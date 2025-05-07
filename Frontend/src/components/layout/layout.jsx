@@ -10,7 +10,7 @@ const Layout = () => {
   const activeNavItem =
     NavItems.find((item) => item.href === location.pathname) || NavItems[0];
 
-console.log(activeNavItem, NavItems[0].name,"here")
+// console.log(activeNavItem, NavItems[0].name,"here")
 
   return (
     <div className="flex w-full h-screen">

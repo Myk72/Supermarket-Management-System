@@ -15,6 +15,7 @@ import Inventory from "./pages/Inventory";
 import Report from "./pages/Report";
 
 import Layout from "./components/layout/layout";
+import ProductSale from "./pages/ProductSale";
 const App = () => {
   return (
     <div className="flex justify-center w-full h-screen items-center">
@@ -22,6 +23,7 @@ const App = () => {
         <Route element={<Layout />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/products" element={<Product />} />
+          <Route path="/pos" element={<ProductSale />} />
           <Route path="/categories" element={<Category />} />
           <Route path="/inventory" element={<Inventory />} />
           <Route path="/sales" element={<Sales />} />

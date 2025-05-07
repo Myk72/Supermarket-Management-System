@@ -11,11 +11,13 @@ import {
   UserCog,
   Warehouse,
   RefreshCw,
+  ShoppingBag,
 } from "lucide-react";
 
 export const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: Home },
   { name: "Products", href: "/products", icon: Package },
+  { name: "POS", href: "/pos", icon: ShoppingBag },
   { name: "Inventory", href: "/inventory", icon: Box },
   { name: "Sales", href: "/sales", icon: ShoppingCart },
   { name: "Customers", href: "/customers", icon: Users },
