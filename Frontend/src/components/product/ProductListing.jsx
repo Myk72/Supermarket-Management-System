@@ -13,7 +13,7 @@ export const ProductListing = ({ addToCart = () => {} }) => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 15;
+  const itemsPerPage = 10;
 
   const filteredProduct = products?.filter((product) => {
     return (
@@ -21,8 +21,6 @@ export const ProductListing = ({ addToCart = () => {} }) => {
       product.status.toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
-
-  
 
   const pageCount = Math.ceil(filteredProduct.length / itemsPerPage);
   const paginatedProduct = filteredProduct.slice(
@@ -32,6 +30,7 @@ export const ProductListing = ({ addToCart = () => {} }) => {
 
   return (
     <div className="flex flex-col gap-6 p-4 w-2/3 rounded-lg bg-white shadow-md">
+      <h1 className="text-2xl font-bold font-serif">Product List</h1>
       <div>
         <ProductSearchToolbar
           searchTerm={searchTerm}
@@ -47,12 +46,16 @@ export const ProductListing = ({ addToCart = () => {} }) => {
           />
         ))}
       </div>
-
-      <ProductSalePagination
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        pageCount={pageCount}
-      />
+      <div
+      // put it at the bottom page
+      className="mt-auto"
+      > 
+        <ProductSalePagination
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          pageCount={pageCount}
+        />
+      </div>
     </div>
   );
 };
