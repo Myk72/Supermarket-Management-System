@@ -84,7 +84,7 @@ const ProductSale = () => {
           />
         </div>
 
-        <div className="sapce-y-2 overflow-y-auto h-64">
+        <div className="sapce-y-2 overflow-y-auto h-80">
           {cart.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-muted-foreground p-4">
               <ShoppingCart className="h-12 w-12 mb-2" />

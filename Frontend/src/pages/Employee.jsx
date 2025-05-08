@@ -1,9 +1,18 @@
-import React from 'react'
-
+import React, { useEffect } from "react";
+import { CustomTable } from "@/components/table/Table";
+import EmployeeColumns from "@/components/columns/Employee";
+import { useEmployeeStore } from "@/store/employee.store";
 const Employee = () => {
+  const { employees, fetchEmployees } = useEmployeeStore();
+  useEffect(() => {
+    fetchEmployees();
+  }, []);
   return (
-    <div>Employee</div>
-  )
-}
+    <div className="space-y-3">
+      <h1 className="text-xl font-semibold">List Of All Employees</h1>
+      <CustomTable columns={EmployeeColumns} data={employees} />
+    </div>
+  );
+};
 
-export default Employee
+export default Employee;

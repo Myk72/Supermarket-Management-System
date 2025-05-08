@@ -1,7 +1,7 @@
 import { Button } from "./components/ui/button";
 import { useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import LoginPage from "./pages/Auth/LoginPage"; 
+import LoginPage from "./pages/Auth/LoginPage";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Product from "./pages/Product";
 import Return from "./pages/Return";
@@ -33,9 +33,9 @@ const App = () => {
           <Route path="/employees" element={<Employee />} />
           <Route path="/reports" element={<Report />} />
           <Route path="/returns" element={<Return />} />
-          <Route path="*" element={<Navigate to="/dashboard" />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </div>
   );

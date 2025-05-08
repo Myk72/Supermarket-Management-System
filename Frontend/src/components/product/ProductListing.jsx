@@ -37,7 +37,7 @@ export const ProductListing = ({ addToCart = () => {} }) => {
           setSearchTerm={setSearchTerm}
         />
       </div>
-      <div className="flex flex-wrap gap-6">
+      <div className="flex flex-wrap gap-6 pl-4">
         {paginatedProduct.map((product) => (
           <ProductCard
             key={product.product_id}

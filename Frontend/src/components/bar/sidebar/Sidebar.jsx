@@ -16,7 +16,7 @@ const Sidebar = ({ header, navItems, activeNavItem }) => {
               const isActive = activeNavItem.name === item.name;
 
               return (
-                <li key={item.id}>
+                <li key={item.name}>
                   <NavLink
                     to={item.href}
                     className={`flex items-center rounded-r-lg gap-3 p-2 ${
