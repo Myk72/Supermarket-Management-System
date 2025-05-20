@@ -42,14 +42,14 @@ export const CustomTable = ({
           header: "Select",
           cell: ({ row }) => (
             <input
-            type="radio"
-            checked={selectedRowId === row.id}
-            onChange={() => {
-              setSelectedRowId(row.id);
-              onSelectionChange(row.original);
-            }}
-            onClick={(e) => e.stopPropagation()}
-            className="size-4"
+              type="radio"
+              checked={selectedRowId === row.id}
+              onChange={() => {
+                setSelectedRowId(row.id);
+                onSelectionChange(row.original);
+              }}
+              onClick={(e) => e.stopPropagation()}
+              className="size-4"
             />
           ),
           size: 40,
@@ -102,7 +102,7 @@ export const CustomTable = ({
                     style={{
                       width: header.getSize(),
                     }}
-                    className="py-2 text-gray-700 font-medium"
+                    className="py-2 text-gray-700 font-medium items-center"
                   >
                     {flexRender(
                       header.column.columnDef.header,
@@ -118,7 +118,7 @@ export const CustomTable = ({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  className="hover:bg-gray-50"
+                  className="hover:bg-gray-50 cursor-pointer"
                   onClick={() => {
                     if (EnableSelection) {
                       setSelectedRowId(row.id);

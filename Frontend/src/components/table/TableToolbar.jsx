@@ -21,7 +21,8 @@ export const TableToolbar = ({ table, addButtonText, onAddClick, role }) => {
       (column) =>
         column.getCanFilter() &&
         column.id !== "actions" &&
-        column.id !== "select"
+        column.id !== "select" &&
+        column.id !== "image"
     );
 
   const handleFilterChange = (value) => {

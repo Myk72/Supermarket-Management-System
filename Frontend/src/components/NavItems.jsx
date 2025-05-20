@@ -15,15 +15,15 @@ import {
 } from "lucide-react";
 
 export const navigation = [
-  { name: "Dashboard", href: "/dashboard", icon: Home },
-  { name: "Products", href: "/products", icon: Package },
-  { name: "POS", href: "/pos", icon: ShoppingBag },
-  { name: "Inventory", href: "/inventory", icon: Box },
-  { name: "Sales", href: "/sales", icon: ShoppingCart },
-  { name: "Customers", href: "/customers", icon: Users },
-  { name: "Purchases", href: "/purchases", icon: Warehouse },
-  { name: "Suppliers", href: "/suppliers", icon: Truck },
-  { name: "Employees", href: "/employees", icon: UserCog },
-  { name: "Reports", href: "/reports", icon: BarChart3 },
-  { name: "Returns", href: "/returns", icon: RefreshCw },
+  { name: "Dashboard", href: "dashboard", icon: Home },
+  { name: "Products", href: "products", icon: Package },
+  { name: "POS", href: "pos", icon: ShoppingBag },
+  { name: "Inventory", href: "inventory", icon: Box },
+  { name: "Sales", href: "sales", icon: ShoppingCart },
+  { name: "Customers", href: "customers", icon: Users },
+  { name: "Purchases", href: "purchases", icon: Warehouse },
+  { name: "Suppliers", href: "suppliers", icon: Truck },
+  { name: "Employees", href: "employees", icon: UserCog },
+  { name: "Reports", href: "reports", icon: BarChart3 },
+  { name: "Returns", href: "returns", icon: RefreshCw },
 ];

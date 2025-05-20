@@ -13,6 +13,7 @@ import Sales from "./pages/Sales";
 import Category from "./pages/Category";
 import Inventory from "./pages/Inventory";
 import Report from "./pages/Report";
+import ProductDetail from "./components/product/productDetail";
 
 import Layout from "./components/layout/layout";
 import ProductSale from "./pages/ProductSale";
@@ -33,6 +34,7 @@ const App = () => {
           <Route path="/employees" element={<Employee />} />
           <Route path="/reports" element={<Report />} />
           <Route path="/returns" element={<Return />} />
+          <Route path="/products/view/:id" element={<ProductDetail />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="*" element={<Navigate to="/login" />} />

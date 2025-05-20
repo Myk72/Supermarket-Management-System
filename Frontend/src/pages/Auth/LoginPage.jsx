@@ -84,7 +84,7 @@ const LoginPage = () => {
           </div>
           <Button
             type="submit"
-            className="w-full bg-blue-600 text-white hover:bg-blue-700 "
+            className="w-full bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
           >
             Login
           </Button>

@@ -6,11 +6,16 @@ import { useAuthStore } from "@/store/auth.store";
 import { navigation as NavItems } from "../NavItems";
 const Layout = () => {
   const location = useLocation();
-
   const activeNavItem =
-    NavItems.find((item) => item.href === location.pathname) || NavItems[0];
+    NavItems.find((item) => {
+      return item.href === location.pathname.split("/")[1];
+    }) || NavItems[0];
 
-  // console.log(activeNavItem, NavItems[0].name,"here")
+  // console.log(
+  //   NavItems.find((item) => {
+  //     return item.href === location.pathname.split("/")[1];
+  //   })
+  // );
 
   return (
     <div className="flex w-full h-screen">
@@ -23,7 +28,7 @@ const Layout = () => {
       <div className="flex flex-col flex-1 border-gray-200">
         <Topbar currentNavItem={activeNavItem.name} />
 
-        <main className="p-6 bg-gray-100 h-screen">
+        <main className="p-6 bg-gray-100 h-screen overflow-y-scroll">
           <Outlet />
         </main>
       </div>
