@@ -14,7 +14,7 @@ const ProductDetail = () => {
   }, [id]);
 
   return (
-    <div className="flex flex-col justify-center p-3 font-serif gap-2 bg-white rounded-2xl p-10">
+    <div className="flex flex-col justify-center font-serif gap-2 bg-white rounded-2xl p-10">
       <div className="flex justify-between items-center">
         <Button
           variant={"outline"}
