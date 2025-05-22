@@ -21,10 +21,10 @@ const Inventory = () => {
         ))}
       </div>
       <div className="flex flex-row gap-2">
-        {/* Inventory table */}
+        
         <div className="w-3/5 pr-4 bg-white p-4 rounded-2xl">
           <h2 className="text-xl font-semibold">Inventory List</h2>
-          {/* Table component */}
+         
           <CustomTable
             columns={InventoryColumns}
             data={[]}
@@ -34,7 +34,7 @@ const Inventory = () => {
         </div>
         <div className="w-2/5 bg-white p-4 rounded-2xl">
           <h2 className="text-xl font-semibold text-red-500">Low Stock Items</h2>
-          {/* Table component */}
+          
           <CustomTable columns={LowStockColumns} data={[]} pageSize={5} />
         </div>
       </div>

@@ -24,7 +24,7 @@ const mockSales = [
   {
     sale_id: 3,
     customer_id: null,
-    employee_id: 1,
+    employee_id: 3,
     total_amount: 12.99,
     tax_amount: 1.04,
     discount_amount: 0,
@@ -33,8 +33,8 @@ const mockSales = [
   },
   {
     sale_id: 4,
-    customer_id: 3,
-    employee_id: 2,
+    customer_id: 4,
+    employee_id: 4,
     total_amount: 78.5,
     tax_amount: 6.28,
     discount_amount: 10.0,
@@ -43,8 +43,8 @@ const mockSales = [
   },
   {
     sale_id: 5,
-    customer_id: 1,
-    employee_id: 1,
+    customer_id: 5,
+    employee_id: 5,
     total_amount: 34.25,
     tax_amount: 2.74,
     discount_amount: 0,
