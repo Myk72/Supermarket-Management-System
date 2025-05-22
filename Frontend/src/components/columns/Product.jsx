@@ -59,7 +59,7 @@ const ProductColumns = [
     cell: ({ row }) => (
       <div
         className={`rounded-full items-center text-white flex justify-center p-1 w-3/4 text-xs
-        ${row.original.status === "active" ? "bg-green-400" : "bg-red-500"}
+        ${row.original.status === "active" ? "bg-green-500" : "bg-red-500"}
         `}
       >
         {row.original.status.toUpperCase()}
@@ -77,7 +77,7 @@ const ProductColumns = [
           <span className="font-medium">${row.original.price}</span>
         </div>
         {row.original.discount > 0 && (
-          <div className="flex items-center bg-green-400 text-white rounded-2xl justify-center text-xs w-3/4">
+          <div className="flex items-center text-green-500 rounded-2xl justify-center text-xs w-3/4">
             % {row.original.discount} OFF
           </div>
         )}

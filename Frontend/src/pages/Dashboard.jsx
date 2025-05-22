@@ -50,11 +50,11 @@ const Dashboard = () => {
   return (
     <div className="space-y-6">
       <div className="text-3xl">
-        <h1 className="font-bold tracking-tight flex items-center gap-2">
+        <h1 className="font-bold tracking-tight flex items-center gap-2 text-blue-900">
           Welcome to the Dashboard
           <HomeIcon className="h-8 w-8 text-muted-foreground" />
         </h1>
-        <span className="text-muted-foreground text-lg">
+        <span className="text-lg text-blue-900 font-light">
           Overview of your supermarket operations
         </span>
       </div>
@@ -75,7 +75,7 @@ const Dashboard = () => {
         <div className="flex justify-between items-center gap-2">
           <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6 space-y-4 h-[450px] w-1/2">
             <div>
-              <h3 className="text-2xl font-semibold font-serif">
+              <h3 className="text-2xl font-semibold font-serif text-blue-500">
                 Recent Sales
               </h3>
               <p className="text-sm text-gray-500">
@@ -110,7 +110,7 @@ const Dashboard = () => {
 
           <div className="bg-white rounded-lg border border-gray-200 shadow-sm space-y-4 p-6 h-[450px] w-1/2">
             <div>
-              <h3 className="text-2xl font-semibold font-serif">
+              <h3 className="text-2xl font-semibold font-serif text-red-500">
                 Low Stock Items
               </h3>
               <p className="text-sm text-gray-500">

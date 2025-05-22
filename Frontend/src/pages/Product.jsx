@@ -14,7 +14,7 @@ const Product = () => {
 
   return (
     <div className="space-y-2 font-serif h-screen">
-      <h1 className="font-semibold text-2xl">List of Products</h1>
+      <h1 className="font-semibold text-2xl text-blue-900">List of Products</h1>
       <CustomTable
         data={products}
         columns={ProductColumns}

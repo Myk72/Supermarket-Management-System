@@ -7,6 +7,15 @@ import { useSaleStore } from "@/store/sales.store";
 import { ShoppingCart, Trash2, UserPlus } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
 const ProductSale = () => {
   const { products, fetchProducts } = useProductStore();
@@ -225,3 +234,7 @@ const ProductSale = () => {
 };
 
 export default ProductSale;
+
+
+
+

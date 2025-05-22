@@ -25,9 +25,9 @@ export const CustomTable = ({
   defaultSort = [],
   pageSize = 10,
   addButtonText,
-  EnableSelection = false,
   onAddClick = () => {},
   onSelectionChange = () => {},
+  onRowClick = () => {},
   meta = {},
 }) => {
   const [sorting, setSorting] = useState(defaultSort);
@@ -35,28 +35,7 @@ export const CustomTable = ({
   const [globalFilter, setGlobalFilter] = useState("");
   const [selectedRowId, setSelectedRowId] = useState(null);
 
-  const tableColumns = EnableSelection
-    ? [
-        {
-          id: "select",
-          header: "Select",
-          cell: ({ row }) => (
-            <input
-              type="radio"
-              checked={selectedRowId === row.id}
-              onChange={() => {
-                setSelectedRowId(row.id);
-                onSelectionChange(row.original);
-              }}
-              onClick={(e) => e.stopPropagation()}
-              className="size-4"
-            />
-          ),
-          size: 40,
-        },
-        ...columns,
-      ]
-    : columns;
+  const tableColumns = columns;
 
   const table = useReactTable({
     data,
@@ -102,7 +81,7 @@ export const CustomTable = ({
                     style={{
                       width: header.getSize(),
                     }}
-                    className="py-2 text-gray-700 font-medium items-center"
+                    className="py-2 text-gray-700 font-medium"
                   >
                     {flexRender(
                       header.column.columnDef.header,
@@ -120,10 +99,7 @@ export const CustomTable = ({
                   key={row.id}
                   className="hover:bg-gray-50 cursor-pointer"
                   onClick={() => {
-                    if (EnableSelection) {
-                      setSelectedRowId(row.id);
-                      onSelectionChange(row.original);
-                    }
+                    onRowClick(row.original);
                   }}
                 >
                   {row.getVisibleCells().map((cell) => (

@@ -96,14 +96,16 @@ export const TableToolbar = ({ table, addButtonText, onAddClick, role }) => {
           )}
         </div>
       </div>
-      <Button
-        variant="default"
-        className="bg-blue-600 hover:bg-blue-700 text-white gap-2"
-        onClick={onAddClick}
-      >
-        {addButtonText}
-        <PlusCircle className="h-4 w-4" />
-      </Button>
+      {addButtonText && (
+        <Button
+          variant="default"
+          className="bg-blue-600 hover:bg-blue-700 text-white gap-2"
+          onClick={onAddClick}
+        >
+          {addButtonText}
+          <PlusCircle className="h-4 w-4" />
+        </Button>
+      )}
     </div>
   );
 };
