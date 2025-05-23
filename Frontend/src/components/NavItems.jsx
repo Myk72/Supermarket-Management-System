@@ -16,10 +16,10 @@ import {
 
 export const navigation = [
   { name: "Dashboard", href: "dashboard", icon: Home },
-  { name: "Products", href: "products", icon: Package },
   { name: "POS", href: "pos", icon: ShoppingBag },
-  { name: "Inventory", href: "inventory", icon: Box },
+  { name: "Products", href: "products", icon: Package },
   { name: "Sales", href: "sales", icon: ShoppingCart },
+  { name: "Inventory", href: "inventory", icon: Box },
   { name: "Customers", href: "customers", icon: Users },
   { name: "Purchases", href: "purchases", icon: Warehouse },
   { name: "Suppliers", href: "suppliers", icon: Truck },

@@ -84,7 +84,7 @@ const ProductSale = () => {
   return (
     <div className="flex flex-row gap-4 max-h-screen">
       <ProductListing addToCart={(product) => addToCart(product)} />
-      <div className="w-1/3 shadow-md bg-white p-4 rounded-lg">
+      <div className="w-1/3 shadow-md bg-white p-4 rounded-lg border">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold ">Current Sale</h1>
           <UserPlus

@@ -17,7 +17,7 @@ const Customers = () => {
         List Of All Customers
       </h1>
       <div className="flex space-x-3 w-full">
-        <div className="w-2/3 bg-white p-4 rounded-2xl">
+        <div className="w-2/3 bg-white p-4 rounded-2xl border shadow-sm">
           <CustomTable
             columns={CustomerColumns}
             data={customers}
@@ -31,7 +31,7 @@ const Customers = () => {
             }}
           />
         </div>
-        <div className="w-1/3 bg-white p-4 rounded-2xl">
+        <div className="w-1/3 bg-white p-4 rounded-2xl border shadow-sm">
           <h2 className="text-lg font-semibold text-blue-900">
             Customer Details
           </h2>
@@ -53,7 +53,7 @@ const Customers = () => {
                 </p>
               </div>
             ) : (
-              <div>
+              <div className="flex flex-col items-center">
                 <Users className="h-16 w-16" />
                 <p className="text-sm text-gray-500">
                   Select a customer to view

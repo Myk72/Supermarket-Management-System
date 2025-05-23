@@ -16,7 +16,7 @@ const Topbar = ({ currentNavItem }) => {
   const { user, logout } = useAuthStore();
   const Navigate = useNavigate();
   return (
-    <header className="bg-white py-4 px-6 flex items-center justify-between">
+    <header className="bg-white py-4 px-6 flex items-center justify-between border-b">
       <div>
         <h1 className="text-2xl font-bold font-serif">{currentNavItem}</h1>
       </div>

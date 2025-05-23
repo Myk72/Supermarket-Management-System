@@ -21,7 +21,7 @@ const LoginPage = () => {
         <h1 className="text-2xl font-bold text-blue-900">SuperMarket MS</h1>
       </header>
 
-      <div className="flex flex-row items-center w-full h-screen gap-10 p-4">
+      <div className="flex flex-row items-center w-full h-screen gap-16 p-4">
         <div className="flex justify-center items-center w-1/2 shrink-0">
           <img
             src="/Shopping.png"
@@ -29,7 +29,7 @@ const LoginPage = () => {
             className="w-full object-cover"
           />
         </div>
-        <div className="flex flex-col items-center justify-center p-6 bg-white rounded-lg font-serif gap-4 w-2/5">
+        <div className="flex flex-col items-center justify-center p-6 bg-white rounded-lg font-serif gap-4 w-1/3">
           <div className="flex justify-center items-center flex-col gap-1">
             <h1 className="text-2xl font-black text-blue-600">
               Welcome Back!

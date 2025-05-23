@@ -22,7 +22,7 @@ const Inventory = () => {
       </div>
       <div className="flex flex-row gap-2">
         
-        <div className="w-3/5 pr-4 bg-white p-4 rounded-2xl">
+        <div className="w-3/5 pr-4 bg-white p-4 rounded-2xl border shadow-sm">
           <h2 className="text-xl font-semibold">Inventory List</h2>
          
           <CustomTable
@@ -32,7 +32,7 @@ const Inventory = () => {
             pageSize={5}
           />
         </div>
-        <div className="w-2/5 bg-white p-4 rounded-2xl">
+        <div className="w-2/5 bg-white p-4 rounded-2xl border shadow-sm">
           <h2 className="text-xl font-semibold text-red-500">Low Stock Items</h2>
           
           <CustomTable columns={LowStockColumns} data={[]} pageSize={5} />
