@@ -65,8 +65,8 @@ const Return = () => {
     setCurrentPage(page);
   };
   return (
-    <div className="flex flex-col w-full h-screen  gap-4">
-      <h1 className="text-2xl font-bold text-blue-900">Returns Management</h1>
+    <div className="flex flex-col w-full h-screen font-serif  gap-4">
+      <h1 className="text-2xl font-semibold text-blue-900">Returns Management</h1>
       <div className="grid grid-cols-4 gap-4">
         {ReturnCard.map((card, index) => (
           <Card

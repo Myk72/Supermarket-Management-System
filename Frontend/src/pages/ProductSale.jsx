@@ -84,9 +84,9 @@ const ProductSale = () => {
   return (
     <div className="flex flex-row gap-4 max-h-screen">
       <ProductListing addToCart={(product) => addToCart(product)} />
-      <div className="w-1/3 shadow-md bg-white p-4 rounded-lg border">
+      <div className="w-1/3 shadow-md bg-white p-4 rounded-lg border font-serif">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold ">Current Sale</h1>
+          <h1 className="text-2xl font-semibold text-blue-900">Current Sale</h1>
           <UserPlus
             className="w-10 h-10 text-blue-600 p-2 rounded-md hover:cursor-pointer hover:bg-gray-200 transition-all duration-300"
             onClick={() => alert("CHoose a customer")}

@@ -8,7 +8,7 @@ import InventoryColumns from "@/components/columns/InventoryCol";
 const Inventory = () => {
   return (
     <div className="flex flex-col w-full font-serif gap-4">
-      <h1 className="text-2xl font-bold ">Inventory Management</h1>
+      <h1 className="text-2xl font-semibold text-blue-900">Inventory Management</h1>
       <div className="flex flex-row gap-4">
         {InventoryCardData.map((item, index) => (
           <Card

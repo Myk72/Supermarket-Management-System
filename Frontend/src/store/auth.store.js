@@ -6,7 +6,7 @@ const useAuthStore = create((set) => ({
   token: null,
   login: (userData) => set({ 
     user: userData.user,
-    role: "cashier",
+    role: "manager",
   }),
   logout: () => set({ user: null, role: null, token: null }),
 }));

@@ -10,8 +10,8 @@ const Sales = () => {
   }, []);
   // console.log(sales);
   return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-bold ">Sales Management</h1>
+    <div className="space-y-4 font-serif">
+      <h1 className="text-2xl font-semibold text-blue-900 ">Sales Management</h1>
       <div className="bg-white p-6 rounded-2xl border shadow-sm">
         <CustomTable
           columns={SalesColumns}

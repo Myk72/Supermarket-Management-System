@@ -54,11 +54,11 @@ const CustomerColumns = [
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Salary
+        Loyalty Points
         <ArrowUpDown className="size-4" />
       </Button>
     ),
-    size: 24,
+    size: 20,
   },
   {
     id: "Phone",

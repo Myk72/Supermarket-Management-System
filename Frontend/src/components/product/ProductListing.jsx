@@ -30,7 +30,7 @@ export const ProductListing = ({ addToCart = () => {} }) => {
 
   return (
     <div className="flex flex-col gap-6 p-4 w-2/3 rounded-lg bg-white shadow-md border">
-      <h1 className="text-2xl font-bold font-serif text-blue-900">Product List</h1>
+      <h1 className="text-2xl font-semibold font-serif text-blue-900">Product List</h1>
       <div>
         <ProductSearchToolbar
           searchTerm={searchTerm}

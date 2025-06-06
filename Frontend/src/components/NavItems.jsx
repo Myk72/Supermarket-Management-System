@@ -15,51 +15,51 @@ import {
 } from "lucide-react";
 
 export const navigation = [
-  { name: "Dashboard", href: "dashboard", icon: Home, role: ["admin"] },
+  { name: "Dashboard", href: "dashboard", icon: Home, role: ["manager"] },
   {
     name: "Dashboard",
     href: "cashier-dashboard",
     icon: Home,
     role: ["cashier"],
   },
-  { name: "POS", href: "pos", icon: ShoppingBag, role: ["admin", "cashier"] },
+  { name: "POS", href: "pos", icon: ShoppingBag, role: ["manager", "cashier"] },
   {
     name: "Products",
     href: "products",
     icon: Package,
-    role: ["admin", "stocker", "cashier"],
+    role: ["manager", "stocker", "cashier"],
   },
-  { name: "Sales", href: "sales", icon: ShoppingCart, role: ["admin"] },
+  { name: "Sales", href: "sales", icon: ShoppingCart, role: ["manager"] },
   {
     name: "Inventory",
     href: "inventory",
     icon: Box,
-    role: ["admin", "stocker"],
+    role: ["manager", "stocker"],
   },
   {
     name: "Customers",
     href: "customers",
     icon: Users,
-    role: ["admin", "cashier"],
+    role: ["manager", "cashier"],
   },
   {
     name: "Purchases",
     href: "purchases",
     icon: Warehouse,
-    role: ["admin", "stocker"],
+    role: ["manager", "stocker"],
   },
   {
     name: "Suppliers",
     href: "suppliers",
     icon: Truck,
-    role: ["admin", "stocker"],
+    role: ["manager", "stocker"],
   },
-  { name: "Employees", href: "employees", icon: UserCog, role: ["admin"] },
-  { name: "Reports", href: "reports", icon: BarChart3, role: ["admin"] },
+  { name: "Employees", href: "employees", icon: UserCog, role: ["manager"] },
+  { name: "Reports", href: "reports", icon: BarChart3, role: ["manager"] },
   {
     name: "Returns",
     href: "returns",
     icon: RefreshCw,
-    role: ["admin", "stocker"],
+    role: ["manager", "stocker"],
   },
 ];

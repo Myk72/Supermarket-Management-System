@@ -1,17 +1,29 @@
 import { NavLink } from "react-router-dom";
-import { ShoppingCart } from "lucide-react";
+import { ChevronsLeft, ChevronsRight, ShoppingCart } from "lucide-react";
 import useAuthStore from "@/store/auth.store";
 
-const Sidebar = ({ header, navItems, activeNavItem }) => {
+const Sidebar = ({
+  header,
+  navItems,
+  activeNavItem,
+  sidebarOpen,
+  onToggle,
+}) => {
   const { role } = useAuthStore();
   return (
-    <div className="w-56 flex flex-col h-screen bg-white shadow-2xl">
+    <div
+      className={`flex flex-col h-screen bg-white shadow-2xl
+      ${sidebarOpen ? "w-56" : "w-18"} transition-width duration-500`}
+    >
       <div className="flex items-center gap-2 py-3 px-2 justify-center">
-        <ShoppingCart size={32} className="text-green-500" />
-        <h1 className="text-lg font-bold font-serif ml-2 text-indigo-600">
-          {header}
-        </h1>
+        <ShoppingCart size={32} className="text-[#5865F2]" />
+        {sidebarOpen && (
+          <h1 className="text-lg font-bold font-serif ml-2 text-indigo-600">
+            {header}
+          </h1>
+        )}
       </div>
+
       <div>
         <nav className="px-4 w-full py-6">
           <ul className="space-y-3">
@@ -31,16 +43,38 @@ const Sidebar = ({ header, navItems, activeNavItem }) => {
                       isActive
                         ? "bg-gray-50 text-blue-600 border-l-4 border-blue-600 font-semibold"
                         : "hover:bg-gray-50 hover:text-blue-600"
-                    }`}
+                    }
+                        ${sidebarOpen ? "justify-start" : "justify-center"}
+                        `}
                   >
                     <IconComponent className="size-4" />
-                    <span className="font-serif text-sm">{item.name}</span>
+                    {sidebarOpen && (
+                      <span className="font-serif text-sm">{item.name}</span>
+                    )}
                   </NavLink>
                 </li>
               );
             })}
           </ul>
         </nav>
+      </div>
+
+      <div className="mt-auto border-t">
+        <button
+          onClick={onToggle}
+          className="w-full flex items-center p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors justify-center"
+          aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+        >
+          {sidebarOpen ? (
+            <>
+              <ChevronsLeft className="size-6" />
+            </>
+          ) : (
+            <>
+              <ChevronsRight className="size-6" />
+            </>
+          )}
+        </button>
       </div>
     </div>
   );

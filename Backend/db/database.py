@@ -21,7 +21,6 @@ Base = declarative_base()
 def connect_db():
     db = Session()
     try:
-        # print("Connected to the database")
         yield db
     finally:
         db.close()

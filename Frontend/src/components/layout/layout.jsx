@@ -6,16 +6,12 @@ import useAuthStore from "@/store/auth.store";
 import { navigation as NavItems } from "../NavItems";
 const Layout = () => {
   const location = useLocation();
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const activeNavItem =
     NavItems.find((item) => {
       return item.href === location.pathname.split("/")[1];
     }) || NavItems[0];
 
-  // console.log(
-  //   NavItems.find((item) => {
-  //     return item.href === location.pathname.split("/")[1];
-  //   })
-  // );
 
   return (
     <div className="flex w-full h-screen">
@@ -23,6 +19,8 @@ const Layout = () => {
         header={"SuperMarket MS"}
         navItems={NavItems}
         activeNavItem={activeNavItem}
+        sidebarOpen={sidebarOpen}
+        onToggle={() => setSidebarOpen(!sidebarOpen)}
       />
 
       <div className="flex flex-col flex-1">

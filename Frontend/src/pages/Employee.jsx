@@ -8,8 +8,8 @@ const Employee = () => {
     fetchEmployees();
   }, []);
   return (
-    <div className="space-y-3">
-      <h1 className="text-xl font-semibold text-blue-900">List Of All Employees</h1>
+    <div className="space-y-3 font-serif">
+      <h1 className="text-xl font-semibold text-blue-900">Employees</h1>
       <CustomTable columns={EmployeeColumns} data={employees} />
     </div>
   );
