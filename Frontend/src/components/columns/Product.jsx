@@ -77,7 +77,7 @@ const ProductColumns = [
           <span className="font-medium">${row.original.price}</span>
         </div>
         {row.original.discount > 0 && (
-          <div className="flex items-center text-green-500 rounded-2xl justify-center text-xs w-3/4">
+          <div className="text-green-500 rounded-2xl text-xs w-3/4">
             % {row.original.discount} OFF
           </div>
         )}

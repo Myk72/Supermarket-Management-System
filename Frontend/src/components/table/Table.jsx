@@ -7,7 +7,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useAuthStore } from "@/store/auth.store";
+import useAuthStore from "@/store/auth.store";
 import {
   Table,
   TableBody,

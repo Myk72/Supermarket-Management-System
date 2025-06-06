@@ -3,16 +3,22 @@ import { ShoppingCart } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import useAuthStore from "@/store/auth.store";
 const LoginPage = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const { login } = useAuthStore();
   const navigate = useNavigate();
   const onSubmit = (data) => {
     console.log(data);
-    navigate("/dashboard");
+    login(data);
+    if (useAuthStore.getState().role === "cashier") {
+      navigate("/cashier-dashboard");
+    } else navigate("/dashboard");
+    // navigate("/cashier-dashboard");
   };
   return (
     <div className="flex flex-col items-center w-full h-screen">
@@ -22,18 +28,16 @@ const LoginPage = () => {
       </header>
 
       <div className="flex flex-row items-center w-full h-screen gap-16 p-4">
-        <div className="flex justify-center items-center w-1/2 shrink-0">
+        <div className="flex justify-center items-center w-1/2 shrink-0 shadow-sm">
           <img
             src="/Shopping.png"
             alt="Login"
-            className="w-full object-cover"
+            className="w-full object-cover hover:scale-105 transition-all duration-500"
           />
         </div>
         <div className="flex flex-col items-center justify-center p-6 bg-white rounded-lg font-serif gap-4 w-1/3">
           <div className="flex justify-center items-center flex-col gap-1">
-            <h1 className="text-2xl font-black text-blue-600">
-              Welcome Back!
-            </h1>
+            <h1 className="text-2xl font-black text-blue-600">Welcome Back!</h1>
             <span className="text-sm font-light text-blue-600">
               Login to your account
             </span>

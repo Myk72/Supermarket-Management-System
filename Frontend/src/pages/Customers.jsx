@@ -22,6 +22,7 @@ const Customers = () => {
             columns={CustomerColumns}
             data={customers}
             addButtonText="Add Customer"
+            pageSize={8}
             onAddClick={() => {
               navigate("/customers/add");
             }}

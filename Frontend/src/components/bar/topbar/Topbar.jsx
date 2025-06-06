@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "@/store/auth.store";
+import useAuthStore from "@/store/auth.store";
 import { LogOut, Settings, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FiUser } from "react-icons/fi";
@@ -16,7 +16,7 @@ const Topbar = ({ currentNavItem }) => {
   const { user, logout } = useAuthStore();
   const Navigate = useNavigate();
   return (
-    <header className="bg-white py-4 px-6 flex items-center justify-between border-b">
+    <header className="bg-white py-3 px-6 flex items-center justify-between shadow-md">
       <div>
         <h1 className="text-2xl font-bold font-serif">{currentNavItem}</h1>
       </div>
@@ -47,7 +47,12 @@ const Topbar = ({ currentNavItem }) => {
               <Settings className="h-4 w-4" />
               <span>Setting</span>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => Navigate("/login")}>
+            <DropdownMenuItem
+              onClick={() => {
+                logout();
+                Navigate("/login");
+              }}
+            >
               <LogOut className="h-4 w-4" />
               <span>Log out</span>
             </DropdownMenuItem>

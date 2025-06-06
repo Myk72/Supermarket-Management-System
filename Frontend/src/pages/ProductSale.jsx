@@ -1,6 +1,6 @@
 import { ProductListing } from "@/components/product/ProductListing";
 import { Button } from "@/components/ui/button";
-import { useAuthStore } from "@/store/auth.store";
+import useAuthStore from "@/store/auth.store";
 import { useCustomerStore } from "@/store/customers.store";
 import { useProductStore } from "@/store/product.store";
 import { useSaleStore } from "@/store/sales.store";
