@@ -8,11 +8,17 @@ class EmployeeBase(BaseModel):
     salary: float
     hire_date: date
     phone: str
+    address: str | None = None
+    token: str | None = None
+    is_authenticated: bool = False
 
 class UserRegister(EmployeeBase):
     email: EmailStr
-    password: str
 
 class UserLogin(BaseModel):
     email: EmailStr
+    password: str
+
+class SetPasswordRequest(BaseModel):
+    token: str
     password: str

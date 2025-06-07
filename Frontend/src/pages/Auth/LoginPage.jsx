@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "@/store/auth.store";
+import { api } from "@/lib/api";
 const LoginPage = () => {
   const {
     register,
@@ -12,13 +13,15 @@ const LoginPage = () => {
   } = useForm();
   const { login } = useAuthStore();
   const navigate = useNavigate();
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data);
     login(data);
-    if (useAuthStore.getState().role === "cashier") {
-      navigate("/cashier-dashboard");
-    } else navigate("/dashboard");
-    // navigate("/cashier-dashboard");
+    try {
+      const response = await api.post("/auth/login", data);
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
   return (
     <div className="flex flex-col items-center w-full h-screen">

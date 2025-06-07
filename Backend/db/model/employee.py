@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Date, DateTime, Float, ForeignKey, Enum, Text
+from sqlalchemy import Column, Integer, String, Date, DateTime, Float, ForeignKey, Enum, Text, Boolean
 from sqlalchemy.sql import func
 from db.database import Base
 import enum
@@ -18,6 +18,9 @@ class Employee(Base):
     salary = Column(Float(10, 2))
     hire_date = Column(Date)
     phone = Column(String(20))
+    address = Column(Text, nullable=True)
+    token = Column(String(255), nullable=True)
+    is_authenticated = Column(Boolean, default=False)
     created_at = Column(DateTime, server_default=func.now())
 
 class User(Base):

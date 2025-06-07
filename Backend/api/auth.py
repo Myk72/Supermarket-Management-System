@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from utils import utils
-from schemas.userSchema import UserRegister, UserLogin
+from schemas.userSchema import UserRegister, UserLogin, SetPasswordRequest
 from db.model.employee import User, Employee
 from db.database import connect_db
 from datetime import datetime
@@ -10,12 +10,14 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 
 
-@router.post("/register")
-def register(user_data: UserRegister, db: Session = Depends(connect_db)):
+from utils.utils import hash_password, verify_password, generate_token, send_email, verify_token
 
+
+@router.post("/register")
+async def register(user_data: UserRegister, db: Session = Depends(connect_db)):
     if db.query(User).filter(User.email == user_data.email).first():
         raise HTTPException(status_code=400, detail="Email already exists")
-
+    token = generate_token(user_data.email)
     new_employee = Employee(
         firstName=user_data.firstName,
         lastName=user_data.lastName,
@@ -23,33 +25,64 @@ def register(user_data: UserRegister, db: Session = Depends(connect_db)):
         salary=user_data.salary,
         hire_date=user_data.hire_date,
         phone=user_data.phone,
+        token=token,
     )
-
     db.add(new_employee)
     db.commit()
     db.refresh(new_employee)
 
-    hashed_pw = utils.hash_password(user_data.password)
     new_user = User(
         employee_id=new_employee.employee_id,
         email=user_data.email,
-        password=hashed_pw,
+        password=hash_password("temporary_password"),
     )
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
 
-    return {"message": "User registered successfully"}
+    
+    await send_email(user_data.email, token)
 
+    return {"message": "User has been registered successfully"}
 
 
 @router.post("/login")
 def login(credentials: UserLogin, db: Session = Depends(connect_db)):
     user = db.query(User).filter(User.email == credentials.email).first()
-    if not user or not utils.verify_password(credentials.password, user.password):
+    if not user or not verify_password(credentials.password, user.password):
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
     user.last_login = datetime.now()
     db.commit()
 
     return {"message": "Login successful", "employee_id": user.employee_id}
+
+
+
+@router.post("/set-password")
+def set_password(data: SetPasswordRequest, db: Session = Depends(connect_db)):
+    # print("Received token:", data)
+    email = verify_token(data.token)
+    if not email:
+        raise HTTPException(status_code=400, detail="Invalid or expired token")
+
+    user = db.query(User).filter_by(email=email).first()
+    print("User found:", user)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    user.password = utils.hash_password(data.password)
+
+    db.commit()
+
+    employee = db.query(Employee).filter_by(employee_id=user.employee_id).first()
+    employee.is_authenticated = True
+    employee.token = None
+    db.commit()
+
+
+
+
+
+    return {"message": "Password has been set successfully",
+            "user": user}

@@ -21,12 +21,14 @@ import ProductSale from "./pages/ProductSale";
 import Unauthorized from "./components/Auth/Unauthorized";
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import CashierDashboard from "./pages/Dashboard/CashierDashboard";
+import ResetPasswordPage from "./pages/Auth/ResetPassword";
 const App = () => {
   return (
     <div className="flex justify-center w-full h-screen items-center">
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path="/set-password/:id" element={<ResetPasswordPage />} />
 
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>
