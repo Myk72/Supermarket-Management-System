@@ -4,7 +4,7 @@ import ProductSalePagination from "./ProductSalePagination";
 import ProductCard from "./productCard";
 import { useProductStore } from "@/store/product.store";
 
-export const ProductListing = ({ addToCart = () => {} }) => {
+export const ProductListing = ({ addToCart = () => {}, scannedCode }) => {
   const { fetchProducts, products } = useProductStore();
 
   useEffect(() => {
@@ -31,10 +31,17 @@ export const ProductListing = ({ addToCart = () => {} }) => {
   return (
     <div className="flex flex-col gap-6 p-4 w-2/3 rounded-lg bg-white shadow-md border">
       <h1 className="text-2xl font-semibold font-serif text-blue-900">Product List</h1>
-      <div>
+      <div className="flex flex-row justify-between items-center">
         <ProductSearchToolbar
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
+        />
+        <input
+          type="text"
+          placeholder="Barcode Scanner"
+          value={scannedCode || ""}
+          readOnly
+          className="p-2 border rounded-2xl"
         />
       </div>
       <div className="flex flex-wrap gap-6 pl-4">

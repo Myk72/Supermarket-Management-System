@@ -54,6 +54,7 @@ def login(credentials: UserLogin, db: Session = Depends(connect_db)):
 
     user.last_login = datetime.now()
     db.commit()
+    db.refresh(user)
 
     return {"message": "Login successful", "employee_id": user.employee_id}
 
@@ -67,22 +68,22 @@ def set_password(data: SetPasswordRequest, db: Session = Depends(connect_db)):
         raise HTTPException(status_code=400, detail="Invalid or expired token")
 
     user = db.query(User).filter_by(email=email).first()
-    print("User found:", user)
+    employee = db.query(Employee).filter_by(employee_id=user.employee_id).first()
+    # print("User found:", user)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
+    if not employee.token:
+        raise HTTPException(status_code=400, detail="Token has already been used or is invalid")
+    
 
     user.password = utils.hash_password(data.password)
 
     db.commit()
 
-    employee = db.query(Employee).filter_by(employee_id=user.employee_id).first()
     employee.is_authenticated = True
     employee.token = None
     db.commit()
-
-
-
-
+    db.refresh(user)
 
     return {"message": "Password has been set successfully",
             "user": user}

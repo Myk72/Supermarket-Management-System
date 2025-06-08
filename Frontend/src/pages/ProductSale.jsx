@@ -7,6 +7,7 @@ import { useSaleStore } from "@/store/sales.store";
 import { ShoppingCart, Trash2, UserPlus } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator";
+import { io } from "socket.io-client";
 import {
   Dialog,
   DialogContent,
@@ -15,7 +16,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 
 const ProductSale = () => {
   const { products, fetchProducts } = useProductStore();
@@ -24,23 +25,45 @@ const ProductSale = () => {
   const { user } = useAuthStore();
 
   const [cart, setCart] = useState([]);
+  const [scannedCode, setScannedCode] = useState("");
+
+  useEffect(() => {
+    const socket = io("https://192.168.8.19:8000", {
+      reconnection: 5,
+      timeout: 5000,
+    });
+
+    socket.on("connect", () => {
+      console.log("Connected to server");
+      socket.emit("register_display");
+    });
+
+    socket.on("initial-codes", (codes) => {
+      setScannedCode(codes);
+    });
+
+    socket.on("scanned-code", (code) => {
+      console.log("Scanned code:", code);
+      setScannedCode(code);
+      const product = products.find((p) => p.barcode === code);
+      if (product) {
+        addToCart(product);
+      } else {
+        alert("Product not found for scanned code: " + code);
+      }
+    });
+
+    socket.on("connect_error", (err) => {
+      console.error("Connection error:", err);
+    });
+
+    return () => socket.disconnect();
+  }, []);
 
   useEffect(() => {
     fetchProducts();
     fetchCustomers();
   }, [fetchProducts, fetchCustomers]);
-
-  const handleBarcodeScan = (e) => {
-    e.preventDefault();
-    if (!barcodeInput.trim()) return;
-
-    const product = products.find((p) => p.barcode === barcodeInput);
-    if (product) {
-      addToCart(product);
-    } else {
-      alert("Product not found");
-    }
-  };
 
   const clearCart = () => {
     setCart([]);
@@ -83,7 +106,8 @@ const ProductSale = () => {
 
   return (
     <div className="flex flex-row gap-4 max-h-screen">
-      <ProductListing addToCart={(product) => addToCart(product)} />
+      <ProductListing addToCart={(product) => addToCart(product)} scannedCode={scannedCode}/>
+
       <div className="w-1/3 shadow-md bg-white p-4 rounded-lg border font-serif">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-semibold text-blue-900">Current Sale</h1>
@@ -234,7 +258,3 @@ const ProductSale = () => {
 };
 
 export default ProductSale;
-
-
-
-

@@ -4,9 +4,10 @@ from api import user as user_routes
 from api import auth as auth_routes
 from db.database import Base, engine
 from db.model import *
+import socketio
 
+scanned_data = ""
 Base.metadata.create_all(bind=engine)
-
 app = FastAPI()
 
 origins = [
@@ -23,10 +24,37 @@ app.add_middleware(
     allow_headers=["*"],    
 )
 
-
 app.include_router(user_routes.router)
 app.include_router(auth_routes.router)
+
+sio = socketio.AsyncServer(cors_allowed_origins='*', async_mode='asgi')
+socket_app = socketio.ASGIApp(sio, other_asgi_app=app)
+
 
 @app.get("/")
 def read_root():
     return {"message": "Welcome to SMS"}
+
+
+@sio.event
+async def connect(sid, environ):
+    if environ['HTTP_ORIGIN'].startswith('https://'):
+        print(f"Client connected via https: {sid}")
+    else:
+        print(f"Client connected via http: {sid}")
+
+@sio.event
+async def disconnect(sid):
+    print(f"Client disconnected: {sid}")
+
+@sio.event
+async def scan(sid, data):
+    global scanned_data
+    scanned_data = data
+    await sio.emit("scanned-code", data)
+
+
+@sio.event
+async def register_display(sid):
+    print(scanned_data, "register_display called")
+    await sio.emit("initial-codes", scanned_data, to=sid)

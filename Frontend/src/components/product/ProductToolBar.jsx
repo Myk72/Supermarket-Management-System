@@ -29,7 +29,7 @@ const ProductSearchToolbar = ({ searchTerm, setSearchTerm }) => {
         placeholder="Search Product"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="w-1/4 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
     </div>
   );

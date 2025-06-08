@@ -1,3 +1,3 @@
 # Supermarket Management System
 
-## Using React frontend & FastApi backend
+## React Frontend & FastApi backend
