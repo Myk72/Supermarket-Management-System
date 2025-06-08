@@ -10,7 +10,11 @@ const Employee = () => {
   return (
     <div className="space-y-3 font-serif">
       <h1 className="text-xl font-semibold text-blue-900">Employees</h1>
-      <CustomTable columns={EmployeeColumns} data={employees} />
+      <CustomTable
+        columns={EmployeeColumns}
+        data={employees}
+        addButtonText={"Add New Employee"}
+      />
     </div>
   );
 };

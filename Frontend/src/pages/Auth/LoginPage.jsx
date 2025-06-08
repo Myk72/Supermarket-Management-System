@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "@/store/auth.store";
-import { api } from "@/lib/api";
+
 const LoginPage = () => {
   const {
     register,
@@ -14,11 +14,8 @@ const LoginPage = () => {
   const { login } = useAuthStore();
   const navigate = useNavigate();
   const onSubmit = async (data) => {
-    console.log(data);
-    login(data);
     try {
-      const response = await api.post("/auth/login", data);
-      navigate("/dashboard");
+      await login(data);
     } catch (error) {
       console.error("Login failed:", error);
     }

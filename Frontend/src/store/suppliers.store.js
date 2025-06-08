@@ -1,5 +1,4 @@
 import { create } from "zustand";
-
 const mockSuppliers = [
   {
     supplier_id: 1,
@@ -47,7 +46,7 @@ export const useSupplierStore = create((set) => ({
     set({ isLoading: true });
     try {
       setTimeout(() => {
-        set({ suppliers: mockSuppliers, isLoading: false });
+        set({ suppliers: [], isLoading: false });
       }, 300);
     } catch (error) {
       set({ error: error.message, isLoading: false });

@@ -42,26 +42,26 @@ const Customers = () => {
               <div className="flex flex-col gap-4 ml-2">
                 <h2 className=" flex flex-col gap-1 text-xl font-semibold text-blue-900">
                   {selectedCustomer.name}
-                  <span className="text-sm text-gray-500">
+                  <span className="text-sm text-gray-500 font-light">
                     Customer Since{" "}
                     {new Date(selectedCustomer.created_at).toLocaleDateString()}
                   </span>
                 </h2>
                 <h2 className=" flex flex-col gap-1 text-xl font-semibold text-blue-900">
                   Phone Number
-                  <span className="text-sm text-gray-500">
+                  <span className="text-sm text-gray-500 font-light">
                     {selectedCustomer.phone}
                   </span>
                 </h2>
                 <h2 className=" flex flex-col gap-1 text-xl font-semibold text-blue-900">
                   Email
-                  <span className="text-sm text-gray-500">
+                  <span className="text-sm text-gray-500 font-light">
                     {selectedCustomer.email}
                   </span>
                 </h2>
                 <h2 className="flex flex-col gap-1 text-xl font-semibold text-blue-900">
                   Loyality Point
-                  <div className="text-sm text-gray-500 mt-1">
+                  <div className="text-sm text-gray-500 mt-1 font-light">
                     <span className="rounded-lg border p-1">
                       {selectedCustomer.loyalty_points || 0}
                     </span>{" "}
@@ -70,7 +70,7 @@ const Customers = () => {
                 </h2>
                 <h2 className="flex flex-col gap-1 text-xl font-semibold text-blue-900">
                   ID
-                  <div className="text-sm text-gray-500 mt-1">
+                  <div className="text-sm text-gray-500 mt-1 font-light">
                     <span>
                       Identification Type: {selectedCustomer.id_type || "N/A"}
                     </span>
@@ -84,7 +84,7 @@ const Customers = () => {
                 <h2 className="flex flex-col gap-1 text-xl font-semibold text-blue-900">
                   Purchased History
                   {purchasedHistory.length > 0 ? (
-                    <div className="text-sm text-gray-500 mt-1">
+                    <div className="text-sm text-gray-500 mt-1 font-light">
                       <span>{purchasedHistory.length} purchases</span>
                       <span>
                         Last Purchase:{" "}
@@ -103,7 +103,7 @@ const Customers = () => {
                       </span>
                     </div>
                   ) : (
-                    <span className="text-sm text-gray-500 mt-1">
+                    <span className="text-sm text-gray-500 mt-1 font-light">
                       No purchase history available
                     </span>
                   )}

@@ -8,21 +8,21 @@ import {
   Users2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useSaleStore } from "@/store/sales.store";
 import { useNavigate } from "react-router-dom";
+import { useSupplierStore } from "@/store/suppliers.store";
 
-const CashierDashboard = () => {
-  const { sales } = useSaleStore();
+const ClerkDashboard = () => {
+  const { suppliers } = useSupplierStore();
   useEffect(() => {
-    useSaleStore.getState().fetchSales();
+    useSupplierStore.getState().fetchSuppliers();
   }, []);
   const navigate = useNavigate();
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
-  const totalPages = Math.ceil(sales.length / itemsPerPage);
+  const totalPages = Math.ceil(suppliers.length / itemsPerPage);
 
-  const currentItems = sales.slice(
+  const currentItems = suppliers.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -33,13 +33,13 @@ const CashierDashboard = () => {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Cashier Dashboard</h1>
-      <p className="text-gray-600">Welcome to the Cashier Dashboard.</p>
+      <h1 className="text-2xl font-bold">Stock Clerk Dashboard</h1>
+      <p className="text-gray-600">Welcome to the clerk Dashboard</p>
       <div className="flex flex-col gap-4 mt-6">
         <div className="flex flex-row gap-4 justify-center items-center">
           <div className="w-1/4 py-4">
             <Card
-              title="Total Sales"
+              title="Total Purchases"
               icon={LucideBadgeDollarSign}
               description="Total sales made today"
               value="0"
@@ -51,10 +51,10 @@ const CashierDashboard = () => {
               <Button
                 variant={"outline"}
                 className={"px-10 py-6 space-x-2 w-3/10"}
-                onClick={() => navigate("/pos")}
+                onClick={() => navigate("/purchases")}
               >
                 <ShoppingBasket />
-                <span className="text-lg">New Sale</span>
+                <span className="text-lg">New Purchase</span>
               </Button>
               <Button
                 variant={"outline"}
@@ -67,31 +67,30 @@ const CashierDashboard = () => {
               <Button
                 variant={"outline"}
                 className={"px-10 py-6 space-x-2 w-3/10"}
-                onClick={() => navigate("/customers")}
+                onClick={() => navigate("/suppliers")}
               >
                 <Users2 />
-                <span className="text-lg">Customers Lookup</span>
+                <span className="text-lg">Check Suppliers</span>
               </Button>
             </div>
           </div>
         </div>
 
         <div className="bg-white font-serif p-4 rounded-xl">
-          <h1 className="text-2xl font-bold">Recent Transaction</h1>
-          <p>Your most recent sales transactions</p>
+          <h1 className="text-2xl font-bold">Recent Purchases</h1>
+          <p>Your most recent Purchases transactions</p>
           <div className="flex flex-col gap-4 mt-4">
             {currentItems.length > 0 ? (
               currentItems.map((sale, index) => (
                 <div>
                   <div className="p-4 bg-white rounded-lg shadow-sm">
                     <h2 className="font-semibold text-lg">
-                      Sale ID: {sale.sale_id}
+                      Purchase ID: {sale.sale_id}
                     </h2>
-                    <p>Customer ID: {sale.customer_id || "Guest"}</p>
-                    <p>Payment Method : {sale.payment_method}</p>
+                    <p>Supplier ID: {sale.supplier_id || "Guest"}</p>
                     <p>Total Amount: ${sale.total_amount.toFixed(2)}</p>
                     <p>
-                      Sale Date: {new Date(sale.sale_date).toLocaleString()}
+                      Purchase Date: {new Date(sale.sale_date).toLocaleString()}
                     </p>
                   </div>
                 </div>
@@ -151,4 +150,4 @@ const CashierDashboard = () => {
   );
 };
 
-export default CashierDashboard;
+export default ClerkDashboard;

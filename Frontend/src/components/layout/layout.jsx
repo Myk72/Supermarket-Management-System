@@ -16,7 +16,7 @@ const Layout = () => {
   return (
     <div className="flex w-full h-screen">
       <Sidebar
-        header={"SuperMarket MS"}
+        header={"SuperMarket"}
         navItems={NavItems}
         activeNavItem={activeNavItem}
         sidebarOpen={sidebarOpen}

@@ -56,7 +56,7 @@ def login(credentials: UserLogin, db: Session = Depends(connect_db)):
     db.commit()
     db.refresh(user)
 
-    return {"message": "Login successful", "employee_id": user.employee_id}
+    return {"message": "Login successful", "id": user.employee_id}
 
 
 
