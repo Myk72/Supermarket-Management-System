@@ -14,7 +14,7 @@ const Sales = () => {
     <div className="font-serif flex flex-col gap-4">
       <h1 className="text-2xl font-bold text-blue-900">Sales List</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {currentItems?.map((sale) => (
           <SalesCard key={sale.sale_id} sale={sale} />
         ))}
@@ -22,7 +22,7 @@ const Sales = () => {
       <PagePagination
         Items={sales}
         setCurrentItems={setCurrentItems}
-        itemsPerPage={8}
+        itemsPerPage={6}
       />
     </div>
   );

@@ -25,6 +25,8 @@ import ResetPasswordPage from "./pages/Auth/ResetPassword";
 import ClerkDashboard from "./pages/Dashboard/stockClerkDashboard";
 import useAuthStore from "./store/auth.store";
 import ViewSale from "./components/Sales/viewSale";
+import AddEmployee from "./components/Employee/AddEmployee";
+import AssignShift from "./components/Employee/AssignShift";
 
 const AuthRedirect = ({ children }) => {
   const { isAuthenticated, role, user } = useAuthStore();
@@ -74,6 +76,8 @@ const App = () => {
             <Route element={<ProtectedRoute allowedRoles={["manager"]} />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/employees" element={<Employee />} />
+              <Route path="/employees/add" element={<AddEmployee />} />
+              <Route path="/employees/assign/:id" element={<AssignShift />} />
               <Route path="/reports" element={<Report />} />
             </Route>
 

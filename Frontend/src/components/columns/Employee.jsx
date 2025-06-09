@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Edit, ArrowUpDown, Trash2 } from "lucide-react";
+import { Edit, ArrowUpDown, Trash2, UserCheck2 } from "lucide-react";
 
 const EmployeeColumns = [
   {
@@ -19,13 +19,13 @@ const EmployeeColumns = [
 
   {
     id: "Name",
-    accessorKey: "name",
+    accessorFn: (row) => `${row.firstName} ${row.lastName}`,
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Name
+        Full Name
         <ArrowUpDown className="size-4" />
       </Button>
     ),
@@ -58,6 +58,7 @@ const EmployeeColumns = [
         <ArrowUpDown className="size-4" />
       </Button>
     ),
+    cell: ({ row }) => `${row.original.salary} $`,
     size: 24,
   },
   {
@@ -95,6 +96,17 @@ const EmployeeColumns = [
       <div className="flex space-x-2">
         <Button variant="ghost" size="sm" className="hover:bg-gray-200">
           <Edit className="size-4 text-blue-600" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="hover:bg-gray-200"
+          onClick={(e) => {
+            e.stopPropagation();
+            table.options.meta?.onAssignClick?.(row.original);
+          }}
+        >
+          <UserCheck2 className="size-4" />
         </Button>
         <Button variant="ghost" size="sm" className="hover:bg-gray-200">
           <Trash2 className="size-4 text-red-600" />
