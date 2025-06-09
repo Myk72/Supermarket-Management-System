@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useSupplierStore } from "@/store/suppliers.store";
+import PagePagination from "@/components/PagePagination";
 
 const ClerkDashboard = () => {
   const { suppliers } = useSupplierStore();
@@ -18,18 +19,7 @@ const ClerkDashboard = () => {
   }, []);
   const navigate = useNavigate();
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4;
-  const totalPages = Math.ceil(suppliers.length / itemsPerPage);
-
-  const currentItems = suppliers.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
+  const [currentItems, setCurrentItems] = useState([]);
 
   return (
     <div>
@@ -79,7 +69,7 @@ const ClerkDashboard = () => {
         <div className="bg-white font-serif p-4 rounded-xl">
           <h1 className="text-2xl font-bold">Recent Purchases</h1>
           <p>Your most recent Purchases transactions</p>
-          <div className="flex flex-col gap-4 mt-4">
+          <div className="grid grid-cols-3 gap-4 mt-4">
             {currentItems.length > 0 ? (
               currentItems.map((sale, index) => (
                 <div>
@@ -99,51 +89,11 @@ const ClerkDashboard = () => {
               <p>No transactions yet today</p>
             )}
           </div>
-          {currentItems.length === 0 ? null : (
-            <div className="flex justify-between mt-2">
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-                className={`px-4 py-2 rounded ${
-                  currentPage === 1
-                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                    : "bg-blue-500 text-white hover:bg-blue-600"
-                }`}
-              >
-                Previous
-              </button>
-
-              <div className="flex space-x-2">
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                  (page) => (
-                    <button
-                      key={page}
-                      onClick={() => handlePageChange(page)}
-                      className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                        currentPage === page
-                          ? "bg-blue-500 text-white"
-                          : "bg-gray-200 hover:bg-gray-300"
-                      }`}
-                    >
-                      {page}
-                    </button>
-                  )
-                )}
-              </div>
-
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                className={`px-4 py-2 rounded ${
-                  currentPage === totalPages
-                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                    : "bg-blue-500 text-white hover:bg-blue-600"
-                }`}
-              >
-                Next
-              </button>
-            </div>
-          )}
+          <PagePagination
+            Items={suppliers}
+            setCurrentItems={setCurrentItems}
+            itemsPerPage={9}
+          />
         </div>
       </div>
     </div>

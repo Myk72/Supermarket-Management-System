@@ -24,6 +24,7 @@ import CashierDashboard from "./pages/Dashboard/CashierDashboard";
 import ResetPasswordPage from "./pages/Auth/ResetPassword";
 import ClerkDashboard from "./pages/Dashboard/stockClerkDashboard";
 import useAuthStore from "./store/auth.store";
+import ViewSale from "./components/Sales/viewSale";
 
 const AuthRedirect = ({ children }) => {
   const { isAuthenticated, role, user } = useAuthStore();
@@ -44,7 +45,6 @@ const AuthRedirect = ({ children }) => {
 };
 
 const App = () => {
-
   return (
     <div className="flex justify-center w-full h-screen items-center">
       <Routes>
@@ -78,18 +78,14 @@ const App = () => {
             </Route>
 
             <Route
-              element={
-                <ProtectedRoute allowedRoles={["manager", "stock"]} />
-              }
+              element={<ProtectedRoute allowedRoles={["manager", "stock"]} />}
             >
               <Route path="/categories" element={<Category />} />
               <Route path="/inventory" element={<Inventory />} />
               <Route path="/purchases" element={<Purchase />} />
               <Route path="/suppliers" element={<Supplier />} />
               <Route path="/returns" element={<Return />} />
-              <Route
-                element={<ProtectedRoute allowedRoles={["stock"]} />}
-              >
+              <Route element={<ProtectedRoute allowedRoles={["stock"]} />}>
                 <Route
                   path="/stock-clerk-dashboard"
                   element={<ClerkDashboard />}
@@ -102,6 +98,7 @@ const App = () => {
             >
               <Route path="/pos" element={<ProductSale />} />
               <Route path="/sales" element={<Sales />} />
+              <Route path="/sales/:id" element={<ViewSale />} />
               <Route path="/customers" element={<Customers />} />
               <Route path="/customers/add" element={<AddCustomer />} />
 

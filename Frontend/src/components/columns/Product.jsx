@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Edit, Trash2, Star, Percent, Eye } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import Barcode from "react-barcode";
 
 const ProductColumns = [
   {
@@ -14,20 +15,6 @@ const ProductColumns = [
       </div>
     ),
   },
-  {
-    id: "image",
-    accessorKey: "image",
-    header: "Picture",
-    cell: ({ row }) => (
-      <div className="flex space-x-3 shrink-0 overflow-hidden rounded-lg">
-        <img
-          src={row.original.image}
-          className="object-cover hover:scale-105 transition-all duration-500 w-full h-18"
-        />
-      </div>
-    ),
-    size: 100,
-  },
 
   {
     id: "name",
@@ -36,6 +23,22 @@ const ProductColumns = [
     cell: ({ row }) => <div className="">{row.original.name}</div>,
     size: 50,
   },
+
+  {
+    id: "image",
+    accessorKey: "image",
+    header: "Picture",
+    cell: ({ row }) => (
+      <div className="flex space-x-3 shrink-0 overflow-hidden rounded-lg">
+        <img
+          src={row.original.image}
+          className="object-cover hover:scale-105 transition-all duration-500 w-full h-24"
+        />
+      </div>
+    ),
+    size: 120,
+  },
+
   {
     id: "category",
     accessorKey: "category",
@@ -84,6 +87,20 @@ const ProductColumns = [
       </div>
     ),
     size: 80,
+  },
+
+  {
+    id: "barcode",
+    header: "Barcode",
+    cell: ({ row }) => (
+      <div className="flex items-center justify-center">
+        <Barcode
+          value={row.original.barcode || "N/A"}
+          height={64}
+        />
+      </div>
+    ),
+    size: 150,
   },
 
   {

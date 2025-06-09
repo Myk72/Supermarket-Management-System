@@ -41,10 +41,10 @@ export const ProductListing = ({ addToCart = () => {}, scannedCode }) => {
           placeholder="Barcode Scanner"
           value={scannedCode || ""}
           readOnly
-          className="p-2 border rounded-2xl"
+          className="py-2 px-3 border rounded-2xl"
         />
       </div>
-      <div className="flex flex-wrap gap-6 pl-4">
+      <div className="grid grid-cols-2 gap-6 pl-4 md:grid-cols-3 lg:grid-cols-5">
         {paginatedProduct.map((product) => (
           <ProductCard
             key={product.product_id}

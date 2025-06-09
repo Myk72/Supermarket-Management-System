@@ -25,8 +25,11 @@ async def register(user_data: UserRegister, db: Session = Depends(connect_db)):
         salary=user_data.salary,
         hire_date=user_data.hire_date,
         phone=user_data.phone,
-        token=token,
+        address=user_data.address,
     )
+
+    await send_email(user_data.email, token)
+    
     db.add(new_employee)
     db.commit()
     db.refresh(new_employee)
@@ -35,13 +38,12 @@ async def register(user_data: UserRegister, db: Session = Depends(connect_db)):
         employee_id=new_employee.employee_id,
         email=user_data.email,
         password=hash_password("temporary_password"),
+        token=token,
     )
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
 
-    
-    await send_email(user_data.email, token)
 
     return {"message": "User has been registered successfully"}
 
@@ -68,26 +70,23 @@ def set_password(data: SetPasswordRequest, db: Session = Depends(connect_db)):
         raise HTTPException(status_code=400, detail="Invalid or expired token")
 
     user = db.query(User).filter_by(email=email).first()
-    employee = db.query(Employee).filter_by(employee_id=user.employee_id).first()
     # print("User found:", user)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
-    print(employee.token)
-    if not employee.token:
+    # print(user.token, "here")
+    if not user.token:
         raise HTTPException(status_code=400, detail="Token has already been used or is invalid")
     
-
     user.password = utils.hash_password(data.password)
 
     db.commit()
 
-    employee.is_authenticated = True
-    employee.token = None
+    user.is_authenticated = True
+    user.token = None
     db.commit()
     db.refresh(user)
 
-    return {"message": "Password has been set successfully",
-            "user": user}
+    return {"message": "Password has been set successfully"}
 
 
 @router.post("/forgot-password")

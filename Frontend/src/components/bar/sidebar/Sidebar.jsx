@@ -12,10 +12,10 @@ const Sidebar = ({
   const { role } = useAuthStore();
   return (
     <div
-      className={`flex flex-col h-screen bg-white shadow-2xl
+      className={`flex flex-col h-screen bg-white shadow-2xl border-r border-gray-300
       ${sidebarOpen ? "w-56" : "w-18"} transition-width duration-500`}
     >
-      <div className="flex items-center gap-2 py-3 px-2 justify-center">
+      <div className="flex items-center gap-2 py-3 px-2 justify-center border-b border-gray-300">
         <ShoppingCart size={32} className="text-[#5865F2]" />
         {sidebarOpen && (
           <h1 className="text-lg font-bold font-serif ml-2 text-indigo-600">

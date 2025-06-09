@@ -1,25 +1,29 @@
-import { CustomTable } from "@/components/table/Table";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSaleStore } from "@/store/sales.store";
-import SalesColumns from "@/components/columns/Sales";
+import SalesCard from "@/components/Sales/salesCard";
+import PagePagination from "@/components/PagePagination";
 
 const Sales = () => {
   const { sales, fetchSales } = useSaleStore();
   useEffect(() => {
     fetchSales();
   }, []);
-  // console.log(sales);
+
+  const [currentItems, setCurrentItems] = useState([]);
   return (
-    <div className="space-y-4 font-serif">
-      <h1 className="text-2xl font-semibold text-blue-900 ">Sales Management</h1>
-      <div className="bg-white p-6 rounded-2xl border shadow-sm">
-        <CustomTable
-          columns={SalesColumns}
-          data={sales}
-          addButtonText={"Add New Sale"}
-          pageSize={5}
-        />
+    <div className="font-serif flex flex-col gap-4">
+      <h1 className="text-2xl font-bold text-blue-900">Sales List</h1>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {currentItems?.map((sale) => (
+          <SalesCard key={sale.sale_id} sale={sale} />
+        ))}
       </div>
+      <PagePagination
+        Items={sales}
+        setCurrentItems={setCurrentItems}
+        itemsPerPage={8}
+      />
     </div>
   );
 };

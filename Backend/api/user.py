@@ -19,3 +19,16 @@ async def get_employee_by_id(id: int, db: Session = Depends(connect_db)):
     if not employee:
         raise HTTPException(status_code=404, detail="Employee not found")
     return employee
+
+
+@router.delete("/{id}")
+async def delete_employee(id: int, db: Session = Depends(connect_db)):
+    employee = db.query(Employee).filter(Employee.employee_id == id).first()
+    if not employee:
+        raise HTTPException(status_code=404, detail="Employee not found")
+    
+    print(employee,"here")
+    
+    db.delete(employee)
+    db.commit()
+    return {"message": "Employee deleted successfully"}
