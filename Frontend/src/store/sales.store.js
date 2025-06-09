@@ -153,6 +153,145 @@ const mockSales = [
   },
 ];
 
+const mockSaleItems = [
+  {
+    sale_item_id: 1,
+    sale_id: 1,
+    product_id: 101,
+    quantity: 2,
+    unit_price: 12.99,
+    subtotal: 25.98
+  },
+  {
+    sale_item_id: 88,
+    sale_id: 1,
+    product_id: 101,
+    quantity: 2,
+    unit_price: 12.99,
+    subtotal: 25.98
+  },
+  {
+    sale_item_id: 86,
+    sale_id: 1,
+    product_id: 101,
+    quantity: 2,
+    unit_price: 12.99,
+    subtotal: 25.98
+  },
+  {
+    sale_item_id: 2,
+    sale_id: 1,
+    product_id: 205,
+    quantity: 1,
+    unit_price: 24.50,
+    subtotal: 24.50
+  },
+  {
+    sale_item_id: 3,
+    sale_id: 2,
+    product_id: 102,
+    quantity: 3,
+    unit_price: 8.75,
+    subtotal: 26.25
+  },
+  {
+    sale_item_id: 4,
+    sale_id: 2,
+    product_id: 301,
+    quantity: 1,
+    unit_price: 15.00,
+    subtotal: 15.00
+  },
+  {
+    sale_item_id: 5,
+    sale_id: 3,
+    product_id: 103,
+    quantity: 5,
+    unit_price: 5.99,
+    subtotal: 29.95
+  },
+  {
+    sale_item_id: 6,
+    sale_id: 4,
+    product_id: 202,
+    quantity: 2,
+    unit_price: 19.99,
+    subtotal: 39.98
+  },
+  {
+    sale_item_id: 7,
+    sale_id: 4,
+    product_id: 302,
+    quantity: 1,
+    unit_price: 32.50,
+    subtotal: 32.50
+  },
+  {
+    sale_item_id: 8,
+    sale_id: 5,
+    product_id: 104,
+    quantity: 1,
+    unit_price: 45.00,
+    subtotal: 45.00
+  },
+  {
+    sale_item_id: 9,
+    sale_id: 6,
+    product_id: 203,
+    quantity: 4,
+    unit_price: 7.25,
+    subtotal: 29.00
+  },
+  {
+    sale_item_id: 10,
+    sale_id: 7,
+    product_id: 303,
+    quantity: 2,
+    unit_price: 12.49,
+    subtotal: 24.98
+  },
+  {
+    sale_item_id: 11,
+    sale_id: 8,
+    product_id: 105,
+    quantity: 3,
+    unit_price: 9.99,
+    subtotal: 29.97
+  },
+  {
+    sale_item_id: 12,
+    sale_id: 9,
+    product_id: 204,
+    quantity: 1,
+    unit_price: 27.75,
+    subtotal: 27.75
+  },
+  {
+    sale_item_id: 13,
+    sale_id: 10,
+    product_id: 304,
+    quantity: 2,
+    unit_price: 14.95,
+    subtotal: 29.90
+  },
+  {
+    sale_item_id: 14,
+    sale_id: 10,
+    product_id: 106,
+    quantity: 1,
+    unit_price: 18.50,
+    subtotal: 18.50
+  },
+  {
+    sale_item_id: 15,
+    sale_id: 10,
+    product_id: 201,
+    quantity: 3,
+    unit_price: 6.25,
+    subtotal: 18.75
+  }
+];
+
 export const useSaleStore = create((set) => ({
   sales: [],
   currentSale: null,
@@ -180,9 +319,10 @@ export const useSaleStore = create((set) => ({
   fetchSaleItems: async (saleId) => {
     set({ isLoading: true });
     try {
+      const id = Number(saleId)
       setTimeout(() => {
-        const items = mockSales.find((sale) => sale.sale_id === saleId);
-        set({ saleItems: items ? [items] : [], isLoading: false });
+        const items = mockSaleItems.filter(item => item.sale_id === id);
+        set({ saleItems: items , isLoading: false });
       }, 400);
     } catch (error) {}
   },
