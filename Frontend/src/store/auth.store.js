@@ -7,7 +7,7 @@ const useAuthStore = create((set) => ({
   isAuthenticated: false,
   login: async (userData) => {
     const response = await api.post("/auth/login", userData);
-    console.log(response)
+    console.log(response);
     const id = response.data.id;
     const data = await api.get(`/users/${id}`);
     set({
@@ -16,8 +16,13 @@ const useAuthStore = create((set) => ({
       isAuthenticated: true,
     });
   },
-  logout: () => set({ user: null, role: null, isAuthenticated: false}),
-  
+  logout: () => set({ user: null, role: null, isAuthenticated: false }),
+
+  forgotpassword: async (email) => {
+    console.log(email)
+    const response = await api.post("/auth/forgot-password", { email });
+    return response;
+  },
 }));
 
 export default useAuthStore;

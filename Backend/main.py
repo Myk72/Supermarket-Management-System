@@ -12,7 +12,7 @@ app = FastAPI()
 
 origins = [
     "http://localhost:5173",
-    "http://127.0.0.1:8000"
+    "http://127.0.0.1:8000",
 ]
 
 
@@ -34,6 +34,7 @@ socket_app = socketio.ASGIApp(sio, other_asgi_app=app)
 @app.get("/")
 def read_root():
     return {"message": "Welcome to SMS"}
+
 
 
 @sio.event

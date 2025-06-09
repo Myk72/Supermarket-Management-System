@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from utils import utils
-from schemas.userSchema import UserRegister, UserLogin, SetPasswordRequest
+from schemas.userSchema import UserRegister, UserLogin, SetPasswordRequest, ForgotPasswordRequest
 from db.model.employee import User, Employee
 from db.database import connect_db
 from datetime import datetime
@@ -72,6 +72,7 @@ def set_password(data: SetPasswordRequest, db: Session = Depends(connect_db)):
     # print("User found:", user)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
+    print(employee.token)
     if not employee.token:
         raise HTTPException(status_code=400, detail="Token has already been used or is invalid")
     
@@ -87,3 +88,21 @@ def set_password(data: SetPasswordRequest, db: Session = Depends(connect_db)):
 
     return {"message": "Password has been set successfully",
             "user": user}
+
+
+@router.post("/forgot-password")
+async def forgot_password(data: ForgotPasswordRequest, db: Session = Depends(connect_db)):
+    email = data.email
+    user = db.query(User).filter(User.email == email).first()
+    employee = db.query(Employee).filter_by(employee_id=user.employee_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Invalid Email")
+
+    token = generate_token(email)
+    employee.token = token
+    db.commit()
+    db.refresh(user)
+
+    await send_email(email, token)
+
+    return {"message": "Password reset link has been sent to your email"}

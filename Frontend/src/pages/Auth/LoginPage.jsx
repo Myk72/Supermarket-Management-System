@@ -1,9 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { ShoppingCart } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "@/store/auth.store";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const LoginPage = () => {
   const {
@@ -11,8 +20,10 @@ const LoginPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { login } = useAuthStore();
+  const { login, forgotpassword } = useAuthStore();
   const navigate = useNavigate();
+  const [forgotPasswordIsOpen, setForgotPasswordIsOpen] = useState(false);
+  const [email, setEmail] = useState("");
   const onSubmit = async (data) => {
     try {
       await login(data);
@@ -97,7 +108,10 @@ const LoginPage = () => {
               )}
             </div>
 
-            <div className="flex justify-end font-semibold text-xs text-blue-600 cursor-pointer -mt-2 mb-2">
+            <div
+              className="flex justify-end font-semibold text-xs text-blue-600 cursor-pointer -mt-2 mb-2"
+              onClick={() => setForgotPasswordIsOpen(true)}
+            >
               <span>Forgot Password?</span>
             </div>
             <Button
@@ -109,6 +123,47 @@ const LoginPage = () => {
           </form>
         </div>
       </div>
+
+      <Dialog
+        open={forgotPasswordIsOpen}
+        onOpenChange={setForgotPasswordIsOpen}
+      >
+        <DialogContent className="sm:max-w-md bg-gray-100">
+          <DialogHeader>
+            <DialogTitle>Forgot your password?</DialogTitle>
+          </DialogHeader>
+
+          <div className="flex flex-col gap-2 font-serif">
+            <label htmlFor="email">Email address</label>
+            <input
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+              required
+              className="p-2 border rounded-xl border-black"
+              onChange={() => {
+                setEmail(event.target.value);
+              }}
+            />
+          </div>
+          <Button
+            variant={"outline"}
+            className={
+              "bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
+            }
+            onClick={async () => {
+              try {
+                await forgotpassword(email);
+                setForgotPasswordIsOpen(false);
+              } catch {
+                alert("Failed to send reset link. Please try again.");
+              }
+            }}
+          >
+            Send Reset Link
+          </Button>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
