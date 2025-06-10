@@ -10,3 +10,6 @@ class Supplier(Base):
     contact_phone = Column(String(20))
     email = Column(String(100))
     address = Column(Text)
+    status = Column(String(20), default="active")
+    total_purchases = Column(Integer, default=0)
+    created_at = Column(String(50), server_default=func.now())

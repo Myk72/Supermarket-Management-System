@@ -12,8 +12,9 @@ class Purchase(Base):
     supplier_id = Column(Integer, ForeignKey(Supplier.supplier_id))
     employee_id = Column(Integer, ForeignKey(Employee.employee_id))
     total_cost = Column(Float(12, 2), nullable=False)
-    purchase_date = Column(DateTime, server_default=func.now())
+    expected_date = Column(DateTime, server_default=func.now())
     status = Column(Enum('pending', 'received', 'cancelled'), default='pending')
+    createdAt = Column(DateTime, server_default=func.now())
 
 class PurchaseItem(Base):
     __tablename__ = "purchase_items"
