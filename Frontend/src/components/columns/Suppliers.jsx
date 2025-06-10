@@ -1,5 +1,14 @@
 import { Button } from "@/components/ui/button";
-import { Eye, Phone, Mail, ShoppingCart, Calendar, Home, Edit, Trash2 } from "lucide-react";
+import {
+  Eye,
+  Phone,
+  Mail,
+  ShoppingCart,
+  Calendar,
+  Home,
+  Edit,
+  Trash2,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 const SupplierColumns = [
@@ -55,13 +64,15 @@ const SupplierColumns = [
   },
 
   {
-    id: "last_order",
-    accessorKey: "last_order",
-    header: "Last Order",
+    id: "created_at",
+    accessorKey: "created_at",
+    header: "Start Date",
     cell: ({ row }) => (
       <div className="flex items-center text-sm text-gray-600">
         <Calendar className="size-4 mr-1 text-gray-500" />
-        <span>{row.original.last_order || "N/A"}</span>
+        <span>
+          Since {new Date(row.original.created_at).toLocaleDateString()}
+        </span>
       </div>
     ),
     size: 100,

@@ -27,6 +27,8 @@ import useAuthStore from "./store/auth.store";
 import ViewSale from "./components/Sales/viewSale";
 import AddEmployee from "./components/Employee/AddEmployee";
 import AssignShift from "./components/Employee/AssignShift";
+import AddSupplier from "./components/Suppliers/AddSupplier";
+import AddPurchase from "./components/Purchase/AddPurchase";
 
 const AuthRedirect = ({ children }) => {
   const { isAuthenticated, role, user } = useAuthStore();
@@ -79,6 +81,7 @@ const App = () => {
               <Route path="/employees/add" element={<AddEmployee />} />
               <Route path="/employees/assign/:id" element={<AssignShift />} />
               <Route path="/reports" element={<Report />} />
+              <Route path="/suppliers/add" element={<AddSupplier />} />
             </Route>
 
             <Route
@@ -87,6 +90,7 @@ const App = () => {
               <Route path="/categories" element={<Category />} />
               <Route path="/inventory" element={<Inventory />} />
               <Route path="/purchases" element={<Purchase />} />
+              <Route path="/purchases/add" element={<AddPurchase />} />
               <Route path="/suppliers" element={<Supplier />} />
               <Route path="/returns" element={<Return />} />
               <Route element={<ProtectedRoute allowedRoles={["stock"]} />}>

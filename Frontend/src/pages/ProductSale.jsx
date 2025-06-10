@@ -28,7 +28,7 @@ const ProductSale = () => {
   const [scannedCode, setScannedCode] = useState("");
 
   useEffect(() => {
-    const socket = io("https://192.168.137.1:8000", {
+    const socket = io("https://192.168.174.131:8000", {
       reconnection: 5,
       timeout: 5000,
     });
