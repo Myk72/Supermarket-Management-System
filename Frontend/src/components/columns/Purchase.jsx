@@ -70,7 +70,6 @@ const PurchaseOrderColumns = [
         Pending: "secondary",
         Shipped: "outline",
         Cancelled: "destructive",
-        Processing: "warning"
       };
       return (
         <Badge variant={variantMap[status] || "default"} className="text-xs">
@@ -87,24 +86,18 @@ const PurchaseOrderColumns = [
       <div className="flex space-x-2">
         <Button
           variant="ghost"
-          size="sm"
-          className="hover:bg-blue-100"
           onClick={() => table.options.meta?.onViewClick(row.original)}
         >
-          <Eye className="size-4 text-blue-600" />
+          <Eye className="size-4 text-gray-600" />
         </Button>
         <Button
           variant="ghost"
-          size="sm"
-          className="hover:bg-green-100"
           onClick={() => table.options.meta?.onEditClick(row.original)}
         >
-          <Edit className="size-4 text-green-600" />
+          <Edit className="size-4 text-blue-600" />
         </Button>
         <Button
           variant="ghost"
-          size="sm"
-          className="hover:bg-red-100"
           onClick={() => table.options.meta?.onDeleteClick(row.original)}
         >
           <Trash2 className="size-4 text-red-600" />

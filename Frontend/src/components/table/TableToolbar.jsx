@@ -99,7 +99,7 @@ export const TableToolbar = ({ table, addButtonText, onAddClick, role }) => {
       {addButtonText && (
         <Button
           variant="default"
-          className="bg-blue-600 hover:bg-blue-700 text-white gap-2"
+          className="bg-blue-600 hover:bg-blue-700 text-white gap-2 cursor-pointer"
           onClick={onAddClick}
         >
           {addButtonText}

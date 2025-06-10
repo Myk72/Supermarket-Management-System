@@ -159,7 +159,7 @@ const AddPurchase = () => {
               pageSize={5}
               onRowClick={(row) => addToCart(row)}
             />
-            <div className="space-y-2 overflow-y-auto h-80  border-l ml-4">
+            <div className="space-y-2 overflow-y-auto h-80  border-x ml-4">
               {cart.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-muted-foreground p-4">
                   <Package className="h-12 w-12 mb-2" />

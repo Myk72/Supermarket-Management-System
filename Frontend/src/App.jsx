@@ -29,6 +29,7 @@ import AddEmployee from "./components/Employee/AddEmployee";
 import AssignShift from "./components/Employee/AssignShift";
 import AddSupplier from "./components/Suppliers/AddSupplier";
 import AddPurchase from "./components/Purchase/AddPurchase";
+import ViewPurchase from "./components/Purchase/ViewPurchase";
 
 const AuthRedirect = ({ children }) => {
   const { isAuthenticated, role, user } = useAuthStore();
@@ -91,6 +92,7 @@ const App = () => {
               <Route path="/inventory" element={<Inventory />} />
               <Route path="/purchases" element={<Purchase />} />
               <Route path="/purchases/add" element={<AddPurchase />} />
+              <Route path="/purchases/view/:id" element={<ViewPurchase />} />
               <Route path="/suppliers" element={<Supplier />} />
               <Route path="/returns" element={<Return />} />
               <Route element={<ProtectedRoute allowedRoles={["stock"]} />}>

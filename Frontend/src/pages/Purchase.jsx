@@ -2,16 +2,16 @@ import Card from "@/components/card/card";
 import PurchaseOrderColumns from "@/components/columns/Purchase";
 import { PurchaseCard } from "@/components/Purchase/purchaseCard";
 import { CustomTable } from "@/components/table/Table";
-import { useSupplierStore } from "@/store/suppliers.store";
+import { usePurchaseStore } from "@/store/purchase.store";
 import React, { use } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Purchase = () => {
-  const { fetchSuppliers, suppliers } = useSupplierStore();
+  const { purchases, fetchPurchases } = usePurchaseStore();
   useEffect(() => {
-    fetchSuppliers();
-  }, []);
+    fetchPurchases();
+  }, [fetchPurchases]);
   const navigate = useNavigate();
   return (
     <div className="flex flex-col w-full font-serif gap-4">
@@ -31,11 +31,17 @@ const Purchase = () => {
         <h2 className="text-xl font-semibold">Purchase Orders</h2>
         <CustomTable
           columns={PurchaseOrderColumns}
-          data={suppliers}
+          data={purchases}
           addButtonText={"New Purchase Order"}
           pageSize={5}
           onAddClick={() => {
             navigate("/purchases/add");
+          }}
+          meta={{
+            onViewClick: (row) => {
+              // console.log("View", row);
+              navigate("/purchases/view/" + row.purchase_id);
+            },
           }}
         />
       </div>
