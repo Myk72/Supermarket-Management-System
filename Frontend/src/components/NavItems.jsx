@@ -33,7 +33,7 @@ export const navigation = [
     name: "Products",
     href: "products",
     icon: Package,
-    role: ["manager", "stock", "cashier"],
+    role: ["manager", "stock"],
   },
   { name: "Sales", href: "sales", icon: ShoppingCart, role: ["manager"] },
   {
@@ -66,6 +66,6 @@ export const navigation = [
     name: "Returns",
     href: "returns",
     icon: RefreshCw,
-    role: ["manager"],
+    role: ["manager", "cashier"],
   },
 ];

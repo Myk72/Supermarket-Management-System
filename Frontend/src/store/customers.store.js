@@ -3,7 +3,8 @@ import { create } from "zustand";
 const mockCustomers = [
   {
     customer_id: 1,
-    name: "John Smith",
+    firstName: "John",
+    lastName: "Smith",
     phone: "555-123-4567",
     email: "john.smith@example.com",
     loyalty_points: 250,
@@ -11,7 +12,8 @@ const mockCustomers = [
   },
   {
     customer_id: 2,
-    name: "Sarah Johnson",
+    firstName: "Sarah",
+    lastName: "Johnson",
     phone: "555-234-5678",
     email: "sarah.j@example.com",
     loyalty_points: 120,
@@ -19,7 +21,8 @@ const mockCustomers = [
   },
   {
     customer_id: 3,
-    name: "Michael Brown",
+    firstName: "Michael",
+    lastName: "Brown",
     phone: "555-345-6789",
     email: "michael.b@example.com",
     loyalty_points: 75,
@@ -27,7 +30,8 @@ const mockCustomers = [
   },
   {
     customer_id: 4,
-    name: "Emily Davis",
+    firstName: "Emily",
+    lastName: "Davis",
     phone: "555-456-7890",
     email: "emily.d@example.com",
     loyalty_points: 180,
@@ -35,7 +39,8 @@ const mockCustomers = [
   },
   {
     customer_id: 5,
-    name: "David Wilson",
+    firstName: "David",
+    lastName: "Wilson",
     phone: "555-567-8901",
     email: "david.w@example.com",
     loyalty_points: 300,
@@ -43,7 +48,8 @@ const mockCustomers = [
   },
   {
     customer_id: 6,
-    name: "David Wilson",
+    firstName: "David",
+    lastName: "Wilson",
     phone: "555-567-8901",
     email: "david.w@example.com",
     loyalty_points: 300,
@@ -51,7 +57,8 @@ const mockCustomers = [
   },
   {
     customer_id: 7,
-    name: "David Wilson",
+    firstName: "David",
+    lastName: "Wilson",
     phone: "555-567-8901",
     email: "david.w@example.com",
     loyalty_points: 300,
@@ -59,7 +66,8 @@ const mockCustomers = [
   },
   {
     customer_id: 8,
-    name: "David Wilson",
+    firstName: "David",
+    lastName: "Wilson",
     phone: "555-567-8901",
     email: "david.w@example.com",
     loyalty_points: 300,
@@ -67,7 +75,8 @@ const mockCustomers = [
   },
   {
     customer_id: 9,
-    name: "David Wilson",
+    firstName: "David",
+    lastName: "Wilson",
     phone: "555-567-8901",
     email: "david.w@example.com",
     loyalty_points: 300,
@@ -75,7 +84,8 @@ const mockCustomers = [
   },
   {
     customer_id: 10,
-    name: "David Wilson",
+    firstName: "David",
+    lastName: "Wilson",
     phone: "555-567-8901",
     email: "david.w@example.com",
     loyalty_points: 300,
@@ -83,23 +93,8 @@ const mockCustomers = [
   },
   {
     customer_id: 11,
-    name: "David Wilson",
-    phone: "555-567-8901",
-    email: "david.w@example.com",
-    loyalty_points: 300,
-    created_at: "2023-05-01T11:10:00",
-  },
-  {
-    customer_id: 12,
-    name: "David Wilson",
-    phone: "555-567-8901",
-    email: "david.w@example.com",
-    loyalty_points: 300,
-    created_at: "2023-05-01T11:10:00",
-  },
-  {
-    customer_id: 13,
-    name: "David Wilson",
+    firstName: "David",
+    lastName: "Wilson",
     phone: "555-567-8901",
     email: "david.w@example.com",
     loyalty_points: 300,
@@ -140,6 +135,4 @@ export const useCustomerStore = create((set) => ({
     try {
     } catch (error) {}
   },
-
-
 }));

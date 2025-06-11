@@ -6,7 +6,7 @@ import useAuthStore from "@/store/auth.store";
 import { navigation as NavItems } from "../NavItems";
 const Layout = () => {
   const location = useLocation();
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const activeNavItem =
     NavItems.find((item) => {
       return item.href === location.pathname.split("/")[1];

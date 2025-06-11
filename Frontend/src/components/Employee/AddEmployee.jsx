@@ -31,8 +31,8 @@ const AddEmployee = () => {
         <h1 className="font-semibold text-2xl text-blue-500">
           Add New Employee
         </h1>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex flex-row items-center justify-between gap-6 ">
+        <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+          <div className="grid grid-cols-2 gap-6">
             <div className="flex flex-col gap-4">
               <div>
                 <label htmlFor="firstName" className="text-sm font-semibold">

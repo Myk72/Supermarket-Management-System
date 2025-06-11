@@ -19,7 +19,9 @@ const Product = () => {
         data={products}
         columns={ProductColumns}
         addButtonText="Add Product"
-        onAddClick={() => {}}
+        onAddClick={() => {
+          navigate("/products/add");
+        }}
         pageSize={6}
         meta={{
           onViewClick: (row) => {

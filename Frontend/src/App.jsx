@@ -30,6 +30,9 @@ import AssignShift from "./components/Employee/AssignShift";
 import AddSupplier from "./components/Suppliers/AddSupplier";
 import AddPurchase from "./components/Purchase/AddPurchase";
 import ViewPurchase from "./components/Purchase/ViewPurchase";
+import AddReturns from "./components/Returns/AddReturns";
+import AddProducts from "./components/product/AddProducts";
+import AddInventory from "./components/Inventory/AddInventory";
 
 const AuthRedirect = ({ children }) => {
   const { isAuthenticated, role, user } = useAuthStore();
@@ -73,8 +76,9 @@ const App = () => {
 
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>
-            <Route path="/products/view/:id" element={<ProductDetail />} />
+            {/* <Route path="/products/view/:id" element={<ProductDetail />} /> */}
             <Route path="/products" element={<Product />} />
+            <Route path="/products/add" element={<AddProducts />} />
 
             <Route element={<ProtectedRoute allowedRoles={["manager"]} />}>
               <Route path="/dashboard" element={<Dashboard />} />
@@ -90,11 +94,12 @@ const App = () => {
             >
               <Route path="/categories" element={<Category />} />
               <Route path="/inventory" element={<Inventory />} />
+              <Route path="/inventory/add" element={<AddInventory />} />
               <Route path="/purchases" element={<Purchase />} />
               <Route path="/purchases/add" element={<AddPurchase />} />
               <Route path="/purchases/view/:id" element={<ViewPurchase />} />
               <Route path="/suppliers" element={<Supplier />} />
-              <Route path="/returns" element={<Return />} />
+              
               <Route element={<ProtectedRoute allowedRoles={["stock"]} />}>
                 <Route
                   path="/stock-clerk-dashboard"
@@ -111,6 +116,8 @@ const App = () => {
               <Route path="/sales/:id" element={<ViewSale />} />
               <Route path="/customers" element={<Customers />} />
               <Route path="/customers/add" element={<AddCustomer />} />
+              <Route path="/returns" element={<Return />} />
+              <Route path="/returns/add" element={<AddReturns />} />
 
               <Route element={<ProtectedRoute allowedRoles={["cashier"]} />}>
                 <Route

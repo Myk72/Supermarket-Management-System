@@ -7,7 +7,6 @@ import { useProductStore } from "@/store/product.store";
 import { CustomTable } from "../table/Table";
 import SelectProductColumns from "../columns/SelectProduct";
 import { Package, ShoppingCart, Trash2 } from "lucide-react";
-import { Separator } from "@radix-ui/react-dropdown-menu";
 
 const AddPurchase = () => {
   const {

@@ -165,7 +165,7 @@ const mockSaleItems = [
   {
     sale_item_id: 88,
     sale_id: 1,
-    product_id: 101,
+    product_id: 102,
     quantity: 2,
     unit_price: 12.99,
     subtotal: 25.98
@@ -173,7 +173,7 @@ const mockSaleItems = [
   {
     sale_item_id: 86,
     sale_id: 1,
-    product_id: 101,
+    product_id: 103,
     quantity: 2,
     unit_price: 12.99,
     subtotal: 25.98

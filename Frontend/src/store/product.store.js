@@ -193,6 +193,7 @@ export const useProductStore = create((set) => ({
       const product = mockProducts.find((item) => {
         return item.product_id === productId;
       });
+      console.log("Product Fetched", product);
       set({ products: product, isLoading: false });
     } catch (error) {
       set({ error: error.message, isLoading: false });

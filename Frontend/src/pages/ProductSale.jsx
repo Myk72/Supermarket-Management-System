@@ -17,16 +17,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import SelectCustomer from "@/components/Customers/SelectCustomer";
 
 const ProductSale = () => {
   const { products, fetchProducts } = useProductStore();
   const { createSale } = useSaleStore();
   const { customers, fetchCustomers } = useCustomerStore();
-  const { user } = useAuthStore();
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [openCustomerDialog, setOpenCustomerDialog] = useState(false);
+  const [loyaltyPoints, setLoyaltyPoints] = useState(0);
 
   const [cart, setCart] = useState([]);
   const [scannedCode, setScannedCode] = useState("");
-
+  useEffect(() => {
+    console.log(selectedCustomer);
+  }, [selectedCustomer]);
   useEffect(() => {
     const socket = io("https://192.168.174.131:8000", {
       reconnection: 5,
@@ -106,14 +111,17 @@ const ProductSale = () => {
 
   return (
     <div className="flex flex-row gap-4 max-h-screen">
-      <ProductListing addToCart={(product) => addToCart(product)} scannedCode={scannedCode}/>
+      <ProductListing
+        addToCart={(product) => addToCart(product)}
+        scannedCode={scannedCode}
+      />
 
       <div className="w-1/3 shadow-md bg-white p-4 rounded-lg border font-serif">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-semibold text-blue-900">Current Sale</h1>
           <UserPlus
             className="w-10 h-10 text-blue-600 p-2 rounded-md hover:cursor-pointer hover:bg-gray-200 transition-all duration-300"
-            onClick={() => alert("CHoose a customer")}
+            onClick={() => setOpenCustomerDialog(true)}
           />
         </div>
 
@@ -222,6 +230,27 @@ const ProductSale = () => {
             </span>
           </div>
 
+          {selectedCustomer && (
+            <div className="flex justify-between items-center">
+              <span className="font-semibold">
+                Loyalty Points ({selectedCustomer.loyalty_points}):
+              </span>
+              {selectedCustomer.loyalty_points < 500 ? (
+                <span className="text-red-600 text-xs">
+                  Insufficent points for discount
+                </span>
+              ) : (
+                <input
+                  type="number"
+                  placeholder="Points"
+                  className="border rounded-md w-18 text-right"
+                  onChange={(e) => setLoyaltyPoints(e.target.value)}
+                  value={loyaltyPoints}
+                />
+              )}
+            </div>
+          )}
+
           <div className="flex justify-between items-center">
             <span className="font-semibold">Total ($):</span>
             <span>
@@ -231,6 +260,10 @@ const ProductSale = () => {
                     item.price * (1 - item.discount / 100);
                   const itemSubtotal = discountedPrice * item.quantity;
                   const itemTax = itemSubtotal * (item.tax / 100);
+                  if (selectedCustomer && loyaltyPoints >= 500) {
+                    const discountAmount = (itemSubtotal + itemTax) * 0.1;
+                    return total + itemSubtotal + itemTax - discountAmount;
+                  }
                   return total + itemSubtotal + itemTax;
                 }, 0)
                 .toFixed(2)}
@@ -253,6 +286,23 @@ const ProductSale = () => {
           </Button>
         </div>
       </div>
+
+      <Dialog open={openCustomerDialog} onOpenChange={setOpenCustomerDialog}>
+        <DialogContent className="sm:max-w-4xl">
+          <DialogHeader>
+            <DialogTitle>Select Customer</DialogTitle>
+            <DialogDescription>
+              Choose a customer for this sale.
+            </DialogDescription>
+          </DialogHeader>
+          <SelectCustomer
+            onSuccess={(customer) => {
+              setSelectedCustomer(customer);
+              setOpenCustomerDialog(false);
+            }}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

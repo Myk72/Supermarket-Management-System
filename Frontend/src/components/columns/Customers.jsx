@@ -19,7 +19,7 @@ const CustomerColumns = [
 
   {
     id: "Name",
-    accessorKey: "name",
+    accessorFn: (row) => `${row.firstName} ${row.lastName}`,
     header: ({ column }) => (
       <Button
         variant="ghost"

@@ -108,7 +108,7 @@ const ProductColumns = [
     header: "Quick Action",
     cell: ({ row, table }) => (
       <div className="flex space-x-2">
-        <Button
+        {/* <Button
           variant="ghost"
           size="sm"
           className="hover:bg-blue-100"
@@ -117,7 +117,7 @@ const ProductColumns = [
           }}
         >
           <Eye className="size-4" />
-        </Button>
+        </Button> */}
         <Button
           variant="ghost"
           size="sm"
