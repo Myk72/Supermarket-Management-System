@@ -6,32 +6,27 @@ const InventoryColumns = [
   {
     id: "inventory_id",
     accessorKey: "inventory_id",
-    header: "ID",
+    header: "Invertory ID",
     size: 20,
-    cell: ({ row }) => <div className="font-mono text-xs text-gray-500">#</div>,
   },
 
   {
-    id: "name",
-    accessorKey: "name",
-    header: "Name",
-    cell: ({ row }) => <div className=""></div>,
+    id: "product_id",
+    accessorKey: "product_id",
+    header: "Product ID",
     size: 100,
   },
-
 
   {
     id: "quantity",
     accessorKey: "quantity",
     header: "Quantity",
-    cell: ({ row }) => <div>10</div>,
     size: 50,
   },
   {
     id: "reorder_level",
-    accessorKey: "Reorder Level",
+    accessorKey: "reorder_level",
     header: "Reorder Level",
-    cell: ({ row }) => <div>10</div>,
     size: 50,
   },
 
@@ -39,15 +34,22 @@ const InventoryColumns = [
     id: "status",
     accessorKey: "status",
     header: "Status",
-    cell: ({ row }) => <div></div>,
+    cell: ({ row }) => {
+      const status = row.original.quantity > 0 ? "Available" : "Out of Stock";
+      return (
+        <Badge
+          variant={status === "Available" ? "success" : "destructive"}
+          className={`text-sm ${
+            status === "Available"
+              ? "bg-green-100 text-green-800"
+              : "bg-red-100 text-red-800"
+          }`}
+        >
+          {status}
+        </Badge>
+      );
+    },
     size: 60,
-  },
-
-  {
-    id: "pricing",
-    header: "Pricing",
-    cell: ({ row }) => <div></div>,
-    size: 80,
   },
 
   {

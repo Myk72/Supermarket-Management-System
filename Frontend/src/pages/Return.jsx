@@ -1,5 +1,4 @@
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TabsContent } from "@radix-ui/react-tabs";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import React from "react";
 import Card from "@/components/card/card";
 import { ReturnCard } from "@/components/Returns/ReturnsCard";

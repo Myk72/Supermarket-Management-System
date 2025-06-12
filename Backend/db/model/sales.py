@@ -14,7 +14,7 @@ class Sale(Base):
     total_amount = Column(Float(12, 2), nullable=False)
     tax_amount = Column(Float(10, 2), default=0)
     discount_amount = Column(Float(10, 2), default=0)
-    payment_method = Column(Enum('cash', 'card', 'mobile_banking'), default='cash')
+    payment_method = Column(Enum('cash', 'card', 'mobile_money'), default='cash')
     sale_date = Column(DateTime, server_default=func.now())
 
 class SaleItem(Base):

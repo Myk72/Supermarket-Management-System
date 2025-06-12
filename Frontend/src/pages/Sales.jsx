@@ -9,6 +9,7 @@ const Sales = () => {
     fetchSales();
   }, []);
 
+
   const [currentItems, setCurrentItems] = useState([]);
   return (
     <div className="font-serif flex flex-col gap-4">

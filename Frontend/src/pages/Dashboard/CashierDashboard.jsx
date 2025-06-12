@@ -9,14 +9,18 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSaleStore } from "@/store/sales.store";
+import useAuthStore from "@/store/auth.store";
 import { useNavigate } from "react-router-dom";
 import PagePagination from "@/components/PagePagination";
 
 const CashierDashboard = () => {
-  const { sales } = useSaleStore();
+  const { user } = useAuthStore();
+  const { sales, getSaleByEmployeeId } = useSaleStore();
   useEffect(() => {
-    useSaleStore.getState().fetchSales();
-  }, []);
+    if (user) {
+      getSaleByEmployeeId(user.employee_id);
+    }
+  }, [getSaleByEmployeeId]);
   const navigate = useNavigate();
   const [currentItems, setCurrentItems] = useState([]);
 
@@ -31,7 +35,9 @@ const CashierDashboard = () => {
               title="Total Sales"
               icon={LucideBadgeDollarSign}
               description="Total sales made today"
-              value="0"
+              value={sales
+                .reduce((acc, sale) => acc + sale.total_amount, 0)
+                .toFixed(2)}
             />
           </div>
           <div className="w-full bg-white flex flex-col gap-4 py-4 rounded-2xl p-4 h-36 shadow-md">
@@ -89,7 +95,11 @@ const CashierDashboard = () => {
               <p>No transactions yet today</p>
             )}
           </div>
-          <PagePagination Items={sales} setCurrentItems={setCurrentItems} itemsPerPage={9} />
+          <PagePagination
+            Items={sales}
+            setCurrentItems={setCurrentItems}
+            itemsPerPage={9}
+          />
         </div>
       </div>
     </div>

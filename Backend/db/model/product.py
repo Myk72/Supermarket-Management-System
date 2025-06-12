@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Date, Float, ForeignKey, Enum, T
 from sqlalchemy.sql import func
 from db.database import Base
 from .supplier import Supplier
+from sqlalchemy.orm import relationship
 
 class Product(Base):
     __tablename__ = "products"
@@ -16,7 +17,7 @@ class Product(Base):
     status = Column(Enum('active', 'discontinued', 'out_of_stock'), default='active')
     image = Column(String(255))
     created_at = Column(DateTime, server_default=func.now())
-
+    inventory = relationship("Inventory", back_populates="product", uselist=False)
 
 class Category(Base):
     __tablename__ = "categories"
@@ -33,8 +34,9 @@ class Inventory(Base):
     product_id = Column(Integer, ForeignKey("products.product_id"))
     quantity = Column(Integer, default=0)
     reorder_level = Column(Integer, default=10)
-    last_restocked = Column(Date)
+    last_restocked = Column(DateTime, server_default=func.now())
     location = Column(String(50))
+    product = relationship("Product", back_populates="inventory")
 
 
 class Discount(Base):

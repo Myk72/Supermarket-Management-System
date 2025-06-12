@@ -82,26 +82,7 @@ const AddInventory = () => {
               </p>
             )}
           </div>
-          <div className="mb-4">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Last Restocked
-            </label>
-            <input
-              type="date"
-              {...register("last_restocked", {
-                required: "Last restocked date is required",
-              })}
-              className={`w-full p-2 border ${
-                errors.last_restocked ? "border-red-500" : "border-gray-300"
-              } rounded`}
-              placeholder="Select last restocked date"
-            />
-            {errors.last_restocked && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.last_restocked.message}
-              </p>
-            )}
-          </div>
+
           <div className="mb-4">
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Location

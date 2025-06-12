@@ -4,8 +4,16 @@ import useAuthStore from "@/store/auth.store";
 import { useCustomerStore } from "@/store/customers.store";
 import { useProductStore } from "@/store/product.store";
 import { useSaleStore } from "@/store/sales.store";
-import { ShoppingCart, Trash2, UserPlus } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import {
+  ShoppingCart,
+  Trash2,
+  UserPlus,
+  DollarSign,
+  CreditCardIcon,
+  Smartphone,
+} from "lucide-react";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import React, { use, useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import { io } from "socket.io-client";
 import {
@@ -26,44 +34,72 @@ const ProductSale = () => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [openCustomerDialog, setOpenCustomerDialog] = useState(false);
   const [loyaltyPoints, setLoyaltyPoints] = useState(0);
+  const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState("cash");
+  const { user } = useAuthStore();
 
   const [cart, setCart] = useState([]);
   const [scannedCode, setScannedCode] = useState("");
+  const [taxAmount, setTaxAmount] = useState(0);
+  const [discountAmount, setDiscountAmount] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const taxRate = 0.15;
+
   useEffect(() => {
-    console.log(selectedCustomer);
-  }, [selectedCustomer]);
-  useEffect(() => {
-    const socket = io("https://192.168.174.131:8000", {
-      reconnection: 5,
-      timeout: 5000,
+    let subtotal = 0;
+    let totalTax = 0;
+
+    cart.forEach((item) => {
+      const itemTax = item.price * taxRate * item.quantity;
+
+      subtotal += item.price * item.quantity;
+      totalTax += itemTax;
     });
 
-    socket.on("connect", () => {
-      console.log("Connected to server");
-      socket.emit("register_display");
-    });
+    let loyaltyDiscount = 0;
+    if (selectedCustomer && selectedCustomer.loyalty_points >= 500) {
+      loyaltyDiscount = 0.1 * (subtotal + totalTax);
+    }
 
-    socket.on("initial-codes", (codes) => {
-      setScannedCode(codes);
-    });
+    const total = subtotal + totalTax - loyaltyDiscount;
 
-    socket.on("scanned-code", (code) => {
-      console.log("Scanned code:", code);
-      setScannedCode(code);
-      const product = products.find((p) => p.barcode === code);
-      if (product) {
-        addToCart(product);
-      } else {
-        alert("Product not found for scanned code: " + code);
-      }
-    });
+    setTaxAmount(parseFloat(totalTax.toFixed(2)));
+    setDiscountAmount(parseFloat(loyaltyDiscount.toFixed(2)));
+    setTotalAmount(parseFloat(total.toFixed(2)));
+  }, [cart, selectedCustomer]);
 
-    socket.on("connect_error", (err) => {
-      console.error("Connection error:", err);
-    });
+  // useEffect(() => {
+  //   const socket = io("https://192.168.174.131:8000", {
+  //     reconnection: 5,
+  //     timeout: 5000,
+  //   });
 
-    return () => socket.disconnect();
-  }, []);
+  //   socket.on("connect", () => {
+  //     console.log("Connected to server");
+  //     socket.emit("register_display");
+  //   });
+
+  //   socket.on("initial-codes", (codes) => {
+  //     setScannedCode(codes);
+  //   });
+
+  //   socket.on("scanned-code", (code) => {
+  //     console.log("Scanned code:", code);
+  //     setScannedCode(code);
+  //     const product = products.find((p) => p.barcode === code);
+  //     if (product) {
+  //       addToCart(product);
+  //     } else {
+  //       alert("Product not found for scanned code: " + code);
+  //     }
+  //   });
+
+  //   socket.on("connect_error", (err) => {
+  //     console.error("Connection error:", err);
+  //   });
+
+  //   return () => socket.disconnect();
+  // }, []);
 
   useEffect(() => {
     fetchProducts();
@@ -203,31 +239,14 @@ const ProductSale = () => {
             <span className="font-semibold">Subtotal ($):</span>
             <span>
               {cart
-                .reduce(
-                  (total, item) =>
-                    total +
-                    item.quantity * item.price * (1 - item.discount / 100),
-                  0
-                )
+                .reduce((total, item) => total + item.quantity * item.price, 0)
                 .toFixed(2)}
             </span>
           </div>
 
           <div className="flex justify-between items-center">
             <span className="font-semibold">Tax ($):</span>
-            <span>
-              {cart
-                .reduce(
-                  (total, item) =>
-                    total +
-                    item.quantity *
-                      item.price *
-                      (1 - item.discount / 100) *
-                      (item.tax / 100),
-                  0
-                )
-                .toFixed(2)}
-            </span>
+            <span>{taxAmount}</span>
           </div>
 
           {selectedCustomer && (
@@ -253,34 +272,22 @@ const ProductSale = () => {
 
           <div className="flex justify-between items-center">
             <span className="font-semibold">Total ($):</span>
-            <span>
-              {cart
-                .reduce((total, item) => {
-                  const discountedPrice =
-                    item.price * (1 - item.discount / 100);
-                  const itemSubtotal = discountedPrice * item.quantity;
-                  const itemTax = itemSubtotal * (item.tax / 100);
-                  if (selectedCustomer && loyaltyPoints >= 500) {
-                    const discountAmount = (itemSubtotal + itemTax) * 0.1;
-                    return total + itemSubtotal + itemTax - discountAmount;
-                  }
-                  return total + itemSubtotal + itemTax;
-                }, 0)
-                .toFixed(2)}
-            </span>
+            <span>{totalAmount}</span>
           </div>
         </div>
 
         <div className="flex justify-between items-center p-4 gap-3">
           <Button
-            className="bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition-all duration-300 w-1/2"
+            className="bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition-all duration-300 w-1/2 cursor-pointer"
             onClick={clearCart}
           >
             Clear Cart
           </Button>
           <Button
-            className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-all duration-300 w-1/2"
-            // onClick={processPayment}
+            className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-all duration-300 w-1/2 cursor-pointer"
+            onClick={() => {
+              setPaymentDialogOpen(true);
+            }}
           >
             Payment
           </Button>
@@ -301,6 +308,81 @@ const ProductSale = () => {
               setOpenCustomerDialog(false);
             }}
           />
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={paymentDialogOpen} onOpenChange={setPaymentDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Payment</DialogTitle>
+            <DialogDescription>
+              Select a payment method to complete the sale.
+            </DialogDescription>
+          </DialogHeader>
+          <div>
+            <Tabs value={paymentMethod} className="w-full mt-4 p-1 bg-gray-100">
+              <TabsList className={"flex flex-row justify-between w-full"}>
+                <TabsTrigger
+                  value="cash"
+                  className={" cursor-pointer p-4 text-xl"}
+                  onClick={() => setPaymentMethod("cash")}
+                >
+                  <DollarSign className="mr-1" />
+                  Cash
+                </TabsTrigger>
+                <TabsTrigger
+                  value="mobile_money"
+                  className={"cursor-pointer p-4 text-xl"}
+                  onClick={() => setPaymentMethod("mobile_money")}
+                >
+                  <Smartphone className="mr-1" />
+                  Mobile
+                </TabsTrigger>
+                <TabsTrigger
+                  value="card"
+                  className={"cursor-pointer p-4 text-xl"}
+                  onClick={() => setPaymentMethod("card")}
+                >
+                  <CreditCardIcon className="mr-1" />
+                  Card
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+            <Button
+              className={
+                "mt-4 bg-blue-600 hover:bg-blue-700 text-white w-full cursor-pointer"
+              }
+              onClick={async () => {
+                try {
+                  await createSale({
+                    payment_method: paymentMethod,
+                    employee_id: user?.employee_id,
+                    items: cart.map((item) => ({
+                      product_id: item.product_id,
+                      quantity: item.quantity,
+                      unit_price: item.price,
+                      subtotal: item.price * item.quantity,
+                    })),
+                    total_amount: totalAmount,
+                    tax_amount: taxAmount,
+                    discount_amount: discountAmount,
+                    customer_id: selectedCustomer
+                      ? selectedCustomer.customer_id
+                      : -1,
+                  });
+                  setCart([]);
+                  setSelectedCustomer(null);
+                  setPaymentDialogOpen(false);
+                  alert("Sale completed successfully!");
+                } catch (error) {
+                  console.error("Error creating sale:", error);
+                }
+              }}
+            >
+              Complete Sale
+              <ShoppingCart className="ml-2" />
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
     </div>
