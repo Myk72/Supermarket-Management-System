@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "../ui/button";
 import { FaArrowLeft } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
+import { useEmployeeStore } from "@/store/employee.store";
 
 const AddEmployee = () => {
   const {
@@ -10,9 +11,17 @@ const AddEmployee = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const { addEmployee } = useEmployeeStore();
+
+  const onSubmit = async (data) => {
     console.log(data);
+    try {
+      await addEmployee(data);
+    } catch (error) {
+      console.log(error.message);
+    }
   };
+
   return (
     <div className="flex flex-col justify-center font-serif gap-2 bg-white rounded-2xl p-10">
       <div className="flex justify-between items-center">
@@ -83,7 +92,7 @@ const AddEmployee = () => {
                   {...register("phone", {
                     required: true,
                     pattern: {
-                      value: /^[0-9]{10}$/,
+                      value: /^\+?\d{0,3}[- ]?\d{1,4}[- ]?\d{1,4}[- ]?\d{1,9}$/,
                       message: "Phone number must be 10 digits",
                     },
                   })}
@@ -164,14 +173,14 @@ const AddEmployee = () => {
               </div>
 
               <div>
-                <label htmlFor="hireDate" className="text-sm font-semibold">
+                <label htmlFor="hire_date" className="text-sm font-semibold">
                   Hire Date
                 </label>
                 <input
                   type="date"
-                  id="hireDate"
+                  id="hire_date"
                   className="w-full p-2 border rounded-lg border-gray-300"
-                  {...register("hireDate", {
+                  {...register("hire_date", {
                     required: true,
                     validate: (value) => {
                       const today = new Date();

@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { api } from "@/lib/api";
 
 const mockCategories = [
   { category_id: 1, name: "Fruits & Vegetables", description: "Fresh produce" },
@@ -28,9 +29,8 @@ export const useCategoryStore = create((set) => ({
   fetchCategories: async () => {
     set({ isLoading: true });
     try {
-      setTimeout(() => {
-        set({ categories: mockCategories, isLoading: false });
-      }, 300);
+      const response = await api.get("/category");
+      set({ categories: response.data, isLoading: false });
     } catch (error) {
       set({ error: error.message, isLoading: false });
     }

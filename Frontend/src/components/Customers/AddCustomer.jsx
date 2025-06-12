@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "../ui/button";
 import { FaArrowLeft } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
+import { useCustomerStore } from "@/store/customers.store";
 
 const AddCustomer = () => {
   const {
@@ -9,9 +10,16 @@ const AddCustomer = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const { addCustomer } = useCustomerStore();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      console.log(data);
+      await addCustomer(data);
+      alert("Customer has registered successfully");
+    } catch (error) {
+      console.log(error.message);
+    }
   };
   return (
     <div className="flex flex-col justify-center font-serif gap-2 bg-white rounded-2xl p-10">
@@ -83,7 +91,7 @@ const AddCustomer = () => {
                   {...register("phone", {
                     required: true,
                     pattern: {
-                      value: /^[0-9]{10}$/,
+                      value: /^\+?\d{0,3}[- ]?\d{1,4}[- ]?\d{1,4}[- ]?\d{1,9}$/,
                       message: "Phone number must be 10 digits",
                     },
                   })}

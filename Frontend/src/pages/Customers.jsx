@@ -72,11 +72,11 @@ const Customers = () => {
                   ID
                   <div className="text-sm text-gray-500 mt-1 font-light">
                     <span>
-                      Identification Type: {selectedCustomer.id_type || "N/A"}
+                      Identification Type: {selectedCustomer.idType.toUpperCase() || "N/A"}
                     </span>
                     <br />
                     <span>
-                      ID Number: {selectedCustomer.id_number || "N/A"}
+                      ID Number: {selectedCustomer.idNumber || "N/A"}
                     </span>
                   </div>
                 </h2>

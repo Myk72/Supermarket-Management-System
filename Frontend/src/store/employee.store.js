@@ -23,7 +23,12 @@ export const useEmployeeStore = create((set) => ({
   addEmployee: async (employeeData) => {
     set({ isLoading: true });
     try {
-    } catch (error) {}
+      const response = await api.post("/auth/register", employeeData);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
   },
 
   updateEmployee: async (employeeId, employeeData) => {
@@ -35,6 +40,11 @@ export const useEmployeeStore = create((set) => ({
   deleteEmployee: async (employeeId) => {
     set({ isLoading: true });
     try {
-    } catch (error) {}
+      const response = await api.delete(`/users/${parseInt(employeeId)}`);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
   },
 }));

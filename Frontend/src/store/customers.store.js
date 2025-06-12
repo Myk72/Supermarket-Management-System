@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { api } from "@/lib/api";
 
 const mockCustomers = [
   {
@@ -110,9 +111,9 @@ export const useCustomerStore = create((set) => ({
   fetchCustomers: async () => {
     set({ isLoading: true });
     try {
-      setTimeout(() => {
-        set({ customers: mockCustomers, isLoading: false });
-      }, 300);
+      const response = await api.get("/customer");
+      console.log(response);
+      set({ customers: response.data, isLoading: false });
     } catch (error) {
       set({ error: error.message, isLoading: false });
     }
@@ -121,7 +122,13 @@ export const useCustomerStore = create((set) => ({
   addCustomer: async (customerData) => {
     set({ isLoading: true });
     try {
-    } catch (error) {}
+      console.log("here", customerData)
+      const response = await api.post("/customer/register", customerData);
+      console.log(response);
+    } catch (error) {
+      console.log(error)
+      set({ error: error.message, isLoading: false });
+    }
   },
 
   updateCustomer: async (customerId, customerData) => {

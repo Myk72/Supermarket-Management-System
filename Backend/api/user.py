@@ -23,6 +23,7 @@ async def get_employee_by_id(id: int, db: Session = Depends(connect_db)):
 
 @router.delete("/{id}")
 async def delete_employee(id: int, db: Session = Depends(connect_db)):
+    print(id)
     employee = db.query(Employee).filter(Employee.employee_id == id).first()
     if not employee:
         raise HTTPException(status_code=404, detail="Employee not found")

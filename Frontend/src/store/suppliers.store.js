@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { api } from "@/lib/api";
 const dummySuppliers = [
   {
     supplier_id: 1001,
@@ -59,9 +60,9 @@ export const useSupplierStore = create((set) => ({
   fetchSuppliers: async () => {
     set({ isLoading: true });
     try {
-      setTimeout(() => {
-        set({ suppliers: dummySuppliers, isLoading: false });
-      }, 300);
+      const response = await api.get("/supplier");
+      // console.log(response,"eue")
+      set({ suppliers: response.data, isLoading: false });
     } catch (error) {
       set({ error: error.message, isLoading: false });
     }

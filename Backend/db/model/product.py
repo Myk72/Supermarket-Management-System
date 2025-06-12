@@ -14,6 +14,7 @@ class Product(Base):
     cost_price = Column(Float(10, 2))
     supplier_id = Column(Integer, ForeignKey(Supplier.supplier_id))
     status = Column(Enum('active', 'discontinued', 'out_of_stock'), default='active')
+    image = Column(String(255))
     created_at = Column(DateTime, server_default=func.now())
 
 

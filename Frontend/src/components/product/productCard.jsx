@@ -4,7 +4,7 @@ const ProductCard = ({ product, onClick = () => {} }) => {
       className="flex flex-col rounded-lg overflow-hidden shadow-sm cursor-pointer hover:shadow-lg hover:bg-gray-100 transition-all duration-300"
       onClick={onClick}
     >
-      <div className="shrink-0 overflow-hidden h-20">
+      <div className="shrink-0 overflow-hidden h-28">
         <img
           src={product?.image}
           alt={product?.name}

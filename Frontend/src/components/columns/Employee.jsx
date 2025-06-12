@@ -108,7 +108,15 @@ const EmployeeColumns = [
         >
           <UserCheck2 className="size-4" />
         </Button>
-        <Button variant="ghost" size="sm" className="hover:bg-gray-200">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="hover:bg-gray-200"
+          onClick={(e) => {
+            e.stopPropagation();
+            table.options.meta?.onDeleteClick?.(row.original);
+          }}
+        >
           <Trash2 className="size-4 text-red-600" />
         </Button>
       </div>

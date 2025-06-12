@@ -4,6 +4,7 @@ import { FaArrowLeft } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
 import { useSupplierStore } from "@/store/suppliers.store";
 import { useCategoryStore } from "@/store/category.store";
+import { useProductStore } from "@/store/product.store";
 
 const AddProducts = () => {
   const {
@@ -13,6 +14,7 @@ const AddProducts = () => {
   } = useForm();
   const { suppliers, fetchSuppliers } = useSupplierStore();
   const { categories, fetchCategories } = useCategoryStore();
+  const { addProduct } = useProductStore();
   const [image, setImage] = useState(null);
 
   useEffect(() => {
@@ -21,8 +23,13 @@ const AddProducts = () => {
     console.log(suppliers, "suppliers in add product");
   }, [fetchSuppliers, fetchCategories]);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log("Form Data Submitted: ", data);
+    try {
+      await addProduct(data, image);
+    } catch (error) {
+      console.log(error.message)
+    }
   };
   return (
     <div className="space-y-6">
@@ -84,7 +91,7 @@ const AddProducts = () => {
               <input
                 type="number"
                 id="sellingPrice"
-                {...register("sellingPrice", {
+                {...register("price", {
                   required: "Selling price is required",
                 })}
 
@@ -106,7 +113,7 @@ const AddProducts = () => {
               <input
                 type="number"
                 id="costPrice"
-                {...register("costPrice", {
+                {...register("cost_price", {
                   required: "Cost price is required",
                 })}
                 className={`border p-2 rounded ${
@@ -147,14 +154,14 @@ const AddProducts = () => {
               </label>
               <select
                 id="category"
-                {...register("category", { required: "Category is required" })}
+                {...register("category_id", { required: "Category is required" })}
                 className={`border p-2 rounded ${
                   errors.category ? "border-red-500" : "border-gray-300"
                 }`}
               >
                 <option value="">Select Category</option>
                 {categories.map((category) => (
-                  <option key={category.category_id} value={category.name}>
+                  <option key={category.category_id} value={category.category_id}>
                     {category.name}
                   </option>
                 ))}
@@ -171,14 +178,14 @@ const AddProducts = () => {
               </label>
               <select
                 id="supplier"
-                {...register("supplier", { required: "Supplier is required" })}
+                {...register("supplier_id", { required: "Supplier is required" })}
                 className={`border p-2 rounded ${
                   errors.supplier ? "border-red-500" : "border-gray-300"
                 }`}
               >
                 <option value="">Select Supplier</option>
                 {suppliers.map((supplier) => (
-                  <option key={supplier.supplier_id} value={supplier.name}>
+                  <option key={supplier.supplier_id} value={supplier.supplier_id}>
                     {supplier.name}
                   </option>
                 ))}
@@ -191,7 +198,7 @@ const AddProducts = () => {
             </div>
           </div>
           <div className="flex justify-between items-center">
-            {/* Image input */}
+        
             <div className="flex flex-col gap-2">
               <label htmlFor="image" className="font-semibold">
                 Product Image
@@ -201,6 +208,7 @@ const AddProducts = () => {
                 id="image"
                 accept="image/*"
                 onChange={(e) => setImage(e.target.files[0])}
+                required
                 className="border p-2 rounded"
               />
             </div>

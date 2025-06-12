@@ -6,7 +6,7 @@ import { useProductStore } from "@/store/product.store";
 import { useNavigate } from "react-router-dom";
 
 const Product = () => {
-  const { fetchProducts, products } = useProductStore();
+  const { fetchProducts, products, deleteProduct } = useProductStore();
   const navigate = useNavigate();
   useEffect(() => {
     fetchProducts();
@@ -31,11 +31,11 @@ const Product = () => {
           onEditClick: (row) => {
             console.log("Edit Product", row);
             alert(row.product_id + " Product ID edit");
-
           },
-          onDeleteClick: (row) => {
+          onDeleteClick: async (row) => {
+            console.log(row)
+            await deleteProduct(row.product_id);
             console.log("Delete Product", row);
-            alert(row.product_id + " Product ID delete");
           },
         }}
       />

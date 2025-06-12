@@ -4,7 +4,7 @@ import EmployeeColumns from "@/components/columns/Employee";
 import { useEmployeeStore } from "@/store/employee.store";
 import { useNavigate } from "react-router-dom";
 const Employee = () => {
-  const { employees, fetchEmployees } = useEmployeeStore();
+  const { employees, fetchEmployees, deleteEmployee } = useEmployeeStore();
   const navigate = useNavigate();
   useEffect(() => {
     fetchEmployees();
@@ -22,6 +22,9 @@ const Employee = () => {
         meta={{
           onAssignClick: (employee) => {
             navigate(`/employees/assign/${employee.employee_id}`);
+          },
+          onDeleteClick: (employee) => {
+            deleteEmployee(employee.employee_id);
           },
         }}
       />

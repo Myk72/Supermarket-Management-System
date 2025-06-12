@@ -2,6 +2,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from api import user as user_routes
 from api import auth as auth_routes
+from api import customer as customer_routes
+from api import product as product_routes
+from api import supplier
+from api import category
 from db.database import Base, engine
 from db.model import *
 import socketio
@@ -15,7 +19,6 @@ origins = [
     "http://127.0.0.1:8000",
 ]
 
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins, 
@@ -26,6 +29,10 @@ app.add_middleware(
 
 app.include_router(user_routes.router)
 app.include_router(auth_routes.router)
+app.include_router(customer_routes.router)
+app.include_router(product_routes.router)
+app.include_router(supplier.router)
+app.include_router(category.router)
 
 sio = socketio.AsyncServer(cors_allowed_origins='*', async_mode='asgi')
 socket_app = socketio.ASGIApp(sio, other_asgi_app=app)
