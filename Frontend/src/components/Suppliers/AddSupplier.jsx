@@ -2,6 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "../ui/button";
 import { FaArrowLeft } from "react-icons/fa6";
+import { useSupplierStore } from "@/store/suppliers.store";
 
 const AddSupplier = () => {
   const {
@@ -9,9 +10,15 @@ const AddSupplier = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const { addSupplier } = useSupplierStore();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      await addSupplier(data);
+      alert("Supplier added successfully!");
+    } catch (error) {
+      console.error("Error adding supplier:", error);
+    }
   };
   return (
     <div className="flex flex-col justify-center font-serif gap-2 bg-white rounded-2xl p-10">

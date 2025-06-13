@@ -4,19 +4,27 @@ import { Button } from "../ui/button";
 import { FaArrowLeft } from "react-icons/fa6";
 import { useSupplierStore } from "@/store/suppliers.store";
 import { useProductStore } from "@/store/product.store";
+import { usePurchaseStore } from "@/store/purchase.store";
 import { CustomTable } from "../table/Table";
 import SelectProductColumns from "../columns/SelectProduct";
 import { Package, ShoppingCart, Trash2 } from "lucide-react";
+import useAuthStore from "@/store/auth.store";
 
 const AddPurchase = () => {
+  const { user } = useAuthStore();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      employee_id: user.employee_id,
+    },
+  });
 
   const { suppliers, fetchSuppliers } = useSupplierStore();
   const { products, fetchProducts } = useProductStore();
+  const { addPurchase } = usePurchaseStore();
   const [cart, setCart] = useState([]);
   const clearCart = () => {
     setCart([]);
@@ -62,8 +70,13 @@ const AddPurchase = () => {
     fetchProducts();
   }, [fetchSuppliers, fetchProducts]);
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      addPurchase(data, cart);
+      alert("Purchase added successfully!");
+    } catch (error) {
+      console.error("Error adding purchase:", error);
+    }
   };
   return (
     <div className="flex flex-col justify-center font-serif gap-2 bg-white rounded-2xl p-10">
@@ -94,7 +107,7 @@ const AddPurchase = () => {
               </label>
               <select
                 id="supplier"
-                {...register("supplier", { required: "Supplier is required" })}
+                {...register("supplier_id", { required: "Supplier is required" })}
                 className={`p-3 border rounded-md`}
               >
                 <option value="">Select a supplier</option>
@@ -121,7 +134,7 @@ const AddPurchase = () => {
                 <input
                   type="date"
                   id="expectedDate"
-                  {...register("expectedDate", {
+                  {...register("expected_date", {
                     required: "Expected date is required",
                   })}
                   className={`p-3 border rounded-md`}
@@ -141,7 +154,7 @@ const AddPurchase = () => {
             </label>
             <textarea
               id="notes"
-              {...register("notes")}
+              {...register("note")}
               className={`p-3 border rounded-md`}
               rows={2}
             />
@@ -226,7 +239,7 @@ const AddPurchase = () => {
               <Button onClick={clearCart}>Clear Cart</Button>
               <Button
                 type="submit"
-                className="bg-blue-500 text-white hover:bg-blue-600"
+                className="bg-blue-500 text-white hover:bg-blue-600 cursor-pointer"
               >
                 <ShoppingCart className="mr-2" />
                 Place Purchase

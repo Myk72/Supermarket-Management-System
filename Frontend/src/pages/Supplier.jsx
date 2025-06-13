@@ -16,17 +16,7 @@ const Supplier = () => {
   return (
     <div className="flex flex-col w-full font-serif gap-4">
       <h1 className="text-2xl font-semibold text-blue-900">Suppliers</h1>
-      <div className="flex flex-row gap-4">
-        {SupplierCard.map((item, index) => (
-          <Card
-            key={index}
-            title={item.title}
-            icon={item.icon}
-            description={item.description}
-            value={item.value}
-          />
-        ))}
-      </div>
+      <SupplierCard />
       <div className="space-y-4 bg-white p-4 rounded-lg shadow-md">
         <h2 className="text-xl font-semibold">Suppliers List</h2>
         <CustomTable

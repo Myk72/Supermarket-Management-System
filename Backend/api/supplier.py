@@ -38,3 +38,42 @@ async def add_supplier(data: SupplierBase, db: Session = Depends(connect_db)):
     return {
         "message": "Supplier added successfully",
     }
+
+
+@router.delete("/{supplier_id}")
+async def delete_supplier(supplier_id: int, db: Session = Depends(connect_db)):
+    supplier = db.query(Supplier).filter_by(supplier_id=supplier_id).first()
+    if not supplier:
+        raise HTTPException(status_code=404, detail="Supplier not found")
+
+    db.delete(supplier)
+    db.commit()
+
+    return {
+        "message": "Supplier deleted successfully",
+    }
+
+
+@router.put("/{supplier_id}")
+async def update_supplier(supplier_id: int, data: SupplierBase, db: Session = Depends(connect_db)):
+    supplier = db.query(Supplier).filter_by(supplier_id=supplier_id).first()
+    if not supplier:
+        raise HTTPException(status_code=404, detail="Supplier not found")
+
+    existing = db.query(Supplier).filter(Supplier.email == data.email, Supplier.supplier_id != supplier_id).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="Email already in use by another supplier")
+
+    supplier.name = data.name
+    supplier.contact_phone = data.contact_phone
+    supplier.email = data.email
+    supplier.address = data.address
+    supplier.status = data.status
+
+    db.commit()
+    db.refresh(supplier)
+
+    return {
+        "message": "Supplier updated successfully",
+        "supplier": supplier
+    }

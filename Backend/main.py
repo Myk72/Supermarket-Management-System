@@ -8,6 +8,7 @@ from api import supplier
 from api import category
 from api import inventory
 from api import sales
+from api import purchase
 from db.database import Base, engine
 from db.model import *
 import socketio
@@ -37,6 +38,7 @@ app.include_router(supplier.router)
 app.include_router(category.router)
 app.include_router(inventory.router)
 app.include_router(sales.router)
+app.include_router(purchase.router)
 
 sio = socketio.AsyncServer(cors_allowed_origins='*', async_mode='asgi')
 socket_app = socketio.ASGIApp(sio, other_asgi_app=app)

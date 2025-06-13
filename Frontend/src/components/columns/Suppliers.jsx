@@ -2,12 +2,12 @@ import { Button } from "@/components/ui/button";
 import {
   Eye,
   Phone,
-  Mail,
   ShoppingCart,
   Calendar,
   Home,
   Edit,
   Trash2,
+  MailIcon
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -35,10 +35,10 @@ const SupplierColumns = [
       <div className="flex flex-col space-y-1">
         <div className="flex items-center">
           <Phone className="size-3 mr-1 text-gray-500" />
-          <span className="text-xs">{row.original.phone}</span>
+          <span className="text-xs">{row.original.contact_phone}</span>
         </div>
         <div className="flex items-center">
-          <Mail className="size-3 mr-1 text-gray-500" />
+          <MailIcon className="size-3 mr-1 text-gray-500" />
           <span className="text-xs">{row.original.email}</span>
         </div>
         <div className="flex items-center">
@@ -89,7 +89,7 @@ const SupplierColumns = [
           variant={"outline"}
           className={`
             text-xs text-white p-2
-            ${status === "Active" ? "bg-green-400" : "bg-red-500"}
+            ${status === "active" ? "bg-green-400" : "bg-red-500"}
 
             `}
         >
