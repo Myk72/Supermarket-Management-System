@@ -14,9 +14,7 @@ const Customers = () => {
   const [purchasedHistory, setPurchasedHistory] = useState([]);
   return (
     <div className="space-y-3 font-serif">
-      <h1 className="text-xl font-semibold text-blue-900">
-        Customers
-      </h1>
+      <h1 className="text-xl font-semibold text-blue-900">Customers</h1>
       <div className="flex space-x-3 w-full">
         <div className="w-2/3 bg-white p-4 rounded-2xl border shadow-sm">
           <CustomTable
@@ -37,11 +35,11 @@ const Customers = () => {
           <h2 className="text-2xl font-semibold text-blue-700">
             Customer Details
           </h2>
-          <div className="flex  h-full flex-col mt-6">
+          <div className="flex  h-full flex-col mt-6 overflow-y-auto">
             {selectedCustomer ? (
               <div className="flex flex-col gap-4 ml-2">
                 <h2 className=" flex flex-col gap-1 text-xl font-semibold text-blue-900">
-                  {selectedCustomer.name}
+                  {selectedCustomer.firstName} {selectedCustomer.lastName}
                   <span className="text-sm text-gray-500 font-light">
                     Customer Since{" "}
                     {new Date(selectedCustomer.created_at).toLocaleDateString()}
@@ -72,12 +70,11 @@ const Customers = () => {
                   ID
                   <div className="text-sm text-gray-500 mt-1 font-light">
                     <span>
-                      Identification Type: {selectedCustomer.idType.toUpperCase() || "N/A"}
+                      Identification Type:{" "}
+                      {selectedCustomer.idType.toUpperCase() || "N/A"}
                     </span>
                     <br />
-                    <span>
-                      ID Number: {selectedCustomer.idNumber || "N/A"}
-                    </span>
+                    <span>ID Number: {selectedCustomer.idNumber || "N/A"}</span>
                   </div>
                 </h2>
 

@@ -72,7 +72,7 @@ const AddPurchase = () => {
 
   const onSubmit = async (data) => {
     try {
-      addPurchase(data, cart);
+      await addPurchase(data, cart);
       alert("Purchase added successfully!");
     } catch (error) {
       console.error("Error adding purchase:", error);
@@ -194,6 +194,7 @@ const AddPurchase = () => {
                         <Button
                           variant="outline"
                           size="icon"
+                          type="button" 
                           className="h-8 w-8"
                           onClick={() =>
                             updateCartItemQuantity(
@@ -208,6 +209,7 @@ const AddPurchase = () => {
                         <Button
                           variant="outline"
                           size="icon"
+                          type="button" 
                           className="h-8 w-8"
                           onClick={() =>
                             updateCartItemQuantity(
@@ -222,6 +224,7 @@ const AddPurchase = () => {
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8 text-destructive"
+                          type="button" 
                           onClick={() => removeFromCart(item.product_id)}
                         >
                           <Trash2 className="h-4 w-4" />

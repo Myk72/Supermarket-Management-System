@@ -8,7 +8,9 @@ const PurchaseOrderColumns = [
     accessorKey: "purchase_id",
     header: "Purchase ID",
     size: 30,
-    cell: ({ row }) => <div className="font-medium">PO-{row.original.purchase_id}</div>,
+    cell: ({ row }) => (
+      <div className="font-medium">PO-{row.original.purchase_id}</div>
+    ),
   },
   {
     id: "employee",
@@ -17,8 +19,9 @@ const PurchaseOrderColumns = [
       <div className="flex items-center">
         <User className="size-4 mr-2 text-gray-500" />
         <div>
-          <div className="font-medium">{row.original.employee_name}</div>
-          <div className="text-xs text-gray-500">ID: {row.original.employee_id}</div>
+          <div className="text-xs text-gray-500">
+            ID: {row.original.employee_id}
+          </div>
         </div>
       </div>
     ),
@@ -31,19 +34,19 @@ const PurchaseOrderColumns = [
     cell: ({ row }) => (
       <div className="flex items-center">
         <Truck className="size-4 mr-2 text-gray-500" />
-        <span>{row.original.supplier_name}</span>
+        <span>SID: {row.original.supplier_id}</span>
       </div>
     ),
     size: 120,
   },
   {
-    id: "order_date",
-    accessorKey: "order_date",
-    header: "Order Date",
+    id: "expected_date",
+    accessorKey: "expected_date",
+    header: "Expected Date",
     cell: ({ row }) => (
       <div className="flex items-center">
         <Calendar className="size-4 mr-2 text-gray-500" />
-        <span>{new Date(row.original.order_date).toLocaleDateString()}</span>
+        <span>{new Date(row.original.expected_date).toLocaleDateString()}</span>
       </div>
     ),
     size: 100,
@@ -54,7 +57,7 @@ const PurchaseOrderColumns = [
     header: "Amount",
     cell: ({ row }) => (
       <div className="font-medium">
-        ${parseFloat(row.original.amount).toFixed(2)}
+        ${parseFloat(row.original.total_cost).toFixed(2)}
       </div>
     ),
     size: 80,
@@ -66,9 +69,8 @@ const PurchaseOrderColumns = [
     cell: ({ row }) => {
       const status = row.original.status;
       const variantMap = {
-        Completed: "default",
-        Pending: "secondary",
-        Shipped: "outline",
+        received: "default",
+        pending: "secondary",
         Cancelled: "destructive",
       };
       return (
