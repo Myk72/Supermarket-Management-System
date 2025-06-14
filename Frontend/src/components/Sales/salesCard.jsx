@@ -54,7 +54,7 @@ const SalesCard = ({ sale }) => {
       <div className="space-y-1">
         <div className="flex justify-between">
           <span className="text-sm text-gray-600">Subtotal</span>
-          <span>{formatCurrency(sale.total_amount)}</span>
+          <span>{formatCurrency(sale.total_amount - sale.tax_amount)}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-sm text-gray-600">Tax</span>
@@ -69,7 +69,7 @@ const SalesCard = ({ sale }) => {
           <span className="text-sm font-semibold text-gray-700">Total</span>
           <span className="font-bold text-lg">
             {formatCurrency(
-              sale.total_amount + sale.tax_amount - sale.discount_amount
+              sale.total_amount
             )}
           </span>
         </div>

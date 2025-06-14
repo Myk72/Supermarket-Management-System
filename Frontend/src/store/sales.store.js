@@ -32,11 +32,23 @@ export const useSaleStore = create((set) => ({
     }
   },
 
-  fetchSaleItems: async (saleId) => {
+  getSale: async (saleId) => {
     set({ isLoading: true });
     try {
       const id = Number(saleId);
       const response = await api.get(`/sales/${id}`);
+      const data = response.data;
+      console.log(data);
+      set({ sales: data, isLoading: false, error: null });
+    } catch (error) {
+      set({ error: error.message, isLoading: false });
+    }
+  },
+  fetchSaleItems: async (saleId) => {
+    set({ isLoading: true });
+    try {
+      const id = Number(saleId);
+      const response = await api.get(`/sales/${id}/items`);
       const data = response.data;
       console.log(data);
       set({ saleItems: data, isLoading: false, error: null });

@@ -79,8 +79,15 @@ async def add_sale(data: SaleCreate, db: Session = Depends(connect_db)):
     return {"message": "Sale added successfully", "sale_id": sale.sale_id}
 
 
-
 @router.get("/{sale_id}")
+async def get_sale(sale_id: int, db: Session = Depends(connect_db)):
+    sale = db.query(Sale).filter(Sale.sale_id == sale_id).first()
+    if not sale:
+        raise HTTPException(status_code=404, detail="Sale not found")
+    return sale
+
+
+@router.get("/{sale_id}/items")
 async def get_sale(sale_id: int, db: Session = Depends(connect_db)):
     sale = db.query(Sale).filter(Sale.sale_id == sale_id).first()
     if not sale:

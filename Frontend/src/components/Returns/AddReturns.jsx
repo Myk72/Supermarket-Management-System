@@ -6,7 +6,9 @@ import { CustomTable } from "../table/Table";
 import SelectSalesColumns from "../columns/SelectSales";
 import { ArrowRightCircle, Package, Trash2 } from "lucide-react";
 import { useSaleStore } from "@/store/sales.store";
+import { useReturnStore } from "@/store/returns.store";
 import { useNavigate } from "react-router-dom";
+import useAuthStore from "@/store/auth.store";
 
 const AddReturns = () => {
   const navigate = useNavigate();
@@ -15,6 +17,8 @@ const AddReturns = () => {
   const [products, setProducts] = useState([]);
   const [activeTab, setActiveTab] = useState("sale");
   const { fetchSales, saleItems, fetchSaleItems, sales } = useSaleStore();
+  const { createReturn } = useReturnStore();
+  const { user } = useAuthStore();
 
   useEffect(() => {
     fetchSales();
@@ -28,13 +32,7 @@ const AddReturns = () => {
   };
 
   const [cart, setCart] = useState([]);
-
-  // useEffect(() => {
-  //   console.log(cart, "here");
-  // }, [cart]);
-  useEffect(() => {
-    console.log(sale, "here");
-  }, [sale]);
+  const taxRate = 0.15;
 
   const clearCart = () => {
     setCart([]);
@@ -94,6 +92,35 @@ const AddReturns = () => {
     setCart((prevCart) =>
       prevCart.filter((item) => item.product_id !== productId)
     );
+  };
+
+  const handleSubmit = async () => {
+    try {
+      await createReturn({
+        sale_id: saleId,
+        products: cart.map((item) => ({
+          product_id: item.product_id,
+          quantity: item.quantity,
+          unit_price: item.unit_price,
+          reason: item.reason,
+          total_refund: (
+            item.unit_price *
+            item.quantity *
+            (1 + taxRate)
+          ).toFixed(2),
+        })),
+        processed_by: user.employee_id,
+      });
+      alert("Return processed successfully");
+      setCart([]);
+      setSale([]);
+      setProducts([]);
+      setActiveTab("sale");
+    } catch (error) {
+      console.error("Error processing return:", error);
+      alert("Failed to process return. Please try again.");
+      return;
+    }
   };
 
   return (
@@ -170,6 +197,7 @@ const AddReturns = () => {
                       fetchSaleItems(currentSale.sale_id);
                       setProducts(saleItems);
                     } else {
+                      alert("Sale not found");
                       setSale([]);
                       setProducts([]);
                     }
@@ -390,7 +418,7 @@ const AddReturns = () => {
                         cart.reduce(
                           (acc, item) => acc + item.unit_price * item.quantity,
                           0
-                        ) * 0.15
+                        ) * taxRate
                       )}
                     </span>
                   </div>
@@ -408,7 +436,7 @@ const AddReturns = () => {
                               acc + item.unit_price * item.quantity,
                             0
                           ) *
-                            0.15
+                            taxRate
                       )}
                     </span>
                   </div>
@@ -434,12 +462,14 @@ const AddReturns = () => {
                       size: 40,
                     },
                     {
-                      id: "subtotal",
-                      header: "Subtotal",
+                      id: "total_refund",
+                      header: "Total Refund",
                       cell: ({ row }) => (
                         <span>
                           {formatCurrency(
-                            row.original.unit_price * row.original.quantity
+                            row.original.unit_price *
+                              row.original.quantity *
+                              (1 + taxRate)
                           )}
                         </span>
                       ),
@@ -460,13 +490,7 @@ const AddReturns = () => {
                 </Button>
                 <Button
                   className="bg-blue-500 text-white hover:bg-blue-600"
-                  onClick={() => {
-                    clearCart();
-                    setSale([]);
-                    setProducts([]);
-                    alert("Return Processed Successfully, wait for admin approval");
-                    navigate("/returns");
-                  }}
+                  onClick={handleSubmit}
                 >
                   Process Return
                 </Button>

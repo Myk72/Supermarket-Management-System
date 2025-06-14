@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, DateTime, Float, ForeignKey,Text
+from sqlalchemy import Column, Integer, DateTime, Float, ForeignKey,Text, Enum
 from sqlalchemy.sql import func
 from db.database import Base
 from .sales import Sale
@@ -14,5 +14,6 @@ class Return(Base):
     quantity = Column(Integer, nullable=False)
     return_reason = Column(Text)
     refund_amount = Column(Float(10, 2))
+    status = Column(Enum('pending', 'approved', 'rejected'), default='pending')
     processed_by = Column(Integer, ForeignKey(Employee.employee_id))
     processed_at = Column(DateTime, server_default=func.now())
