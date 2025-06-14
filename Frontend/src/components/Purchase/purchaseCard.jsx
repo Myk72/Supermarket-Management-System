@@ -3,6 +3,7 @@ import {
   Package,
   ShoppingCart,
   Users,
+  ClockFading,
   LucideBadgeDollarSign,
   Truck
 } from "lucide-react";
@@ -45,7 +46,7 @@ export const PurchaseCard = () => {
     },
     {
       title: "Pending Orders",
-      icon: LucideMessageCircleWarning,
+      icon: ClockFading,
       value: purchasePending,
       description: `Awaiting delivery`,
     },

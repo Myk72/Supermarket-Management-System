@@ -1,9 +1,10 @@
 import {
-  LucideMessageCircleWarning,
+  CircleOff,
   Package,
   ShoppingCart,
   Users,
   LucideBadgeDollarSign,
+  TriangleAlert,
 } from "lucide-react";
 import { useInventoryStore } from "@/store/inventory.store";
 import { useEffect } from "react";
@@ -49,13 +50,13 @@ export const InventoryDashboard = () => {
     },
     {
       title: "Low Stock Items",
-      icon: LucideMessageCircleWarning,
+      icon: TriangleAlert,
       value: lowItemsCount,
       description: `Items below reorder level`,
     },
     {
       title: "Out of Stock Items",
-      icon: LucideMessageCircleWarning,
+      icon: CircleOff,
       value: outOfStockCount,
       description: `Items with zero quantity`,
     },

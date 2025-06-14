@@ -43,7 +43,7 @@ const ProductColumns = [
     id: "category",
     accessorKey: "category",
     header: "Category",
-    cell: ({ row }) => <div className="">{row.original.category_id} Fruit</div>,
+    cell: ({ row }) => <div className="">{row.original.category.name} Fruit</div>,
     size: 100,
   },
 

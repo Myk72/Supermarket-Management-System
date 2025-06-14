@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, DateTime, Float, ForeignKey, Enum, String
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
 from db.database import Base
 from .employee import Employee
 from .product import Product
@@ -16,6 +17,8 @@ class Purchase(Base):
     note = Column(String(255), nullable=True)
     status = Column(Enum('pending', 'received', 'cancelled'), default='pending')
     createdAt = Column(DateTime, server_default=func.now())
+
+    supplier = relationship("Supplier", back_populates="purchases")
 
 class PurchaseItem(Base):
     __tablename__ = "purchase_items"

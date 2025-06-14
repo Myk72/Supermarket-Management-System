@@ -2,7 +2,7 @@ import PurchaseOrderColumns from "@/components/columns/Purchase";
 import { PurchaseCard } from "@/components/Purchase/purchaseCard";
 import { CustomTable } from "@/components/table/Table";
 import { usePurchaseStore } from "@/store/purchase.store";
-import React, { use } from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 

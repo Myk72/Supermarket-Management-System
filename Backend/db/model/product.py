@@ -19,12 +19,18 @@ class Product(Base):
     created_at = Column(DateTime, server_default=func.now())
     inventory = relationship("Inventory", back_populates="product", uselist=False)
 
+    category = relationship("Category", back_populates="products")
+
 class Category(Base):
     __tablename__ = "categories"
     
     category_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     name = Column(String(50), nullable=False)
     description = Column(Text)
+
+    products = relationship("Product", back_populates="category")
+
+
 
 
 class Inventory(Base):

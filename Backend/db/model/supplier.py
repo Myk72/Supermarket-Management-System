@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, Text
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
 from db.database import Base
 
 class Supplier(Base):
@@ -13,3 +14,5 @@ class Supplier(Base):
     status = Column(String(20), default="active")
     total_purchases = Column(Integer, default=0)
     created_at = Column(String(50), server_default=func.now())
+
+    purchases = relationship("Purchase", back_populates="supplier")

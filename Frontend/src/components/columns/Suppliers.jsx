@@ -7,7 +7,10 @@ import {
   Home,
   Edit,
   Trash2,
-  MailIcon
+  MailIcon,
+  ClockFading,
+  TruckElectric,
+  ClockAlert,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -54,13 +57,43 @@ const SupplierColumns = [
     id: "total_purchases",
     accessorKey: "total_purchases",
     header: "Total Purchases",
-    cell: ({ row }) => (
-      <div className="flex items-center">
-        <ShoppingCart className="size-4 mr-1 text-gray-500" />
-        <span>{row.original.total_purchases || 0}</span>
-      </div>
-    ),
-    size: 50,
+    cell: ({ row }) => {
+      const purchases = row.original.purchases || [];
+
+      const pendingCount = purchases.filter(
+        (p) => p.status === "pending"
+      ).length;
+      const receivedCount = purchases.filter(
+        (p) => p.status === "received"
+      ).length;
+
+      if (purchases.length === 0) {
+        return (
+          <div className="flex items-center space-x-2">
+            <ShoppingCart className="size-4 text-gray-500" />
+            <span className="text-xs text-gray-500">0</span>
+          </div>
+        );
+      }
+
+      return (
+        <div className="space-y-1">
+          {receivedCount > 0 && (
+            <div className="flex items-center space-x-1">
+              <Truck size={16} />
+              <span>{receivedCount}</span>
+            </div>
+          )}
+          {pendingCount > 0 && (
+            <div className="flex items-center space-x-1">
+              <ClockFading size={16} />
+              <span>{pendingCount}</span>
+            </div>
+          )}
+        </div>
+      );
+    },
+    size: 120,
   },
 
   {

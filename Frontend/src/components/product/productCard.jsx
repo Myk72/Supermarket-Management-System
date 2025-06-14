@@ -1,7 +1,8 @@
+import { Barcode } from "lucide-react";
 const ProductCard = ({ product, onClick = () => {} }) => {
   return (
     <div
-      className="flex flex-col rounded-lg overflow-hidden shadow-sm cursor-pointer hover:shadow-lg hover:bg-gray-100 transition-all duration-300"
+      className="flex flex-col rounded-lg overflow-hidden shadow-sm cursor-pointer hover:shadow-lg hover:bg-gray-100 transition-all duration-300 font-serif"
       onClick={onClick}
     >
       <div className="shrink-0 overflow-hidden h-28">
@@ -12,18 +13,30 @@ const ProductCard = ({ product, onClick = () => {} }) => {
         />
       </div>
 
-      <div className="text-sm flex flex-col gap-1 p-2">
-        <h3 className="font-bold text-blue-800 truncate w-full">
-          {product?.name}
-        </h3>
+      <div className="p-2 grid grid-cols-[1fr_auto] gap-x-4 items-start">
+        <div>
+          <h2 className="font-bold text-lg text-blue-800 truncate">
+            {product?.name}
+          </h2>
+          <span className="text-gray-500 text-xs">
+            {product?.category?.name}
+          </span>
+        </div>
+        <div className="flex justify-end items-start">
+          <span className="font-bold text-blue-600">${product?.price}</span>
+        </div>
 
-        <span className="font-bold text-blue-600">${product?.price}</span>
+        <span className="text-xs text-gray-400 flex mt-1">
+          <Barcode className="mr-1" size={14} />
+          {product?.barcode}
+        </span>
+        <br />
         <span
-          className={`text-gray-900
-            ${product?.status === "active" ? "text-green-600" : "text-red-600"}
-            `}
+          className={`mt-1 text-sm
+      ${product?.status === "active" ? "text-green-600" : "text-red-600"}
+    `}
         >
-          {product?.status.toUpperCase()}
+          {product?.status?.toUpperCase()}
         </span>
       </div>
     </div>

@@ -13,11 +13,12 @@ export const SupplierCard = () => {
   const { fetchSuppliers, suppliers } = useSupplierStore();
   useEffect(() => {
     fetchSuppliers();
+    console.log(suppliers)
   }, [fetchSuppliers]);
 
   const totalSuppliers = suppliers.length;
-  const totalPurchases = suppliers.reduce(
-    (acc, supplier) => acc + supplier.purchases,
+  const totalPurchases  = suppliers.reduce(
+    (acc, supplier) => acc + (supplier.purchases ? supplier.purchases.length : 0),
     0
   );
   const activeSuppliers = suppliers.filter(

@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
-from pydantic import BaseModel, EmailStr
-from pydantic import BaseModel, ConfigDict
+from sqlalchemy.orm import Session, joinedload
+from pydantic import BaseModel, EmailStr, ConfigDict
 from db.database import connect_db
 from db.model.purchase import Purchase, PurchaseItem
 from db.model.supplier import Supplier
@@ -11,12 +10,28 @@ from datetime import datetime
 router = APIRouter(prefix="/purchase", tags=["Purchase"])
 
 class SupplierBase(BaseModel):
+    supplier_id: int
     name: str
+    contact_phone: str
     email: EmailStr
-    phone: str
     address: str
+    status: str = "active"
+    total_purchases: int = 0
+
 
     model_config = ConfigDict(from_attributes=True)
+class PurchaseSchema(BaseModel):
+    purchase_id: int
+    employee_id: int
+    total_cost: float
+    expected_date: datetime
+    note: str | None = None
+    status: str = 'pending'
+    supplier: SupplierBase
+
+    model_config = ConfigDict(from_attributes=True)
+
+
     
 
 class purchaseItemBase(BaseModel):
@@ -39,9 +54,9 @@ class createPurchase(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
-@router.get("/")
+@router.get("/", response_model=list[PurchaseSchema])
 async def get_purchases(db: Session = Depends(connect_db)):
-    purchases = db.query(Purchase).all()
+    purchases = db.query(Purchase).options(joinedload(Purchase.supplier)).all()
     return purchases
 
 @router.post("/")

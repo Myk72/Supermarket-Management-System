@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
+from pydantic import BaseModel, ConfigDict
 from db.database import connect_db
-from db.model.product import Product
+from db.model.product import Product, Category
 from db.model.supplier import Supplier
 from datetime import datetime
 import cloudinary_config
@@ -9,9 +10,32 @@ import cloudinary.uploader
 
 router = APIRouter(prefix="/product", tags=["product"])
 
-@router.get("/")
+class CategorySchema(BaseModel):
+    category_id: int
+    name: str
+    description: str
+
+    model_config = ConfigDict(from_attributes=True)
+
+class ProductSchema(BaseModel):
+    product_id: int
+    barcode: str
+    name: str
+    category: CategorySchema
+    price: float
+    cost_price: float
+    supplier_id: int
+    status: str
+    image: str
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+@router.get("/", response_model=list[ProductSchema])
 async def get_products(db: Session = Depends(connect_db)):
-    return db.query(Product).all()
+    products = db.query(Product).options(joinedload(Product.category)).all()
+    return products
+
 
 @router.post("/add")
 async def add_new_product(

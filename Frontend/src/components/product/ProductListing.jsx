@@ -44,7 +44,7 @@ export const ProductListing = ({ addToCart = () => {}, scannedCode }) => {
           className="py-2 px-3 border rounded-2xl"
         />
       </div>
-      <div className="grid grid-cols-2 gap-6 pl-4 md:grid-cols-3 lg:grid-cols-5">
+      <div className="grid grid-cols-2 gap-6 pl-4 md:grid-cols-3 lg:grid-cols-4">
         {paginatedProduct.map((product) => (
           <ProductCard
             key={product.product_id}

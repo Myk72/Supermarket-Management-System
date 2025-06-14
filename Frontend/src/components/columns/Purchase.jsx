@@ -34,7 +34,7 @@ const PurchaseOrderColumns = [
     cell: ({ row }) => (
       <div className="flex items-center">
         <Truck className="size-4 mr-2 text-gray-500" />
-        <span>SID: {row.original.supplier_id}</span>
+        <span>{row.original.supplier.name}</span>
       </div>
     ),
     size: 120,
