@@ -14,7 +14,7 @@ const ViewPurchase = () => {
   useEffect(() => {
     fetchPurchaseItems(id);
   }, [id, fetchPurchaseItems]);
-  // console.log("Purchase Items:", purchaseItems);
+  
   return (
     <div>
       <Button

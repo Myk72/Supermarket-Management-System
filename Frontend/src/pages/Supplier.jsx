@@ -6,9 +6,11 @@ import { useSupplierStore } from "@/store/suppliers.store";
 import React, { use } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import useAuthStore from "@/store/auth.store";
 
 const Supplier = () => {
   const { fetchSuppliers, suppliers } = useSupplierStore();
+  const { role } = useAuthStore();
   useEffect(() => {
     fetchSuppliers();
   }, []);
@@ -22,7 +24,9 @@ const Supplier = () => {
         <CustomTable
           columns={SupplierColumns}
           data={suppliers}
-          addButtonText={"Add New Supplier"}
+          {...(role === "manager" && {
+            addButtonText: "Add Supplier",
+          })}
           pageSize={5}
           onAddClick={() => {
             navigate("/suppliers/add");

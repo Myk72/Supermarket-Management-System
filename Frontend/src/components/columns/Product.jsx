@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Edit, Trash2, Star, Percent, Eye, ArrowUpDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import Barcode from "react-barcode";
+import { MdLocalOffer } from "react-icons/md";
 
 const ProductColumns = [
   {
@@ -68,11 +69,12 @@ const ProductColumns = [
       </Button>
     ),
     cell: ({ row }) => (
-      <div className="flex justify-center">{row.original.category.name} Fruit</div>
+      <div className="flex justify-center">
+        {row.original.category.name} Fruit
+      </div>
     ),
     size: 100,
   },
-
 
   {
     id: "status",
@@ -150,8 +152,7 @@ const ProductColumns = [
     header: "Quick Action",
     cell: ({ row, table }) => (
       <div className="flex space-x-2">
-
-        <Button
+        {/* <Button
           variant="ghost"
           size="sm"
           className="hover:bg-blue-100"
@@ -160,6 +161,17 @@ const ProductColumns = [
           }}
         >
           <Edit className="size-4 text-blue-600" />
+        </Button> */}
+        <Button
+          variant="ghost"
+          size="sm"
+          className="hover:bg-blue-100"
+          onClick={() => {
+            table.options.meta?.onDiscountClick(row.original);
+          }}
+          title="Add Discount"
+        >
+          <MdLocalOffer className="size-4 text-blue-600" />
         </Button>
         <Button
           variant="ghost"
@@ -168,6 +180,7 @@ const ProductColumns = [
           onClick={() => {
             table.options.meta?.onDeleteClick(row.original);
           }}
+          title="Delete Product"
         >
           <Trash2 className="size-4 text-red-600" />
         </Button>

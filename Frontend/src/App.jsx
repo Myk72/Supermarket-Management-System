@@ -33,6 +33,12 @@ import ViewPurchase from "./components/Purchase/ViewPurchase";
 import AddReturns from "./components/Returns/AddReturns";
 import AddProducts from "./components/product/AddProducts";
 import AddInventory from "./components/Inventory/AddInventory";
+import CheckinPurchase from "./components/Purchase/CheckinPurchase";
+import AddCategory from "./components/Category/AddCategory";
+import Home from "./pages/Landing/Home";
+import ContactUs from "./pages/Landing/contactus";
+import AboutUs from "./pages/Landing/AboutUs";
+import LandingPage from "./pages/Landing/LandingLayout";
 
 const AuthRedirect = ({ children }) => {
   const { isAuthenticated, role, user } = useAuthStore();
@@ -56,14 +62,20 @@ const App = () => {
   return (
     <div className="flex justify-center w-full h-screen items-center">
       <Routes>
-        <Route
-          path="/login"
-          element={
-            <AuthRedirect>
-              <LoginPage />
-            </AuthRedirect>
-          }
-        />
+        <Route element={<LandingPage />}>
+          <Route
+            path="/login"
+            element={
+              <AuthRedirect>
+                <LoginPage />
+              </AuthRedirect>
+            }
+          />
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/contact" element={<ContactUs />} />
+        </Route>
+
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route
           path="/set-password/:id"
@@ -87,6 +99,7 @@ const App = () => {
               <Route path="/employees/assign/:id" element={<AssignShift />} />
               <Route path="/reports" element={<Report />} />
               <Route path="/suppliers/add" element={<AddSupplier />} />
+              <Route path="/category/add" element={<AddCategory />} />
             </Route>
 
             <Route
@@ -98,8 +111,9 @@ const App = () => {
               <Route path="/purchases" element={<Purchase />} />
               <Route path="/purchases/add" element={<AddPurchase />} />
               <Route path="/purchases/view/:id" element={<ViewPurchase />} />
+              <Route path="/purchases/checkin" element={<CheckinPurchase />} />
               <Route path="/suppliers" element={<Supplier />} />
-              
+
               <Route element={<ProtectedRoute allowedRoles={["stock"]} />}>
                 <Route
                   path="/stock-clerk-dashboard"
@@ -129,7 +143,7 @@ const App = () => {
           </Route>
         </Route>
 
-        <Route path="*" element={<Navigate to="/login" />} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </div>
   );

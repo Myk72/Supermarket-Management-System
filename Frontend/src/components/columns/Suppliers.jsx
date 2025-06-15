@@ -12,6 +12,7 @@ import {
   TruckElectric,
   ClockAlert,
   ArrowUpDown,
+  Truck,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -172,7 +173,7 @@ const SupplierColumns = [
     header: "Actions",
     cell: ({ row, table }) => (
       <div className="flex space-x-2">
-        <Button
+        {/* <Button
           variant="ghost"
           size="sm"
           className="hover:bg-blue-100"
@@ -181,7 +182,7 @@ const SupplierColumns = [
           }}
         >
           <Eye className="size-4 text-gray-600" />
-        </Button>
+        </Button> */}
         <Button
           variant="ghost"
           size="sm"

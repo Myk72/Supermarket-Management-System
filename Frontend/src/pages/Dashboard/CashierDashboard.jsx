@@ -71,7 +71,7 @@ const CashierDashboard = () => {
           </div>
         </div>
 
-        <div className=" font-serif p-4 rounded-xl">
+        <div className=" font-serif p-4 rounded-xl space-y-4">
           <h1 className="text-2xl font-bold">Recent Transaction</h1>
           <p>Your most recent sales transactions</p>
           <div className="grid grid-cols-3 gap-4 mt-4">

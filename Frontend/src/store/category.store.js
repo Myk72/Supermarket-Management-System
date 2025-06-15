@@ -19,7 +19,13 @@ export const useCategoryStore = create((set) => ({
   addCategory: async (categoryData) => {
     set({ isLoading: true });
     try {
-    } catch (error) {}
+      const response = await api.post("/category", categoryData);
+
+      return response.data;
+    } catch (error) {
+      set({ error: error.message, isLoading: false });
+      throw new Error(error.message);
+    }
   },
 
   updateCategory: async (categoryId, categoryData) => {

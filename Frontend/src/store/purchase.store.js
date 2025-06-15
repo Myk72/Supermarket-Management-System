@@ -8,7 +8,7 @@ export const usePurchaseStore = create((set) => ({
   error: null,
 
   fetchPurchases: async () => {
-    set({ loading: true });
+    set({ loading: true, purchaseItems: [], error: null });
     try {
       const response = await api.get("/purchase");
       console.log(response);
@@ -23,6 +23,7 @@ export const usePurchaseStore = create((set) => ({
       const response = await api.get(`/purchase/${purchaseId}`);
       console.log(response);
       set({ purchaseItems: response.data, loading: false });
+      return response.data;
     } catch (error) {
       set({ error: error.message, loading: false });
     }
@@ -45,10 +46,25 @@ export const usePurchaseStore = create((set) => ({
         cost_price: item.cost_price,
       })),
     };
+
     try {
       console.log(newData, "here");
       const response = await api.post("/purchase", newData);
       console.log(response);
+    } catch (error) {
+      set({ error: error.message, loading: false });
+    }
+  },
+
+
+
+  updatePurchase: async (purchaseId, operation) => {
+    set({ loading: true });
+    try {
+      const response = await api.put(`/purchase/checkin/${purchaseId}/${operation}`);
+      console.log(response);
+      set({ loading: false });
+      return response.data;
     } catch (error) {
       set({ error: error.message, loading: false });
     }

@@ -33,7 +33,7 @@ export const navigation = [
     name: "Products",
     href: "products",
     icon: Package,
-    role: ["manager", "stock"],
+    role: ["manager"],
   },
   { name: "Sales", href: "sales", icon: ShoppingCart, role: ["manager"] },
   {

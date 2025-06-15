@@ -138,7 +138,7 @@ const PurchaseOrderColumns = [
           className={`${
             status === "pending"
               ? " text-yellow-800"
-              : status === "completed"
+              : status === "received"
               ? " text-green-500"
               : status === "cancelled"
               ? " text-red-500"

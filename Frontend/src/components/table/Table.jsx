@@ -19,6 +19,7 @@ import {
 import { TableToolbar } from "./TableToolbar";
 import { TablePagination } from "./TablePagination";
 
+
 export const CustomTable = ({
   data = [],
   columns = [],
@@ -34,6 +35,7 @@ export const CustomTable = ({
   const [columnFilters, setColumnFilters] = useState([]);
   const [globalFilter, setGlobalFilter] = useState("");
   const [selectedRowId, setSelectedRowId] = useState(null);
+  const { role } = useAuthStore();
 
   const tableColumns = columns;
 
@@ -59,7 +61,6 @@ export const CustomTable = ({
       },
     },
   });
-  const { user } = useAuthStore();
 
   return (
     <div className="space-y-4">
@@ -67,7 +68,7 @@ export const CustomTable = ({
         table={table}
         addButtonText={addButtonText}
         onAddClick={onAddClick}
-        role={user?.role}
+        role={role}
       />
 
       <div className="rounded-md border bg-white shadow-sm overflow-hidden">

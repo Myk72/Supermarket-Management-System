@@ -10,13 +10,15 @@ import {
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useSupplierStore } from "@/store/suppliers.store";
+import { usePurchaseStore } from "@/store/purchase.store";
 import PagePagination from "@/components/PagePagination";
 
 const ClerkDashboard = () => {
   const { suppliers } = useSupplierStore();
+  const { fetchPurchases, purchases } = usePurchaseStore();
   useEffect(() => {
-    useSupplierStore.getState().fetchSuppliers();
-  }, []);
+    fetchPurchases();
+  }, [fetchPurchases]);
   const navigate = useNavigate();
 
   const [currentItems, setCurrentItems] = useState([]);
@@ -31,7 +33,7 @@ const ClerkDashboard = () => {
             <Card
               title="Total Purchases"
               icon={LucideBadgeDollarSign}
-              description="Total sales made today"
+              description="Total Purchases made"
               value="0"
             />
           </div>
@@ -41,7 +43,7 @@ const ClerkDashboard = () => {
               <Button
                 variant={"outline"}
                 className={"px-10 py-6 space-x-2 w-3/10"}
-                onClick={() => navigate("/purchases")}
+                onClick={() => navigate("/purchases/add")}
               >
                 <ShoppingBasket />
                 <span className="text-lg">New Purchase</span>
@@ -57,32 +59,30 @@ const ClerkDashboard = () => {
               <Button
                 variant={"outline"}
                 className={"px-10 py-6 space-x-2 w-3/10"}
-                onClick={() => navigate("/suppliers")}
+                onClick={() => navigate("/purchases/checkin")}
               >
                 <Users2 />
-                <span className="text-lg">Check Suppliers</span>
+                <span className="text-lg">Check in Purchase</span>
               </Button>
             </div>
           </div>
         </div>
 
-        <div className="bg-white font-serif p-4 rounded-xl">
+        <div className="bg-white font-serif p-4 rounded-xl space-y-4">
           <h1 className="text-2xl font-bold">Recent Purchases</h1>
           <p>Your most recent Purchases transactions</p>
-          <div className="grid grid-cols-3 gap-4 mt-4">
+          <div className="grid grid-cols-3 gap-4 mt-2">
             {currentItems.length > 0 ? (
-              currentItems.map((sale, index) => (
-                <div>
-                  <div className="p-4 bg-white rounded-lg shadow-sm">
-                    <h2 className="font-semibold text-lg">
-                      Purchase ID: {sale.sale_id}
-                    </h2>
-                    <p>Supplier ID: {sale.supplier_id || "Guest"}</p>
-                    <p>Total Amount: ${sale.total_amount.toFixed(2)}</p>
-                    <p>
-                      Purchase Date: {new Date(sale.sale_date).toLocaleString()}
-                    </p>
-                  </div>
+              currentItems.map((purchase, index) => (
+                <div className="p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+                  <h2 className="font-semibold text-lg">
+                    Purchase ID: {purchase.purchase_id}
+                  </h2>
+                  <p>Supplier: {purchase.supplier.name }</p>
+                  <p>Total Amount: ${purchase.total_cost}</p>
+                  <p>
+                    Purchase Expected Date: {new Date(purchase.expected_date).toLocaleString()}
+                  </p>
                 </div>
               ))
             ) : (
@@ -90,7 +90,7 @@ const ClerkDashboard = () => {
             )}
           </div>
           <PagePagination
-            Items={suppliers}
+            Items={purchases}
             setCurrentItems={setCurrentItems}
             itemsPerPage={9}
           />
