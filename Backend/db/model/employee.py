@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, Date, DateTime, Float, ForeignKey, Enum, Text, Boolean
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
 from db.database import Base
 import enum
 
@@ -20,6 +21,8 @@ class Employee(Base):
     phone = Column(String(20),nullable=False)
     address = Column(String(20), nullable=False)
     created_at = Column(DateTime, server_default=func.now())
+
+    purchases = relationship("Purchase", back_populates="employee")
 
 class User(Base):
     __tablename__ = "users"

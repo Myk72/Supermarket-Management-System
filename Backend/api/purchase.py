@@ -4,6 +4,7 @@ from pydantic import BaseModel, EmailStr, ConfigDict
 from db.database import connect_db
 from db.model.purchase import Purchase, PurchaseItem
 from db.model.supplier import Supplier
+from db.model.employee import Employee
 from datetime import datetime
 
 
@@ -20,14 +21,21 @@ class SupplierBase(BaseModel):
 
 
     model_config = ConfigDict(from_attributes=True)
+class EmployeeSchema(BaseModel):
+    employee_id: int
+    firstName: str
+    lastName: str
+
+    model_config = ConfigDict(from_attributes=True)
+
 class PurchaseSchema(BaseModel):
     purchase_id: int
-    employee_id: int
     total_cost: float
     expected_date: datetime
     note: str | None = None
     status: str = 'pending'
     supplier: SupplierBase
+    employee: EmployeeSchema
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -54,9 +62,14 @@ class createPurchase(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+
+
 @router.get("/", response_model=list[PurchaseSchema])
 async def get_purchases(db: Session = Depends(connect_db)):
-    purchases = db.query(Purchase).options(joinedload(Purchase.supplier)).all()
+    purchases = db.query(Purchase).options(
+        joinedload(Purchase.supplier),
+        joinedload(Purchase.employee)
+    ).order_by(Purchase.createdAt.desc()).all()
     return purchases
 
 @router.post("/")

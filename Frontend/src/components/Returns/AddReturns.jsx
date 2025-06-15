@@ -163,7 +163,7 @@ const AddReturns = () => {
               value="summary"
               className={"cursor-pointer p-2 data-[state=active]:bg-white"}
               onClick={() => setActiveTab("summary")}
-              disabled={
+              disabled={ !cart.length ||
                 cart.some(
                   (item) => !item.reason || item.reason.trim() === ""
                 ) ||

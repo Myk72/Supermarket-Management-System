@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Edit, Trash2, Star, Percent, Eye } from "lucide-react";
+import { Edit, Trash2, Star, Percent, Eye, ArrowUpDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import Barcode from "react-barcode";
 
@@ -7,7 +7,15 @@ const ProductColumns = [
   {
     id: "product_id",
     accessorKey: "product_id",
-    header: "ID",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        ID
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
     size: 40,
     cell: ({ row }) => (
       <div className="font-mono text-xs text-gray-500">
@@ -19,7 +27,15 @@ const ProductColumns = [
   {
     id: "name",
     accessorKey: "name",
-    header: "Name",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Name
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
     cell: ({ row }) => <div className="">{row.original.name}</div>,
     size: 50,
   },
@@ -42,23 +58,34 @@ const ProductColumns = [
   {
     id: "category",
     accessorKey: "category",
-    header: "Category",
-    cell: ({ row }) => <div className="">{row.original.category.name} Fruit</div>,
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Category
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
+    cell: ({ row }) => (
+      <div className="flex justify-center">{row.original.category.name} Fruit</div>
+    ),
     size: 100,
   },
 
-  {
-    id: "quantity",
-    accessorKey: "quantity",
-    header: "Quantity",
-    cell: ({ row }) => <div>10</div>,
-    size: 50,
-  },
 
   {
     id: "status",
     accessorKey: "status",
-    header: "Status",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Status
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
     cell: ({ row }) => (
       <div
         className={`rounded-full items-center text-white flex justify-center p-1 w-3/4 text-xs
@@ -72,8 +99,17 @@ const ProductColumns = [
   },
 
   {
-    id: "pricing",
-    header: "Pricing",
+    id: "price",
+    accessorKey: "price",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Price
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
     cell: ({ row }) => (
       <div className="space-y-1">
         <div className="flex items-center">
@@ -91,13 +127,19 @@ const ProductColumns = [
 
   {
     id: "barcode",
-    header: "Barcode",
+    accessorKey: "barcode",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Barcode
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
     cell: ({ row }) => (
       <div className="flex items-center justify-center">
-        <Barcode
-          value={row.original.barcode || "N/A"}
-          height={64}
-        />
+        <Barcode value={row.original.barcode || "N/A"} height={64} />
       </div>
     ),
     size: 150,
@@ -108,16 +150,7 @@ const ProductColumns = [
     header: "Quick Action",
     cell: ({ row, table }) => (
       <div className="flex space-x-2">
-        {/* <Button
-          variant="ghost"
-          size="sm"
-          className="hover:bg-blue-100"
-          onClick={() => {
-            table.options.meta?.onViewClick(row.original);
-          }}
-        >
-          <Eye className="size-4" />
-        </Button> */}
+
         <Button
           variant="ghost"
           size="sm"

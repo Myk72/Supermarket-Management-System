@@ -16,7 +16,7 @@ const AssignShift = () => {
     console.log(data);
   };
   return (
-    <div className="flex flex-col justify-center font-serif gap-2 bg-white rounded-2xl p-10">
+    <div className="flex flex-col font-serif gap-2 bg-white rounded-2xl p-10">
       <div className="flex justify-between items-center">
         <Button
           variant="outline"
@@ -29,11 +29,11 @@ const AssignShift = () => {
           Back
         </Button>
       </div>
-      <div className="flex justify-center items-center flex-col gap-4">
+      <div className="flex justify-start items-start flex-col gap-4 w-1/2">
         <h1 className="font-semibold text-2xl text-blue-500">
           Assign New Shift to Employee {id}
         </h1>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
           <div>
             <label htmlFor="startTime" className="text-sm font-semibold">
               Start Time

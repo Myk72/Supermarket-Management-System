@@ -19,6 +19,7 @@ class Purchase(Base):
     createdAt = Column(DateTime, server_default=func.now())
 
     supplier = relationship("Supplier", back_populates="purchases")
+    employee = relationship("Employee", back_populates="purchases")
 
 class PurchaseItem(Base):
     __tablename__ = "purchase_items"

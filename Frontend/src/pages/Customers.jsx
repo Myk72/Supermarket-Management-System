@@ -10,8 +10,8 @@ const Customers = () => {
   const navigate = useNavigate();
   useEffect(() => {
     fetchCustomers();
-    fetchPurchasedHistory();
-  }, [fetchCustomers, fetchPurchasedHistory]);
+    
+  }, [fetchCustomers]);
 
   const [selectedCustomer, setSelectedCustomer] = useState(null);
 

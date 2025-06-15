@@ -1,8 +1,19 @@
+import { ArrowUpDown } from "lucide-react";
+import { Button } from "../ui/button";
+
 const SelectSalesColumns = [
   {
     id: "sale_item_id",
     accessorKey: "sale_item_id",
-    header: "Sales Item ID",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Sale Item ID
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
     size: 20,
     cell: ({ row }) => (
       <div className="font-mono text-xs text-gray-500">
@@ -14,7 +25,15 @@ const SelectSalesColumns = [
   {
     id: "product_id",
     accessorKey: "product_id",
-    header: "Product ID",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        P-ID
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
     size: 20,
     cell: ({ row }) => (
       <div className="font-mono text-xs text-gray-500">
@@ -24,7 +43,15 @@ const SelectSalesColumns = [
   },
   {
     id: "quantity",
-    header: "Quantity",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Quantity
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
     accessorKey: "quantity",
     size: 40,
     cell: ({ row }) => (
@@ -36,7 +63,16 @@ const SelectSalesColumns = [
 
   {
     id: "unit_price",
-    header: "Pricing",
+    accessorKey: "unit_price",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Unit Price
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
     cell: ({ row }) => (
       <div className="flex items-center">
         <span className="font-medium">${row.original.unit_price}</span>
@@ -45,10 +81,17 @@ const SelectSalesColumns = [
     size: 40,
   },
 
-  // subtotal Column
   {
     id: "subtotal",
-    header: "Subtotal",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Subtotal
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
     accessorKey: "subtotal",
     size: 40,
     cell: ({ row }) => (

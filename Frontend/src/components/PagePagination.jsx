@@ -22,7 +22,7 @@ const PagePagination = ({ Items, setCurrentItems, itemsPerPage }) => {
   const totalPages = Math.ceil(Items.length / itemsPerPage);
 
   return (
-    <div className="flex justify-between mt-4">
+    <div className="flex justify-between">
       <button
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1}

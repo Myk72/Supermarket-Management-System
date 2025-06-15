@@ -83,7 +83,7 @@ const Charts = () => {
             <YAxis dataKey="name" type="category" />
             <Tooltip />
             <Legend />
-            <Bar dataKey="total_sold" fill="blue" barSize={20} />
+            <Bar dataKey="total_sold" fill="#9900FF" barSize={20} />
           </BarChart>
         </ResponsiveContainer>
       </div>

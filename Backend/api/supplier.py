@@ -34,6 +34,7 @@ class SupplierResponse(BaseModel):
     email: EmailStr
     address: str
     status: str
+    created_at: datetime
     purchases: list[PurchaseBase] = []
 
     model_config = ConfigDict(from_attributes=True)

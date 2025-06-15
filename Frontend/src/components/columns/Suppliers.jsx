@@ -11,6 +11,7 @@ import {
   ClockFading,
   TruckElectric,
   ClockAlert,
+  ArrowUpDown,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -18,7 +19,15 @@ const SupplierColumns = [
   {
     id: "supplier_id",
     accessorKey: "supplier_id",
-    header: "ID",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        S-ID
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
     size: 20,
     cell: ({ row }) => <div>#{row.original.supplier_id}</div>,
   },
@@ -26,13 +35,22 @@ const SupplierColumns = [
   {
     id: "name",
     accessorKey: "name",
-    header: "Supplier Name",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Name
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
     cell: ({ row }) => <div className="font-medium">{row.original.name}</div>,
     size: 120,
   },
 
   {
     id: "contact",
+    accessorFn: (row) => `${row.contact_phone} ${row.email} ${row.address}`,
     header: "Contact Info",
     cell: ({ row }) => (
       <div className="flex flex-col space-y-1">
@@ -99,7 +117,15 @@ const SupplierColumns = [
   {
     id: "created_at",
     accessorKey: "created_at",
-    header: "Start Date",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Start Date
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
     cell: ({ row }) => (
       <div className="flex items-center text-sm text-gray-600">
         <Calendar className="size-4 mr-1 text-gray-500" />
@@ -114,7 +140,15 @@ const SupplierColumns = [
   {
     id: "status",
     accessorKey: "status",
-    header: "Status",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Status
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
     cell: ({ row }) => {
       const status = row.original.status;
       return (

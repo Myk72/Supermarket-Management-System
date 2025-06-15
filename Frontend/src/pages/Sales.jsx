@@ -9,7 +9,6 @@ const Sales = () => {
     fetchSales();
   }, []);
 
-
   const [currentItems, setCurrentItems] = useState([]);
   return (
     <div className="font-serif flex flex-col gap-4">
@@ -20,11 +19,13 @@ const Sales = () => {
           <SalesCard key={sale.sale_id} sale={sale} />
         ))}
       </div>
-      <PagePagination
-        Items={sales}
-        setCurrentItems={setCurrentItems}
-        itemsPerPage={6}
-      />
+      <div className="mt-auto">
+        <PagePagination
+          Items={sales}
+          setCurrentItems={setCurrentItems}
+          itemsPerPage={6}
+        />
+      </div>
     </div>
   );
 };

@@ -118,7 +118,7 @@ const Dashboard = () => {
                       className="flex items-center justify-between rounded-2xl p-2 border-b border-gray-100 pb-2 hover:bg-gray-100"
                     >
                       <div>
-                        <p className="font-medium">{item.name}</p>
+                        <p className="font-medium">{item.product.name}</p>
                         <p className="text-sm text-gray-500">
                           {item.quantity} in stock (min: {item.reorder_level})
                         </p>

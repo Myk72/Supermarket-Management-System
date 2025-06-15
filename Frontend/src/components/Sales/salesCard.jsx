@@ -14,7 +14,7 @@ const SalesCard = ({ sale }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-white rounded-lg shadow-lg border p-4 border-gray-200">
+    <div className="bg-white rounded-lg shadow border p-4 border-gray-200">
       <div className="flex justify-between items-start">
         <div>
           <h3 className="text-lg font-semibold text-green-600">

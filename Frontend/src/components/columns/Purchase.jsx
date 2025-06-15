@@ -1,26 +1,57 @@
 import { Button } from "@/components/ui/button";
-import { Eye, Edit, Trash2, User, Calendar, Truck } from "lucide-react";
+import {
+  Eye,
+  Edit,
+  Trash2,
+  User,
+  Calendar,
+  Truck,
+  ArrowUpDown,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 const PurchaseOrderColumns = [
   {
     id: "purchase_id",
     accessorKey: "purchase_id",
-    header: "Purchase ID",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Purchase ID
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
     size: 30,
     cell: ({ row }) => (
       <div className="font-medium">PO-{row.original.purchase_id}</div>
     ),
   },
+
   {
     id: "employee",
-    header: "Ordered By",
+    accessorFn: (row) =>
+      `${row.employee.firstName} ${row.employee.lastName} (${row.employee.employee_id})`,
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Order By Employee
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
     cell: ({ row }) => (
       <div className="flex items-center">
         <User className="size-4 mr-2 text-gray-500" />
         <div>
           <div className="text-xs text-gray-500">
-            ID: {row.original.employee_id}
+            ID: {row.original.employee.employee_id}
+          </div>
+          <div className="text-xs text-gray-500">
+            Name: {row.original.employee.firstName}{" "}
+            {row.original.employee.lastName}
           </div>
         </div>
       </div>
@@ -30,7 +61,15 @@ const PurchaseOrderColumns = [
   {
     id: "supplier",
     accessorKey: "supplier_name",
-    header: "Supplier",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Supplier
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
     cell: ({ row }) => (
       <div className="flex items-center">
         <Truck className="size-4 mr-2 text-gray-500" />
@@ -39,10 +78,19 @@ const PurchaseOrderColumns = [
     ),
     size: 120,
   },
+
   {
     id: "expected_date",
     accessorKey: "expected_date",
-    header: "Expected Date",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Expected Date
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
     cell: ({ row }) => (
       <div className="flex items-center">
         <Calendar className="size-4 mr-2 text-gray-500" />
@@ -51,10 +99,19 @@ const PurchaseOrderColumns = [
     ),
     size: 100,
   },
+
   {
-    id: "amount",
-    accessorKey: "amount",
-    header: "Amount",
+    id: "total_cost",
+    accessorKey: "total_cost",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Total Cost
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
     cell: ({ row }) => (
       <div className="font-medium">
         ${parseFloat(row.original.total_cost).toFixed(2)}
@@ -65,18 +122,31 @@ const PurchaseOrderColumns = [
   {
     id: "status",
     accessorKey: "status",
-    header: "Status",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Status
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
     cell: ({ row }) => {
       const status = row.original.status;
-      const variantMap = {
-        received: "default",
-        pending: "secondary",
-        Cancelled: "destructive",
-      };
       return (
-        <Badge variant={variantMap[status] || "default"} className="text-xs">
-          {status}
-        </Badge>
+        <div
+          className={`${
+            status === "pending"
+              ? " text-yellow-800"
+              : status === "completed"
+              ? " text-green-500"
+              : status === "cancelled"
+              ? " text-red-500"
+              : " text-gray-500"
+          } `}
+        >
+          {status.toUpperCase()}
+        </div>
       );
     },
     size: 100,

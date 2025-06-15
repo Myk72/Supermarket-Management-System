@@ -13,7 +13,7 @@ export const useInventoryStore = create((set) => ({
     set({ isLoading: true });
     try {
       const response = await api.get("/inventory");
-      // console.log("Inventory Fetched", response.data);
+      console.log("Inventory Fetched", response.data);
       set({ inventory: response.data, isLoading: false });
     } catch (error) {
       set({ error: error.message, isLoading: false });

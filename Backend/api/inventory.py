@@ -16,23 +16,13 @@ class InventoryItem(BaseModel):
     reorder_level: int
     location: str
 
-class CategoryBase(BaseModel):
-    category_id: int
-    name: str
-    description: str
-    model_config = ConfigDict(from_attributes=True)
-
-
-
-class InventoryProductCategory(BaseModel):
+class InventoryProduct(BaseModel):
     inventory_id: int
-    product_id: int
     quantity: int
     reorder_level: int
     last_restocked: datetime
     location: str
     product: ProductSchema
-    category: CategoryBase
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -41,9 +31,12 @@ class InventoryProductCategory(BaseModel):
 
 router = APIRouter(prefix="/inventory", tags=["Inventory"])
 
-@router.get("/")
+@router.get("/", response_model=List[InventoryProduct])
 async def get_inventory(db: Session = Depends(connect_db)):
-    return db.query(Inventory).all()
+    inventory_items = db.query(Inventory).options(joinedload(Inventory.product)).all()
+    if not inventory_items:
+        raise HTTPException(status_code=404, detail="No inventory items found")
+    return inventory_items
 
 @router.post("/add")
 async def add_inventory_item(
@@ -125,15 +118,13 @@ async def restock_inventory_item(
     return {"message": "Inventory item restocked", "item": existing_item}
 
 
-@router.get("/low-stock")
+@router.get("/low-stock", response_model=List[InventoryProduct])
 async def get_low_stock_items(
     db: Session = Depends(connect_db)
 ):
-    low_stock_items = db.query(Inventory).filter(Inventory.quantity <= Inventory.reorder_level).all()
-    
+    low_stock_items = db.query(Inventory).filter(Inventory.quantity <= Inventory.reorder_level).options(joinedload(Inventory.product)).all()
     if not low_stock_items:
         raise HTTPException(status_code=404, detail="No low stock items found")
-    
     return low_stock_items
 
 

@@ -1,8 +1,19 @@
+import { ArrowUpDown } from "lucide-react";
+import { Button } from "../ui/button";
+
 const SelectProductColumns = [
   {
     id: "product_id",
     accessorKey: "product_id",
-    header: "ID",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        P-ID
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
     size: 40,
     cell: ({ row }) => (
       <div className="font-mono text-xs text-gray-500">
@@ -14,22 +25,47 @@ const SelectProductColumns = [
   {
     id: "name",
     accessorKey: "name",
-    header: "Name",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Name
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
     cell: ({ row }) => <div className="">{row.original.name}</div>,
     size: 50,
   },
 
   {
     id: "category",
-    accessorKey: "category",
-    header: "Category",
-    cell: ({ row }) => <div className="">{row.original.category_id} Fruit</div>,
+    accessorFn: (row) => row.category.name,
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Category
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
+    cell: ({ row }) => <div>{row.original.category.name}</div>,
     size: 100,
   },
 
   {
     id: "cost_price",
-    header: "Pricing",
+    accessorKey: "cost_price",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Cost Price
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
     cell: ({ row }) => (
       <div className="flex items-center">
         <span className="font-medium">${row.original.cost_price}</span>
