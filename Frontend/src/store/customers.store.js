@@ -1,9 +1,10 @@
 import { create } from "zustand";
 import { api } from "@/lib/api";
 
-
 export const useCustomerStore = create((set) => ({
   customers: [],
+  monthlyCustomer: null,
+  purchasedHistory: [],
   isLoading: false,
   error: null,
 
@@ -21,11 +22,22 @@ export const useCustomerStore = create((set) => ({
   addCustomer: async (customerData) => {
     set({ isLoading: true });
     try {
-      console.log("here", customerData)
+      console.log("here", customerData);
       const response = await api.post("/customer/register", customerData);
       console.log(response);
     } catch (error) {
-      console.log(error)
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
+  getMonthlyCustomers: async () => {
+    set({ isLoading: true });
+    try {
+      const response = await api.get("/customer/monthly");
+      console.log(response, "monthly customers");
+      set({ monthlyCustomer: response.data, isLoading: false });
+    } catch (error) {
       set({ error: error.message, isLoading: false });
     }
   },
@@ -40,5 +52,16 @@ export const useCustomerStore = create((set) => ({
     set({ isLoading: true });
     try {
     } catch (error) {}
+  },
+
+  fetchPurchasedHistory: async (customerId) => {
+    set({ isLoading: true });
+    try {
+      const response = await api.get(`sales/customer/${customerId}`);
+      console.log(response);
+      set({ purchasedHistory: response.data, isLoading: false });
+    } catch (error) {
+      set({ error: error.message, isLoading: false });
+    }
   },
 }));

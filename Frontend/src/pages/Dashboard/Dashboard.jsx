@@ -1,13 +1,13 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { HomeIcon } from "lucide-react";
-import { cardData } from "@/components/card/cardItem";
-import Card from "@/components/card/card";
 import { useProductStore } from "@/store/product.store";
 import { useSaleStore } from "@/store/sales.store";
 import { useCustomerStore } from "@/store/customers.store";
 import { useInventoryStore } from "@/store/inventory.store";
 import { useCategoryStore } from "@/store/category.store";
+import Charts from "./Charts";
+import DashboardCard from "@/components/Dashboard/DashboardCard";
 
 const Dashboard = () => {
   const { products, fetchProducts } = useProductStore();
@@ -35,7 +35,7 @@ const Dashboard = () => {
           );
           return {
             ...item,
-            name: product?.name || "Unknown Product",
+            name: product?.name,
           };
         });
       setLowStock(lowStockItems);
@@ -59,27 +59,17 @@ const Dashboard = () => {
         </span>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {cardData.map((item, idx) => (
-          <Card
-            key={idx}
-            title={item.title}
-            icon={item.icon}
-            value={item.value}
-            description={item.description}
-          />
-        ))}
-      </div>
-
+      <DashboardCard products={products} sales={sales} inventory={inventory} customers={customers} lowStock={lowStock} />
+      <Charts />
       <div className="space-y-4">
-        <div className="flex justify-between items-center gap-2">
+        <div className="flex justify-between items-center gap-4">
           <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6 space-y-4 h-[450px] w-1/2">
             <div>
               <h3 className="text-2xl font-semibold font-serif text-blue-500">
                 Recent Sales
               </h3>
               <p className="text-sm text-gray-500">
-                You made {todaySales.length} sales today
+                Made {todaySales.length} sales today
               </p>
             </div>
             <div>
@@ -90,7 +80,7 @@ const Dashboard = () => {
                   {sales.slice(0, 5).map((sale) => (
                     <div
                       key={sale.sale_id}
-                      className="flex items-center justify-between rounded-2xl p-2 border-b border-gray-100 pb-2 hover:bg-gray-100"
+                      className="flex items-center justify-between rounded-2xl p-2 border-b border-gray-100 mt-2 hover:bg-gray-100"
                     >
                       <div>
                         <p className="font-medium">Sale #{sale.sale_id}</p>

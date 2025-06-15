@@ -1,9 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from pydantic import BaseModel, ConfigDict
+from sqlalchemy import func, text
+
 from db.database import connect_db
 from db.model.sales import Sale, SaleItem
-from db.model.product import Inventory
+from db.model.product import Inventory, Product
 
 router = APIRouter(prefix="/sales", tags=["Sales"])
 
@@ -38,7 +40,39 @@ class SaleCreate(BaseModel):
 
 @router.get("/")
 async def get_sales(db: Session = Depends(connect_db)):
-    return db.query(Sale).all()
+    sales = db.query(Sale).order_by(Sale.sale_date.desc()).all()
+    if not sales:
+        raise HTTPException(status_code=404, detail="No sales found")
+    return sales
+
+
+@router.get("/top-products")
+async def get_top_products(db: Session = Depends(connect_db)):
+    top_products = (
+        db.query(
+            Product.name,
+            func.sum(SaleItem.quantity).label('total_sold')
+        )
+        .join(SaleItem, SaleItem.product_id == Product.product_id)
+        .group_by(Product.product_id)
+        .order_by(func.sum(SaleItem.quantity).desc())
+        .limit(5)
+        .all()
+    )
+
+    return [{"name": row.name, "total_sold": row.total_sold} for row in top_products]
+
+
+@router.get("/customer/{customer_id}")
+async def get_sales_by_customer(customer_id: int, db: Session = Depends(connect_db)):
+    sales = db.query(Sale).filter(Sale.customer_id == customer_id).all()
+    if not sales:
+        raise HTTPException(status_code=404, detail="No sales found for this customer")
+    sales.sort(key=lambda x: x.sale_date, reverse=True)
+    return sales
+
+
+
 
 @router.post("/")
 async def add_sale(data: SaleCreate, db: Session = Depends(connect_db)):
@@ -115,3 +149,22 @@ async def get_sales_by_employee(employee_id: int, db: Session = Depends(connect_
     if not sales:
         raise HTTPException(status_code=404, detail="No sales found for this employee")
     return sales
+
+@router.get("/revenue/daily")
+async def get_daily_revenue(db: Session = Depends(connect_db)):
+    today = func.current_date()
+    thirty_days_ago = today - text("INTERVAL 30 DAY")
+
+    daily_revenue = (
+        db.query(
+            func.date(Sale.sale_date).label('day'),
+            func.sum(Sale.total_amount).label('total_revenue')
+        )
+        .filter(Sale.sale_date >= thirty_days_ago)
+        .group_by(func.date(Sale.sale_date))
+        .order_by(func.date(Sale.sale_date))
+        .all()
+    )
+
+    return [{"date": row.day.strftime("%Y-%m-%d"), "revenue": round(float(row.total_revenue), 2)} for row in daily_revenue]
+

@@ -3,6 +3,8 @@ import { CustomTable } from "../table/Table";
 import SelectProductColumns from "../columns/SelectProduct";
 import { useProductStore } from "@/store/product.store";
 import { useForm } from "react-hook-form";
+import { Button } from "../ui/button";
+import { FaArrowLeft } from "react-icons/fa6";
 
 const AddInventory = () => {
   const {
@@ -20,6 +22,18 @@ const AddInventory = () => {
   const onSubmit = (data) => {};
   return (
     <div className="space-y-6 font-serif">
+      <div className="flex justify-between items-center">
+        <Button
+          variant="outline"
+          className="bg-gray-50 hover:bg-gray-200"
+          onClick={() => {
+            window.history.back();
+          }}
+        >
+          <FaArrowLeft className="size-4" />
+          Back
+        </Button>
+      </div>
       <h1 className="text-2xl font-semibold text-blue-900 mb-4">
         Add Inventory
       </h1>

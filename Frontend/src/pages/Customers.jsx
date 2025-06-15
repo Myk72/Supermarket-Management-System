@@ -5,13 +5,16 @@ import { useCustomerStore } from "@/store/customers.store";
 import { useNavigate } from "react-router-dom";
 import { Users } from "lucide-react";
 const Customers = () => {
-  const { customers, fetchCustomers } = useCustomerStore();
+  const { customers, fetchCustomers, fetchPurchasedHistory, purchasedHistory } =
+    useCustomerStore();
   const navigate = useNavigate();
   useEffect(() => {
     fetchCustomers();
-  }, []);
+    fetchPurchasedHistory();
+  }, [fetchCustomers, fetchPurchasedHistory]);
+
   const [selectedCustomer, setSelectedCustomer] = useState(null);
-  const [purchasedHistory, setPurchasedHistory] = useState([]);
+
   return (
     <div className="space-y-3 font-serif">
       <h1 className="text-xl font-semibold text-blue-900">Customers</h1>
@@ -21,12 +24,12 @@ const Customers = () => {
             columns={CustomerColumns}
             data={customers}
             addButtonText="Add Customer"
-            pageSize={8}
+            pageSize={10}
             onAddClick={() => {
               navigate("/customers/add");
             }}
-            onRowClick={(row) => {
-              console.log("View Customer", row);
+            onRowClick={async (row) => {
+              await fetchPurchasedHistory(row.customer_id);
               setSelectedCustomer(row);
             }}
           />
@@ -35,7 +38,7 @@ const Customers = () => {
           <h2 className="text-2xl font-semibold text-blue-700">
             Customer Details
           </h2>
-          <div className="flex  h-full flex-col mt-6 overflow-y-auto">
+          <div className="flex  h-full flex-col mt-6 max-h-[70vh] overflow-y-auto">
             {selectedCustomer ? (
               <div className="flex flex-col gap-4 ml-2">
                 <h2 className=" flex flex-col gap-1 text-xl font-semibold text-blue-900">
@@ -82,22 +85,34 @@ const Customers = () => {
                   Purchased History
                   {purchasedHistory.length > 0 ? (
                     <div className="text-sm text-gray-500 mt-1 font-light">
+                      {/* Purchased History format[
+                          {
+                            "total_amount": 207,
+                            "sale_id": 2,
+                            "discount_amount": 0,
+                            "sale_date": "2025-06-12T22:27:57",
+                            "employee_id": 1,
+                            "tax_amount": 27,
+                            "customer_id": 1,
+                            "payment_method": "cash"
+                          }, */}
                       <span>{purchasedHistory.length} purchases</span>
-                      <span>
-                        Last Purchase:{" "}
-                        {new Date(
-                          purchasedHistory[
-                            purchasedHistory.length - 1
-                          ].purchase_date
-                        ).toLocaleDateString()}
-                      </span>
-                      <br />
-                      <span>
-                        Total Spent: $
-                        {purchasedHistory
-                          .reduce((acc, curr) => acc + curr.amount, 0)
-                          .toFixed(2)}
-                      </span>
+                      <ul className="mt-2 space-y-1">
+                        {purchasedHistory.map((purchase) => (
+                          <li
+                            key={purchase.sale_id}
+                            className="flex justify-between items-center p-2 border-b border-gray-200"
+                          >
+                            <span>
+                              Sale #{purchase.sale_id} -{" "}
+                              {new Date(purchase.sale_date).toLocaleDateString()}
+                            </span>
+                            <span className="font-medium">
+                              ${purchase.total_amount.toFixed(2)}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   ) : (
                     <span className="text-sm text-gray-500 mt-1 font-light">

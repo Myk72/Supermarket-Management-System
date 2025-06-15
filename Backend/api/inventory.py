@@ -1,10 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException
 from typing import List
 from sqlalchemy.orm import Session, joinedload
+from sqlalchemy import func
 from db.database import connect_db
-from pydantic import BaseModel
-from db.model.product import Inventory
-from db.model.product import Product
+from pydantic import BaseModel, ConfigDict
+from db.model.product import Inventory, Product, Category
+from api.product import ProductSchema
 from datetime import datetime
 from schemas.proInvSchema import ProductInventory
 
@@ -14,6 +15,28 @@ class InventoryItem(BaseModel):
     quantity: int
     reorder_level: int
     location: str
+
+class CategoryBase(BaseModel):
+    category_id: int
+    name: str
+    description: str
+    model_config = ConfigDict(from_attributes=True)
+
+
+
+class InventoryProductCategory(BaseModel):
+    inventory_id: int
+    product_id: int
+    quantity: int
+    reorder_level: int
+    last_restocked: datetime
+    location: str
+    product: ProductSchema
+    category: CategoryBase
+
+    model_config = ConfigDict(from_attributes=True)
+
+
 
 
 router = APIRouter(prefix="/inventory", tags=["Inventory"])
@@ -120,5 +143,35 @@ def get_products_with_inventory(db: Session = Depends(connect_db)):
     try:
         products = db.query(Inventory).options(joinedload(Inventory.product)).all()
         return products
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+
+
+@router.get("/inventory-levels-by-category")
+async def get_inventory_levels_by_category(db: Session = Depends(connect_db)):
+    try:
+        results = (
+            db.query(
+                Category.name.label("category"),
+                func.sum(Inventory.quantity).label("quantity"),
+                func.sum(Inventory.reorder_level).label("reorder")
+            )
+            .join(Product, Product.category_id == Category.category_id)
+            .join(Inventory, Inventory.product_id == Product.product_id)
+            .group_by(Category.name)
+            .all()
+        )
+
+        inventory_levels = [
+            {
+                "category": r.category,
+                "quantity": int(r.quantity or 0),
+                "reorder": int(r.reorder or 0),
+            }
+            for r in results
+        ]
+        return inventory_levels
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

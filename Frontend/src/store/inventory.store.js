@@ -5,6 +5,7 @@ export const useInventoryStore = create((set) => ({
   inventory: [],
   lowStockItems: [],
   inventoryProduct: [],
+  inventoryLevelsByCategory: [],
   isLoading: false,
   error: null,
 
@@ -47,5 +48,17 @@ export const useInventoryStore = create((set) => ({
     } catch (error) {
       set({ error: error.message, isLoading: false });
     }
+  },
+
+
+  getInventoryLevelsByCategory: async () => {
+    set({ isLoading: true });
+    try {
+      const response = await api.get("/inventory/inventory-levels-by-category");
+      set({ inventoryLevelsByCategory: response.data, isLoading: false });
+    } catch (error) {
+      set({ error: error.message, isLoading: false });
+    }
   }
+
 }));
