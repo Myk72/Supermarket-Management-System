@@ -6,6 +6,7 @@ import {
   Box,
   ClipboardList,
   DollarSign,
+  Package,
 } from "lucide-react";
 import { Button } from "../ui/button";
 const ViewPurchase = () => {
@@ -14,7 +15,7 @@ const ViewPurchase = () => {
   useEffect(() => {
     fetchPurchaseItems(id);
   }, [id, fetchPurchaseItems]);
-  
+
   return (
     <div>
       <Button
@@ -40,6 +41,13 @@ const ViewPurchase = () => {
               </div>
 
               <div className="space-y-3">
+                <div className="flex items-center">
+                  <Package className="h-4 w-4 mr-2 text-blue-500" />
+                  <span>
+                    Product ID:{" "}
+                    <span className="font-medium">{item.product_id}</span>
+                  </span>
+                </div>
                 <div className="flex items-center">
                   <Box className="h-4 w-4 mr-2 text-blue-500" />
                   <span>

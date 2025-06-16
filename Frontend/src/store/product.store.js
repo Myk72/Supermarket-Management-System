@@ -3,6 +3,7 @@ import { api } from "@/lib/api";
 
 export const useProductStore = create((set) => ({
   products: [],
+  product: null,
   isLoading: false,
   error: null,
 
@@ -17,16 +18,16 @@ export const useProductStore = create((set) => ({
     }
   },
 
-  // fetchProductById: async (productId) => {
-  //   set({ isLoading: true });
-  //   try {
-  //     const product = 
-  //     console.log("Product Fetched", product);
-  //     set({ products: product, isLoading: false });
-  //   } catch (error) {
-  //     set({ error: error.message, isLoading: false });
-  //   }
-  // },
+  fetchProductById: async (productId) => {
+    set({ isLoading: true });
+    try {
+      const response = await api.get(`/product/${parseInt(productId)}`);
+      // console.log("Product Fetched", product);
+      set({ product: response.data, isLoading: false });
+    } catch (error) {
+      set({ error: error.message, isLoading: false });
+    }
+  },
 
   addProduct: async (productData, image) => {
     set({ isLoading: true });
@@ -49,6 +50,7 @@ export const useProductStore = create((set) => ({
         },
       });
       console.log(response);
+      return response.data;
     } catch (error) {
       console.error("Product upload failed:", error);
       set({ isLoading: false, error: error.message });
@@ -73,8 +75,22 @@ export const useProductStore = create((set) => ({
         ),
         isLoading: false,
       }));
+      return response.data;
     } catch (error) {
       console.error("Product deletion failed:", error);
+      set({ isLoading: false, error: error.message });
+      throw error;
+    }
+  },
+
+  addDiscount: async (product_id, data) => {
+    set({ isLoading: true });
+    try {
+      const response = await api.post(`/product/${product_id}/discount`, data);
+      console.log("Discount Added", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Discount addition failed:", error);
       set({ isLoading: false, error: error.message });
       throw error;
     }

@@ -20,6 +20,9 @@ class Product(Base):
     inventory = relationship("Inventory", back_populates="product", uselist=False)
 
     category = relationship("Category", back_populates="products")
+    expiry_trackers = relationship("ExpiryTracker", back_populates="product")
+    discounts = relationship("Discount", back_populates="product")
+
 
 class Category(Base):
     __tablename__ = "categories"
@@ -54,3 +57,5 @@ class Discount(Base):
     percentage = Column(Float(5, 2))
     start_date = Column(DateTime, nullable=False)
     end_date = Column(DateTime, nullable=False)
+
+    product = relationship("Product", back_populates="discounts")

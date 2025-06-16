@@ -69,7 +69,7 @@ const ProductSale = () => {
   }, [cart, selectedCustomer]);
 
   // useEffect(() => {
-  //   const socket = io("https://192.168.174.131:8000", {
+  //   const socket = io("https://192.168.163.131:8000/", {
   //     reconnection: 5,
   //     timeout: 5000,
   //   });

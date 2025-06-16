@@ -29,7 +29,7 @@ const Inventory = () => {
           <CustomTable
             columns={InventoryColumns}
             data={inventory}
-            addButtonText={"Add New Inventory"}
+            addButtonText={"Add Inventory"}
             pageSize={5}
             onAddClick={() => {
               navigate("/inventory/add");

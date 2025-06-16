@@ -5,6 +5,7 @@ from sqlalchemy import func
 from db.database import connect_db
 from pydantic import BaseModel, ConfigDict
 from db.model.product import Inventory, Product, Category
+from db.model.expireTracker import ExpiryTracker
 from api.product import ProductSchema
 from datetime import datetime
 from schemas.proInvSchema import ProductInventory
@@ -15,6 +16,9 @@ class InventoryItem(BaseModel):
     quantity: int
     reorder_level: int
     location: str
+    batch_number: str
+    expiry_date: datetime
+
 
 class InventoryProduct(BaseModel):
     inventory_id: int
@@ -43,6 +47,7 @@ async def add_inventory_item(
     item: InventoryItem,
     db: Session = Depends(connect_db)
 ):
+    print(item)
     existing_item = db.query(Inventory).filter(Inventory.product_id == item.product_id).first()
     
     if existing_item:
@@ -55,7 +60,15 @@ async def add_inventory_item(
         location=item.location,
         last_restocked=datetime.now()
     )
-    
+
+    # add Expiry Tracker
+    expiry_tracker = ExpiryTracker(
+        product_id=item.product_id,
+        batch_number=item.batch_number,
+        expiry_date=item.expiry_date
+    )
+    db.add(expiry_tracker)
+
     db.add(new_item)
     db.commit()
     db.refresh(new_item)
@@ -68,17 +81,15 @@ async def update_inventory_item(
     item: InventoryItem,
     db: Session = Depends(connect_db)
 ):
-    existing_item = db.query(Inventory).filter(Inventory.inventory_id == item_id).first()
+    existing_item = db.query(Inventory).filter(Inventory.product_id == item_id).first()
     
     if not existing_item:
         raise HTTPException(status_code=404, detail="Inventory item not found")
     
-    existing_item.product_id = item.product_id
     existing_item.quantity = item.quantity
     existing_item.reorder_level = item.reorder_level
     existing_item.location = item.location
     existing_item.last_restocked = datetime.now()
-    
     db.commit()
     db.refresh(existing_item)
     
@@ -132,8 +143,11 @@ async def get_low_stock_items(
 @router.get("/products-with-inventory/", response_model=List[ProductInventory])
 def get_products_with_inventory(db: Session = Depends(connect_db)):
     try:
-        products = db.query(Inventory).options(joinedload(Inventory.product)).all()
-        return products
+        products = db.query(Inventory).options(
+            joinedload(Inventory.product).joinedload(Product.expiry_trackers)
+        ).all()
+
+        return [ProductInventory.model_validate(p, from_attributes=True) for p in products]
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     

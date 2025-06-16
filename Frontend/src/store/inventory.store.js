@@ -37,9 +37,25 @@ export const useInventoryStore = create((set) => ({
     } catch (error) {}
   },
 
+  addInventory: async (inventoryData) => {
+    set({ isLoading: true });
+    try {
 
+      // console.log(inventoryData)
+      const response = await api.post(`/inventory/add`, inventoryData);
+      console.log("Inventory Added", response.data);
+      set((state) => ({
+        inventory: [...state.inventory, response.data],
+        isLoading: false,
+      }));
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
 
-  fetchInventoryProduct: async() => {
+  fetchInventoryProduct: async () => {
     set({ isLoading: true });
     try {
       const response = await api.get("/inventory/products-with-inventory/");
@@ -50,7 +66,6 @@ export const useInventoryStore = create((set) => ({
     }
   },
 
-
   getInventoryLevelsByCategory: async () => {
     set({ isLoading: true });
     try {
@@ -59,6 +74,5 @@ export const useInventoryStore = create((set) => ({
     } catch (error) {
       set({ error: error.message, isLoading: false });
     }
-  }
-
+  },
 }));

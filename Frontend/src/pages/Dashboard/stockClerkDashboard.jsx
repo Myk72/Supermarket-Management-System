@@ -78,10 +78,25 @@ const ClerkDashboard = () => {
                   <h2 className="font-semibold text-lg">
                     Purchase ID: {purchase.purchase_id}
                   </h2>
-                  <p>Supplier: {purchase.supplier.name }</p>
+                  <p>Supplier: {purchase.supplier.name}</p>
                   <p>Total Amount: ${purchase.total_cost}</p>
                   <p>
-                    Purchase Expected Date: {new Date(purchase.expected_date).toLocaleString()}
+                    Purchase Expected Date:{" "}
+                    {new Date(purchase.expected_date).toLocaleString()}
+                  </p>
+                  <p>
+                    Status:{" "}
+                    <span
+                      className={`${
+                        purchase.status === "pending"
+                          ? "text-yellow-500"
+                          : purchase.status === "received"
+                          ? "text-green-500"
+                          : "text-red-500"
+                      }`}
+                    >
+                      {purchase.status.toUpperCase()}
+                    </span>
                   </p>
                 </div>
               ))

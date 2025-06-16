@@ -44,9 +44,9 @@ const Product = () => {
             console.log("View Product", row);
             navigate("/products/view/" + row.product_id);
           },
-          onEditClick: (row) => {
+          onDiscountClick: (row) => {
             console.log("Edit Product", row);
-            alert(row.product_id + " Product ID edit");
+            navigate("/products/discount/" + row.product_id);
           },
           onDeleteClick: async (row) => {
             console.log(row);

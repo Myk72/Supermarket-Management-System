@@ -39,6 +39,7 @@ import Home from "./pages/Landing/Home";
 import ContactUs from "./pages/Landing/contactus";
 import AboutUs from "./pages/Landing/AboutUs";
 import LandingPage from "./pages/Landing/LandingLayout";
+import ProductDiscount from "./components/product/ProductDiscount";
 
 const AuthRedirect = ({ children }) => {
   const { isAuthenticated, role, user } = useAuthStore();
@@ -88,7 +89,7 @@ const App = () => {
 
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>
-            {/* <Route path="/products/view/:id" element={<ProductDetail />} /> */}
+            <Route path="/products/view/:id" element={<ProductDetail />} />
             <Route path="/products" element={<Product />} />
             <Route path="/products/add" element={<AddProducts />} />
 
@@ -100,6 +101,10 @@ const App = () => {
               <Route path="/reports" element={<Report />} />
               <Route path="/suppliers/add" element={<AddSupplier />} />
               <Route path="/category/add" element={<AddCategory />} />
+              <Route
+                path="/products/discount/:id"
+                element={<ProductDiscount />}
+              />
             </Route>
 
             <Route

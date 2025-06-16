@@ -36,10 +36,10 @@ const InventoryColumns = [
           <Package2 size={18} className="text-sky-900 w-1/4" />
           <div className="grid grid-cols-1 w-full">
             <span className="font-medium text-blue-900">
-              {row.original.product.name}
+              {row.original.product?.name}
             </span>
             <span className="text-sm text-gray-600">
-              ID: {row.original.product.product_id}
+              ID: {row.original.product?.product_id}
             </span>
           </div>
         </div>

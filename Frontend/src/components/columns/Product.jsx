@@ -148,20 +148,67 @@ const ProductColumns = [
   },
 
   {
+    id: "expiry_trackers",
+    accessorKey: "expiry_trackers",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Expiry Trackers
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
+
+    size: 20,
+    cell: ({ row }) => {
+      const expiryTrackers = row.original.expiry_trackers || [];
+      return (
+        <div className="flex flex-col space-y-1">
+          {expiryTrackers.length > 0 ? (
+            expiryTrackers.map((tracker, index) => (
+              <div key={index} className="flex flex-col items-center justify-center">
+                {new Date(tracker.expiry_date).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                })}
+                <Badge
+                  className={`${
+                    new Date(tracker.expiry_date) < new Date()
+                      ? "bg-red-500 text-white"
+                      : "bg-green-500 text-white"
+                  }`}
+                >
+                  {new Date(tracker.expiry_date) < new Date()
+                    ? "Expired"
+                    : "Valid"}
+                </Badge>
+              </div>
+            ))
+          ) : (
+            <div className="bg-gray-300 text-gray-700">No Trackers</div>
+          )}
+        </div>
+      );
+    },
+  },
+
+  {
     id: "actions",
     header: "Quick Action",
     cell: ({ row, table }) => (
       <div className="flex space-x-2">
-        {/* <Button
+        <Button
           variant="ghost"
           size="sm"
           className="hover:bg-blue-100"
           onClick={() => {
-            table.options.meta?.onEditClick(row.original);
+            table.options.meta?.onViewClick(row.original);
           }}
         >
-          <Edit className="size-4 text-blue-600" />
-        </Button> */}
+          <Eye className="size-4 text-gray-600" />
+        </Button>
         <Button
           variant="ghost"
           size="sm"

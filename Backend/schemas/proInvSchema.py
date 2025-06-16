@@ -1,6 +1,16 @@
 from pydantic import BaseModel, ConfigDict
-from typing import Optional
-from datetime import datetime
+from typing import Optional, List
+from datetime import datetime, date
+
+
+class ExpiryTrackerSchema(BaseModel):
+    expiry_id: int
+    product_id: int
+    batch_number: str
+    expiry_date: date
+
+    model_config = ConfigDict(from_attributes=True)
+
 
 class ProductBase(BaseModel):
     barcode: str
@@ -15,6 +25,9 @@ class ProductBase(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
+class ProductWithExpiry(ProductBase):
+    expiry_trackers: List[ExpiryTrackerSchema] = []
+
 class InventoryBase(BaseModel):
     quantity: int
     reorder_level: int
@@ -22,6 +35,6 @@ class InventoryBase(BaseModel):
     location: str
 
     model_config = ConfigDict(from_attributes=True)
-        
+
 class ProductInventory(InventoryBase):
-    product: Optional[ProductBase] = None 
+    product: Optional[ProductWithExpiry] = None

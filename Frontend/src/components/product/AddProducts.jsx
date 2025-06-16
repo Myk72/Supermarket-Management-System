@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { useSupplierStore } from "@/store/suppliers.store";
 import { useCategoryStore } from "@/store/category.store";
 import { useProductStore } from "@/store/product.store";
+import { useNavigate } from "react-router-dom";
 
 const AddProducts = () => {
   const {
@@ -16,19 +17,27 @@ const AddProducts = () => {
   const { categories, fetchCategories } = useCategoryStore();
   const { addProduct } = useProductStore();
   const [image, setImage] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchSuppliers();
     fetchCategories();
-    console.log(suppliers, "suppliers in add product");
+    // console.log(suppliers, "suppliers in add product");
   }, [fetchSuppliers, fetchCategories]);
 
   const onSubmit = async (data) => {
-    console.log("Form Data Submitted: ", data);
+    // console.log("Form Data Submitted: ", data);
     try {
-      await addProduct(data, image);
+      const resp = await addProduct(data, image);
+      if (resp) {
+        alert("Product added successfully!");
+        navigate("/inventory/add");
+      } else {
+        alert("Failed to add product. Please try again.");
+      }
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
+      alert("An error occurred while adding the product. Please try again.");
     }
   };
   return (
@@ -94,7 +103,6 @@ const AddProducts = () => {
                 {...register("price", {
                   required: "Selling price is required",
                 })}
-
                 className={`border p-2 rounded ${
                   errors.sellingPrice ? "border-red-500" : "border-gray-300"
                 }`}
@@ -154,14 +162,19 @@ const AddProducts = () => {
               </label>
               <select
                 id="category"
-                {...register("category_id", { required: "Category is required" })}
+                {...register("category_id", {
+                  required: "Category is required",
+                })}
                 className={`border p-2 rounded ${
                   errors.category ? "border-red-500" : "border-gray-300"
                 }`}
               >
                 <option value="">Select Category</option>
                 {categories.map((category) => (
-                  <option key={category.category_id} value={category.category_id}>
+                  <option
+                    key={category.category_id}
+                    value={category.category_id}
+                  >
                     {category.name}
                   </option>
                 ))}
@@ -178,14 +191,19 @@ const AddProducts = () => {
               </label>
               <select
                 id="supplier"
-                {...register("supplier_id", { required: "Supplier is required" })}
+                {...register("supplier_id", {
+                  required: "Supplier is required",
+                })}
                 className={`border p-2 rounded ${
                   errors.supplier ? "border-red-500" : "border-gray-300"
                 }`}
               >
                 <option value="">Select Supplier</option>
                 {suppliers.map((supplier) => (
-                  <option key={supplier.supplier_id} value={supplier.supplier_id}>
+                  <option
+                    key={supplier.supplier_id}
+                    value={supplier.supplier_id}
+                  >
                     {supplier.name}
                   </option>
                 ))}
@@ -198,7 +216,6 @@ const AddProducts = () => {
             </div>
           </div>
           <div className="flex justify-between items-center">
-        
             <div className="flex flex-col gap-2">
               <label htmlFor="image" className="font-semibold">
                 Product Image

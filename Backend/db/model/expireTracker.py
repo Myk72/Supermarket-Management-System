@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, Date, ForeignKey
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
 from db.database import Base
 from .product import Product
 
@@ -10,4 +11,4 @@ class ExpiryTracker(Base):
     product_id = Column(Integer, ForeignKey(Product.product_id))
     batch_number = Column(String(50))
     expiry_date = Column(Date, nullable=False)
-    quantity = Column(Integer)
+    product = relationship("Product", back_populates="expiry_trackers")
