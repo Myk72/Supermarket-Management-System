@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from utils import utils
-from schemas.userSchema import UserRegister, UserLogin, SetPasswordRequest, ForgotPasswordRequest
+from schemas.userSchema import UserRegister, UserLogin, SetPasswordRequest, ForgotPasswordRequest, ChangePasswordRequest
 from db.model.employee import User, Employee
 from db.database import connect_db
 from datetime import datetime
@@ -105,3 +105,20 @@ async def forgot_password(data: ForgotPasswordRequest, db: Session = Depends(con
     await send_email(email, token)
 
     return {"message": "Password reset link has been sent to your email"}
+
+
+
+@router.patch("/change-password/{emp_id}")
+def change_password(emp_id: int, data: ChangePasswordRequest, db: Session = Depends(connect_db)):
+    user = db.query(User).filter(User.employee_id == emp_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    if not verify_password(data.old_password, user.password):
+        raise HTTPException(status_code=400, detail="Old password is incorrect")
+
+    user.password = hash_password(data.new_password)
+    db.commit()
+    db.refresh(user)
+
+    return {"message": "Password has been changed successfully"}

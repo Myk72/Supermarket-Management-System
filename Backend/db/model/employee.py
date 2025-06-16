@@ -23,6 +23,8 @@ class Employee(Base):
     created_at = Column(DateTime, server_default=func.now())
 
     purchases = relationship("Purchase", back_populates="employee")
+    user = relationship("User", back_populates="employee", uselist=False)
+    shifts = relationship("EmployeeShift", back_populates="employee")
 
 class User(Base):
     __tablename__ = "users"
@@ -36,6 +38,8 @@ class User(Base):
     is_authenticated = Column(Boolean, default=False)
     created_at = Column(DateTime, server_default=func.now())
 
+    employee = relationship("Employee", back_populates="user")
+
 class EmployeeShift(Base):
     __tablename__ = "employee_shifts"
     
@@ -44,3 +48,5 @@ class EmployeeShift(Base):
     start_time = Column(DateTime, nullable=False)
     end_time = Column(DateTime, nullable=False)
     date = Column(Date, nullable=False)
+
+    employee = relationship("Employee", back_populates="shifts")

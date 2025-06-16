@@ -39,14 +39,11 @@ const Topbar = ({ currentNavItem }) => {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => Navigate("/profile")}>
               <User className="h-4 w-4" />
               <span>Profile</span>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Settings className="h-4 w-4" />
-              <span>Setting</span>
-            </DropdownMenuItem>
+
             <DropdownMenuItem
               onClick={() => {
                 logout();

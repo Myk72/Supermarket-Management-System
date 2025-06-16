@@ -33,6 +33,21 @@ const EmployeeColumns = [
   },
 
   {
+    id: "Email",
+    accessorKey: "email",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Email
+        <ArrowUpDown className="size-4" />
+      </Button>
+    ),
+    size: 24,
+  },
+
+  {
     id: "Role",
     accessorKey: "role",
     header: ({ column }) => (
@@ -94,9 +109,9 @@ const EmployeeColumns = [
     header: "Quick Action",
     cell: ({ row, table }) => (
       <div className="flex space-x-2">
-        <Button variant="ghost" size="sm" className="hover:bg-gray-200">
+        {/* <Button variant="ghost" size="sm" className="hover:bg-gray-200">
           <Edit className="size-4 text-blue-600" />
-        </Button>
+        </Button> */}
         <Button
           variant="ghost"
           size="sm"
