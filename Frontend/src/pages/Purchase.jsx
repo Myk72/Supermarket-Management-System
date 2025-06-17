@@ -2,12 +2,14 @@ import PurchaseOrderColumns from "@/components/columns/Purchase";
 import { PurchaseCard } from "@/components/Purchase/purchaseCard";
 import { CustomTable } from "@/components/table/Table";
 import { usePurchaseStore } from "@/store/purchase.store";
+import useAuthStore from "@/store/auth.store";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Purchase = () => {
   const { purchases, fetchPurchases } = usePurchaseStore();
+  const { role } = useAuthStore();
   useEffect(() => {
     fetchPurchases();
   }, [fetchPurchases]);
@@ -21,7 +23,9 @@ const Purchase = () => {
         <CustomTable
           columns={PurchaseOrderColumns}
           data={purchases}
-          addButtonText={"New Purchase Order"}
+          {...(role === "manager" && {
+            addButtonText: "Add Purchase Order",
+          })}
           pageSize={5}
           onAddClick={() => {
             navigate("/purchases/add");

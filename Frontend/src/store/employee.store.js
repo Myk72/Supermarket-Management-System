@@ -26,6 +26,7 @@ export const useEmployeeStore = create((set) => ({
     try {
       const response = await api.post("/auth/register", employeeData);
       console.log(response);
+      return response.data;
     } catch (error) {
       console.log(error);
       set({ error: error.message, isLoading: false });
@@ -67,6 +68,11 @@ export const useEmployeeStore = create((set) => ({
     try {
       const response = await api.delete(`/users/${parseInt(employeeId)}`);
       console.log(response);
+      set((state) => ({
+        employees: state.employees.filter((emp) => emp.id !== employeeId),
+        isLoading: false,
+      }));
+      return response.data;
     } catch (error) {
       console.log(error);
       set({ error: error.message, isLoading: false });

@@ -162,7 +162,7 @@ const PurchaseOrderColumns = [
         >
           <Eye className="size-4 text-gray-600" />
         </Button>
-        <Button
+        {/* <Button
           variant="ghost"
           onClick={() => table.options.meta?.onEditClick(row.original)}
         >
@@ -173,7 +173,7 @@ const PurchaseOrderColumns = [
           onClick={() => table.options.meta?.onDeleteClick(row.original)}
         >
           <Trash2 className="size-4 text-red-600" />
-        </Button>
+        </Button> */}
       </div>
     ),
     enableSorting: false,

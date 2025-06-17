@@ -36,6 +36,7 @@ const AddInventory = () => {
         batch_number: data.batch_number,
         expiry_date: data.expiry_date,
       });
+      
       if (res) {
         alert("Inventory added successfully!");
       } else {

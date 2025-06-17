@@ -16,7 +16,12 @@ const AddEmployee = () => {
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      await addEmployee(data);
+      const res = await addEmployee(data);
+      if (res) {
+        alert("Employee added successfully!");
+      } else {
+        alert("Failed to add employee. Please try again.");
+      }
     } catch (error) {
       console.log(error.message);
     }

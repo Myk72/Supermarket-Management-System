@@ -168,46 +168,46 @@ const SupplierColumns = [
     size: 80,
   },
 
-  {
-    id: "actions",
-    header: "Actions",
-    cell: ({ row, table }) => (
-      <div className="flex space-x-2">
-        {/* <Button
-          variant="ghost"
-          size="sm"
-          className="hover:bg-blue-100"
-          onClick={() => {
-            table.options.meta?.onViewClick(row.original);
-          }}
-        >
-          <Eye className="size-4 text-gray-600" />
-        </Button> */}
-        <Button
-          variant="ghost"
-          size="sm"
-          className="hover:bg-green-100"
-          onClick={() => {
-            table.options.meta?.onEditClick(row.original);
-          }}
-        >
-          <Edit className="size-4 text-blue-600" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="hover:bg-green-100"
-          onClick={() => {
-            table.options.meta?.onEditClick(row.original);
-          }}
-        >
-          <Trash2 className="size-4 text-red-600" />
-        </Button>
-      </div>
-    ),
-    enableSorting: false,
-    size: 80,
-  },
+  // {
+  //   id: "actions",
+  //   header: "Actions",
+  //   cell: ({ row, table }) => (
+  //     <div className="flex space-x-2">
+  //       {/* <Button
+  //         variant="ghost"
+  //         size="sm"
+  //         className="hover:bg-blue-100"
+  //         onClick={() => {
+  //           table.options.meta?.onViewClick(row.original);
+  //         }}
+  //       >
+  //         <Eye className="size-4 text-gray-600" />
+  //       </Button> */}
+  //       <Button
+  //         variant="ghost"
+  //         size="sm"
+  //         className="hover:bg-green-100"
+  //         onClick={() => {
+  //           table.options.meta?.onEditClick(row.original);
+  //         }}
+  //       >
+  //         <Edit className="size-4 text-blue-600" />
+  //       </Button>
+  //       {/* <Button
+  //         variant="ghost"
+  //         size="sm"
+  //         className="hover:bg-green-100"
+  //         onClick={() => {
+  //           table.options.meta?.onEditClick(row.original);
+  //         }}
+  //       >
+  //         <Trash2 className="size-4 text-red-600" />
+  //       </Button> */}
+  //     </div>
+  //   ),
+  //   enableSorting: false,
+  //   size: 80,
+  // },
 ];
 
 export default SupplierColumns;

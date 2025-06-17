@@ -23,8 +23,13 @@ const Employee = () => {
           onAssignClick: (employee) => {
             navigate(`/employees/assign/${employee.employee_id}`);
           },
-          onDeleteClick: (employee) => {
-            deleteEmployee(employee.employee_id);
+          onDeleteClick: async (employee) => {
+            const res = await deleteEmployee(employee.employee_id);
+            if (res) {
+              alert("Employee deleted successfully!");
+            } else {
+              alert("Failed to delete employee. Please try again.");
+            }
           },
         }}
       />

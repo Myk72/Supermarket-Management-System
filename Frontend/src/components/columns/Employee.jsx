@@ -123,7 +123,7 @@ const EmployeeColumns = [
         >
           <UserCheck2 className="size-4" />
         </Button>
-        <Button
+        {/* <Button
           variant="ghost"
           size="sm"
           className="hover:bg-gray-200"
@@ -133,7 +133,7 @@ const EmployeeColumns = [
           }}
         >
           <Trash2 className="size-4 text-red-600" />
-        </Button>
+        </Button> */}
       </div>
     ),
     enableSorting: false,
