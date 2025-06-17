@@ -58,48 +58,61 @@ const ProductSale = () => {
 
     let loyaltyDiscount = 0;
     if (selectedCustomer && selectedCustomer.loyalty_points >= 500) {
-      loyaltyDiscount = 0.1 * (subtotal + totalTax);
+      loyaltyDiscount = selectedCustomer.loyalty_points;
     }
 
-    const total = subtotal + totalTax - loyaltyDiscount;
+    let discountAmount = 0;
+    cart.forEach((item) => {
+      const discount = item.discounts?.find(
+        (d) =>
+          new Date(d.start_date) <= new Date() &&
+          new Date(d.end_date) >= new Date()
+      );
+      if (discount) {
+        const discountValue = (item.price * discount.percentage) / 100;
+        discountAmount += discountValue * item.quantity;
+      }
+    });
+
+    const total = subtotal + totalTax - loyaltyDiscount - discountAmount;
 
     setTaxAmount(parseFloat(totalTax.toFixed(2)));
-    setDiscountAmount(parseFloat(loyaltyDiscount.toFixed(2)));
+    setDiscountAmount(parseFloat(loyaltyDiscount.toFixed(2)) + discountAmount);
     setTotalAmount(parseFloat(total.toFixed(2)));
   }, [cart, selectedCustomer]);
 
-  // useEffect(() => {
-  //   const socket = io("https://192.168.163.131:8000/", {
-  //     reconnection: 5,
-  //     timeout: 5000,
-  //   });
+  useEffect(() => {
+    const socket = io("https://192.168.163.131:8000/", {
+      reconnection: 5,
+      timeout: 5000,
+    });
 
-  //   socket.on("connect", () => {
-  //     console.log("Connected to server");
-  //     socket.emit("register_display");
-  //   });
+    socket.on("connect", () => {
+      console.log("Connected to server");
+      socket.emit("register_display");
+    });
 
-  //   socket.on("initial-codes", (codes) => {
-  //     setScannedCode(codes);
-  //   });
+    socket.on("initial-codes", (codes) => {
+      setScannedCode(codes);
+    });
 
-  //   socket.on("scanned-code", (code) => {
-  //     console.log("Scanned code:", code);
-  //     setScannedCode(code);
-  //     const product = products.find((p) => p.barcode === code);
-  //     if (product) {
-  //       addToCart(product);
-  //     } else {
-  //       alert("Product not found for scanned code: " + code);
-  //     }
-  //   });
+    socket.on("scanned-code", (code) => {
+      console.log("Scanned code:", code);
+      setScannedCode(code);
+      const product = products.find((p) => p.barcode === code);
+      if (product) {
+        addToCart(product);
+      } else {
+        alert("Product not found for scanned code: " + code);
+      }
+    });
 
-  //   socket.on("connect_error", (err) => {
-  //     console.error("Connection error:", err);
-  //   });
+    socket.on("connect_error", (err) => {
+      console.error("Connection error:", err);
+    });
 
-  //   return () => socket.disconnect();
-  // }, []);
+    return () => socket.disconnect();
+  }, []);
 
   useEffect(() => {
     fetchProducts();
@@ -111,13 +124,20 @@ const ProductSale = () => {
   };
 
   const addToCart = (product) => {
+    const stock_quantity = product?.inventory?.quantity;
+    if (!stock_quantity || stock_quantity <= 0) {
+      alert("This product is out of stock.");
+      return;
+    }
+
     setCart((prevCart) => {
       const existingItem = prevCart.find(
         (item) => item.product_id === product.product_id
       );
       if (existingItem) {
         return prevCart.map((item) =>
-          item.product_id === product.product_id
+          item.product_id === product.product_id &&
+          item.quantity < stock_quantity
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
@@ -201,12 +221,17 @@ const ProductSale = () => {
                         variant="outline"
                         size="icon"
                         className="h-8 w-8"
-                        onClick={() =>
+                        onClick={() => {
+                          const stock_quantity = item?.inventory?.quantity;
+                          if (stock_quantity <= item.quantity) {
+                            alert("Cannot increase quantity beyond stock.");
+                            return;
+                          }
                           updateCartItemQuantity(
                             item.product_id,
                             item.quantity + 1
-                          )
-                        }
+                          );
+                        }}
                       >
                         +
                       </Button>
@@ -247,6 +272,10 @@ const ProductSale = () => {
           <div className="flex justify-between items-center">
             <span className="font-semibold">Tax ($):</span>
             <span>{taxAmount}</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="font-semibold">Discount ($):</span>
+            <span>{discountAmount}</span>
           </div>
 
           {selectedCustomer && (

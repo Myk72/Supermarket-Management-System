@@ -50,8 +50,10 @@ const Product = () => {
           },
           onDeleteClick: async (row) => {
             console.log(row);
-            await deleteProduct(row.product_id);
-            console.log("Delete Product", row);
+            if (role === "manager") {
+              await deleteProduct(row.product_id);
+              console.log("Delete Product", row);
+            }
           },
         }}
       />
