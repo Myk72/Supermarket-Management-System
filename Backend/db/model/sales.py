@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Date, DateTime, Float, ForeignKey, Enum, Text
+from sqlalchemy import Column, Integer, String, Date, DateTime, Float, ForeignKey, Enum, Text, Computed, DECIMAL
 from sqlalchemy.sql import func
 from db.database import Base
 from .customer import Customer
@@ -24,5 +24,5 @@ class SaleItem(Base):
     sale_id = Column(Integer, ForeignKey("sales.sale_id"))
     product_id = Column(Integer, ForeignKey(Product.product_id))
     quantity = Column(Integer, nullable=False)
-    unit_price = Column(Float(10, 2), nullable=False)
-    subtotal = Column(Float(10, 2))
+    unit_price = Column(DECIMAL(10, 2), nullable=False)
+    subtotal = Column(DECIMAL(10, 2), Computed("quantity * unit_price", persisted=True))

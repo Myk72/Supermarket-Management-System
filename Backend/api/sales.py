@@ -6,6 +6,7 @@ from sqlalchemy import func, text
 from db.database import connect_db
 from db.model.sales import Sale, SaleItem
 from db.model.product import Inventory, Product
+from db.model.customer import Customer
 
 router = APIRouter(prefix="/sales", tags=["Sales"])
 
@@ -96,7 +97,6 @@ async def add_sale(data: SaleCreate, db: Session = Depends(connect_db)):
             product_id=item.product_id,
             quantity=item.quantity,
             unit_price=item.unit_price,
-            subtotal=item.subtotal
         )
         db.add(sale_item)
     
@@ -105,6 +105,11 @@ async def add_sale(data: SaleCreate, db: Session = Depends(connect_db)):
         if inventory:
             inventory.quantity -= item.quantity
             db.add(inventory)
+
+    if data.customer_id is not None:
+        customer = db.query(Customer).filter(Customer.customer_id == data.customer_id).first()
+        if customer:
+            customer.loyalty_points += int(data.total_amount // 20)
 
 
     db.commit()

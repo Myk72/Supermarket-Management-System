@@ -41,6 +41,7 @@ import AboutUs from "./pages/Landing/AboutUs";
 import LandingPage from "./pages/Landing/LandingLayout";
 import ProductDiscount from "./components/product/ProductDiscount";
 import ProfilePage from "./components/Profile/ProfilePage";
+import Schedules from "./pages/Schedules";
 
 const AuthRedirect = ({ children }) => {
   const { isAuthenticated, role, user } = useAuthStore();
@@ -94,6 +95,12 @@ const App = () => {
             <Route path="/products" element={<Product />} />
             <Route path="/products/add" element={<AddProducts />} />
             <Route path="/profile" element={<ProfilePage />} />
+
+            <Route
+              element={<ProtectedRoute allowedRoles={["stock", "cashier"]} />}
+            >
+              <Route path="/schedule" element={<Schedules />} />
+            </Route>
 
             <Route element={<ProtectedRoute allowedRoles={["manager"]} />}>
               <Route path="/dashboard" element={<Dashboard />} />

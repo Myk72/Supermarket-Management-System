@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Date, DateTime, Float, ForeignKey, Enum, Text, Boolean
+from sqlalchemy import Column, Integer, String, Date, DateTime, Float, ForeignKey, Enum, Text, Boolean, Time
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from db.database import Base
@@ -45,8 +45,8 @@ class EmployeeShift(Base):
     
     shift_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     employee_id = Column(Integer, ForeignKey("employees.employee_id",ondelete="CASCADE"))
-    start_time = Column(DateTime, nullable=False)
-    end_time = Column(DateTime, nullable=False)
+    start_time = Column(Time, nullable=False)
+    end_time = Column(Time, nullable=False)
     date = Column(Date, nullable=False)
 
     employee = relationship("Employee", back_populates="shifts")

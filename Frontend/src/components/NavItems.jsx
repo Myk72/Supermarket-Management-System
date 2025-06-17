@@ -12,6 +12,7 @@ import {
   Warehouse,
   RefreshCw,
   ShoppingBag,
+  CalendarRange,
 } from "lucide-react";
 
 export const navigation = [
@@ -67,5 +68,11 @@ export const navigation = [
     href: "returns",
     icon: RefreshCw,
     role: ["manager", "cashier"],
+  },
+  {
+    name: "My Schedules",
+    href: "schedule",
+    icon: CalendarRange,
+    role: ["stock", "cashier"],
   },
 ];

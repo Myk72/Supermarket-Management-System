@@ -13,7 +13,14 @@ import cloudinary.uploader
 
 router = APIRouter(prefix="/product", tags=["product"])
 
+class InventoryProduct(BaseModel):
+    inventory_id: int
+    quantity: int
+    reorder_level: int
+    last_restocked: datetime
+    location: str
 
+    model_config = ConfigDict(from_attributes=True)
 
 class DiscountSchema(BaseModel):
     discount_id: Optional[int] = None
@@ -48,6 +55,7 @@ class ProductSchema(BaseModel):
     category: CategorySchema
     expiry_trackers: List[ExpiryTrackerSchema]
     discounts : List[DiscountSchema] = Field(default_factory=list)
+    inventory: Optional[InventoryProduct] = None
     price: float
     cost_price: float
     supplier_id: int
@@ -63,6 +71,7 @@ async def get_products(db: Session = Depends(connect_db)):
     products = db.query(Product).options(
         joinedload(Product.category),
         joinedload(Product.expiry_trackers),
+        joinedload(Product.inventory),
         joinedload(Product.discounts)
     ).all()
     return products

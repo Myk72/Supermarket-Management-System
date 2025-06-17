@@ -3,6 +3,7 @@ import { api } from "@/lib/api";
 
 export const useEmployeeStore = create((set) => ({
   employees: [],
+  shifts: [],
   isLoading: false,
   error: null,
 
@@ -37,6 +38,30 @@ export const useEmployeeStore = create((set) => ({
     } catch (error) {}
   },
 
+  assignShift: async (shiftData) => {
+    try {
+      const response = await api.post(`/users/assign-shift`, shiftData);
+      console.log(response);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
+  getShifts: async (employeeId) => {
+    set({ isLoading: true });
+    try {
+      const response = await api.get(`/users/${parseInt(employeeId)}/shifts`);
+      console.log(response.data);
+      set({ shifts: response.data, isLoading: false });
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+      return [];
+    }
+  },
   deleteEmployee: async (employeeId) => {
     set({ isLoading: true });
     try {
