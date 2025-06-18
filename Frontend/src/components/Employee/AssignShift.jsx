@@ -53,7 +53,7 @@ const AssignShift = () => {
         </h1>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col gap-4 w-full"
+          className="flex flex-col gap-4 w-1/2"
         >
           <div>
             <label htmlFor="startTime" className="text-sm font-semibold">

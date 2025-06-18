@@ -14,8 +14,12 @@ const AddSupplier = () => {
 
   const onSubmit = async (data) => {
     try {
-      await addSupplier(data);
-      alert("Supplier added successfully!");
+      const res = await addSupplier(data);
+      if (res) {
+        alert("Supplier added successfully");
+      } else {
+        alert("Failed to add supplier. Please try again.");
+      }
     } catch (error) {
       console.error("Error adding supplier:", error);
     }

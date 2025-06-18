@@ -275,7 +275,7 @@ const ProductSale = () => {
           </div>
           <div className="flex justify-between items-center">
             <span className="font-semibold">Discount ($):</span>
-            <span>{discountAmount}</span>
+            <span>{discountAmount.toFixed(2)}</span>
           </div>
 
           {selectedCustomer && (

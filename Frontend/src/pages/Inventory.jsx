@@ -5,8 +5,10 @@ import LowStockColumns from "@/components/columns/LowStock";
 import InventoryColumns from "@/components/columns/InventoryCol";
 import { useNavigate } from "react-router-dom";
 import { useInventoryStore } from "@/store/inventory.store";
+import useAuthStore from "@/store/auth.store";
 
 const Inventory = () => {
+  const { role } = useAuthStore();
   const navigate = useNavigate();
   const { fetchInventory, inventory, fetchLowStockItems, lowStockItems } =
     useInventoryStore();
@@ -29,7 +31,9 @@ const Inventory = () => {
           <CustomTable
             columns={InventoryColumns}
             data={inventory}
-            addButtonText={"Add Inventory"}
+            {...(role === "manager" && {
+              addButtonText: "Add Inventory",
+            })}
             pageSize={5}
             onAddClick={() => {
               navigate("/inventory/add");

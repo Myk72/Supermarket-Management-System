@@ -220,7 +220,7 @@ const ProductColumns = [
         >
           <MdLocalOffer className="size-4 text-blue-600" />
         </Button>
-        <Button
+        {/* <Button
           variant="ghost"
           size="sm"
           className="hover:bg-blue-100"
@@ -230,7 +230,7 @@ const ProductColumns = [
           title="Delete Product"
         >
           <Trash2 className="size-4 text-red-600" />
-        </Button>
+        </Button> */}
       </div>
     ),
     enableSorting: false,

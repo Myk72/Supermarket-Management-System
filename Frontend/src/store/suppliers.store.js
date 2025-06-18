@@ -21,8 +21,12 @@ export const useSupplierStore = create((set) => ({
     set({ isLoading: true });
     try {
       const response = await api.post("/supplier", supplierData);
-      console.log(response)
-    } catch (error) {}
+      console.log(response);
+      return response.data;
+    } catch (error) {
+      set({ error: error.message, isLoading: false });
+      throw new Error(error.message);
+    }
   },
 
   updateSupplier: async (supplierId, supplierData) => {
