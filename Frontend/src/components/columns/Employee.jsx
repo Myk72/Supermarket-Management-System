@@ -44,7 +44,7 @@ const EmployeeColumns = [
         <ArrowUpDown className="size-4" />
       </Button>
     ),
-    size: 24,
+    size: 50,
   },
 
   {
@@ -109,9 +109,9 @@ const EmployeeColumns = [
     header: "Quick Action",
     cell: ({ row, table }) => (
       <div className="flex space-x-2">
-        {/* <Button variant="ghost" size="sm" className="hover:bg-gray-200">
+        <Button variant="ghost" size="sm" className="hover:bg-gray-200">
           <Edit className="size-4 text-blue-600" />
-        </Button> */}
+        </Button>
         <Button
           variant="ghost"
           size="sm"

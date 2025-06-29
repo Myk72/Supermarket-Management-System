@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
+import toast, { Toaster } from "react-hot-toast";
 
 import useAuthStore from "@/store/auth.store";
 
@@ -25,18 +26,19 @@ const Security = () => {
         user?.employee_id
       );
       if (response.data) {
-        alert("Password changed successfully!");
-      } else {
-        setError("Failed to change password. Please try again.");
+        toast.success("Password changed successfully");
       }
+      
     } catch (error) {
       console.error("Error changing password:", error);
       setError("Failed to change password. Please try again.");
+      toast.error("Failed to change password. Please try again");
     }
   };
 
   return (
     <div className="px-2 py-4 bg-white font-serif space-y-4">
+      <Toaster />
       <h2 className="text-2xl font-bold ">Change Password</h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">

@@ -3,6 +3,7 @@ import { usePurchaseStore } from "@/store/purchase.store";
 import { Button } from "../ui/button";
 import { useState, useEffect } from "react";
 import { FaArrowLeft } from "react-icons/fa6";
+import toast, { Toaster } from "react-hot-toast";
 
 const CheckinPurchase = () => {
   const {
@@ -11,6 +12,7 @@ const CheckinPurchase = () => {
     fetchPurchaseItems,
     purchaseItems,
     updatePurchase,
+    loading,
   } = usePurchaseStore();
   const [purchaseId, setPurchaseId] = useState(null);
   const [selectedPurchase, setSelectedPurchase] = useState(null);
@@ -19,8 +21,17 @@ const CheckinPurchase = () => {
     fetchPurchases();
   }, [fetchPurchases]);
 
+  useEffect(() => {
+    if (loading) {
+      toast.loading("Loading ...");
+    } else {
+      toast.dismiss();
+    }
+  }, [loading]);
+
   return (
     <div className="font-serif p-2 space-y-6">
+      <Toaster />
       <h1 className="text-2xl font-bold mb-4 text-blue-900">
         Check in Purchase
       </h1>
@@ -54,9 +65,9 @@ const CheckinPurchase = () => {
               const CurrentPurchase = purchases.find(
                 (p) => p.purchase_id === purchaseId && p.status === "pending"
               );
-              
+
               if (!res || !CurrentPurchase) {
-                alert("No purchase found with this ID ");
+                toast.error("No purchase found with this ID ");
                 setSelectedPurchase(null);
                 return;
               }
@@ -67,8 +78,8 @@ const CheckinPurchase = () => {
             Search
           </Button>
         </div>
-        
-        {(selectedPurchase  && purchaseItems.length > 0) ? (
+
+        {selectedPurchase && purchaseItems.length > 0 ? (
           <div className="space-y-6 h-72 overflow-auto">
             <h2 className="text-lg font-semibold mb-2">
               Purchase Items for order ID: {purchaseId}
@@ -111,9 +122,9 @@ const CheckinPurchase = () => {
                 onClick={async () => {
                   const res = await updatePurchase(purchaseId, "received");
                   if (res) {
-                    alert("Purchase successfully checked in");
+                    toast.success("Purchase successfully checked in");
                   } else {
-                    alert("Failed to check in purchase");
+                    toast.error("Failed to check in purchase");
                   }
                 }}
               >
@@ -125,9 +136,9 @@ const CheckinPurchase = () => {
                 onClick={async () => {
                   const res = updatePurchase(purchaseId, "cancelled");
                   if (res) {
-                    alert("Purchase successfully rejected");
+                    toast.success("Purchase successfully rejected");
                   } else {
-                    alert("Failed to reject purchase");
+                    toast.error("Failed to reject purchase");
                   }
                 }}
               >

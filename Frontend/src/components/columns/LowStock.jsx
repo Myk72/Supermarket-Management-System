@@ -9,9 +9,10 @@ const LowStockColumns = [
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className={"text-xs"}
       >
         ID
-        <ArrowUpDown className="size-4" />
+        <ArrowUpDown className="size-3" />
       </Button>
     ),
     size: 20,
@@ -24,9 +25,10 @@ const LowStockColumns = [
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className={"text-xs"}
       >
         Product
-        <ArrowUpDown className="size-4" />
+        <ArrowUpDown className="size-3" />
       </Button>
     ),
     cell: ({ row }) => {
@@ -51,9 +53,10 @@ const LowStockColumns = [
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className={"text-xs"}
       >
         Quantity
-        <ArrowUpDown className="size-4" />
+        <ArrowUpDown className="size-3" />
       </Button>
     ),
     size: 50,
@@ -66,9 +69,10 @@ const LowStockColumns = [
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className={"text-xs"}
       >
-        Reorder Level
-        <ArrowUpDown className="size-4" />
+        Reorder
+        <ArrowUpDown className="size-3" />
       </Button>
     ),
     size: 50,

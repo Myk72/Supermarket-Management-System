@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "../ui/button";
 import { useForm } from "react-hook-form";
 import { FaArrowLeft } from "react-icons/fa6";
 import { useCategoryStore } from "@/store/category.store";
+import toast, { Toaster } from "react-hot-toast";
 
 const AddCategory = () => {
   const {
@@ -11,21 +12,32 @@ const AddCategory = () => {
     formState: { errors },
   } = useForm();
 
-  const { addCategory } = useCategoryStore();
+  const { addCategory, isLoading } = useCategoryStore();
+
+  useEffect(() => {
+    if (isLoading) {
+      toast.loading("Adding category...");
+    } else {
+      toast.dismiss();
+    }
+  }, [isLoading]);
 
   const onSubmit = async (data) => {
     console.log(data);
     try {
       const response = await addCategory(data);
-      alert("Category added successfully!");
+      if (response) {
+        toast.success("Category added successfully!");
+      }
     } catch (error) {
       console.error("Error adding category:", error);
-      alert("Failed to add category. Please try again.");
+      toast.error("Failed to add category. Please try again.");
     }
   };
 
   return (
     <div className="font-serif">
+      <Toaster />
       <h1 className="text-2xl text-blue-900 font-semibold mb-4">
         Add New Category
       </h1>
@@ -82,7 +94,7 @@ const AddCategory = () => {
           <div className="flex justify-end">
             <Button
               type="submit"
-              className="bg-blue-600 text-white hover:bg-blue-700 w-1/4"
+              className="bg-blue-600 text-white hover:bg-blue-700 w-1/4 cursor-pointer"
             >
               Add Category
             </Button>

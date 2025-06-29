@@ -52,6 +52,7 @@ export const useInventoryStore = create((set) => ({
     } catch (error) {
       console.log(error);
       set({ error: error.message, isLoading: false });
+      throw error
     }
   },
 

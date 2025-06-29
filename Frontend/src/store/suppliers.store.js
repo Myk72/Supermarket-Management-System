@@ -22,6 +22,10 @@ export const useSupplierStore = create((set) => ({
     try {
       const response = await api.post("/supplier", supplierData);
       console.log(response);
+      set((state) => ({
+        suppliers: [...state.suppliers, response.data],
+        isLoading: false,
+      }));
       return response.data;
     } catch (error) {
       set({ error: error.message, isLoading: false });

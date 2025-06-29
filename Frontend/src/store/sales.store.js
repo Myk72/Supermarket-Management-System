@@ -17,6 +17,7 @@ export const useSaleStore = create((set) => ({
       const data = response.data;
       console.log(data);
       set({ sales: data, isLoading: false, error: null });
+      return data
     } catch (error) {
       set({ error: error.message, isLoading: false });
     }
@@ -27,8 +28,10 @@ export const useSaleStore = create((set) => ({
     try {
       const resp = await api.post("/sales", saleData);
       console.log(resp.data);
+      return resp.data
     } catch (error) {
       set({ error: error.message, isLoading: false });
+      throw error;
     }
   },
 
@@ -40,6 +43,7 @@ export const useSaleStore = create((set) => ({
       const data = response.data;
       console.log(data);
       set({ sales: data, isLoading: false, error: null });
+      return data
     } catch (error) {
       set({ error: error.message, isLoading: false });
     }
@@ -52,6 +56,7 @@ export const useSaleStore = create((set) => ({
       const data = response.data;
       console.log(data);
       set({ saleItems: data, isLoading: false, error: null });
+      return data
     } catch (error) {
       set({ error: error.message, isLoading: false });
     }
@@ -64,6 +69,7 @@ export const useSaleStore = create((set) => ({
       const data = response.data;
       console.log(data);
       set({ sales: data, isLoading: false, error: null });
+      return data
     } catch (error) {
       set({ error: error.message, isLoading: false });
     }

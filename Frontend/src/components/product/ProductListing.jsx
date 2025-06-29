@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import ProductSearchToolbar from "./ProductToolBar";
-import ProductSalePagination from "./ProductSalePagination";
 import ProductCard from "./productCard";
+import PagePagination from "../PagePagination";
 import { useProductStore } from "@/store/product.store";
 
 export const ProductListing = ({ addToCart = () => {}, scannedCode }) => {
@@ -12,26 +12,25 @@ export const ProductListing = ({ addToCart = () => {}, scannedCode }) => {
   }, []);
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 10;
+  const [currentProducts, setCurrentProducts] = useState([]);
 
-  const filteredProduct = products?.filter((product) => {
+  const filteredProduct = useMemo(() => {
+    const search = searchTerm.toLowerCase();
     return (
-      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.status.toLowerCase().includes(searchTerm.toLowerCase())
+      products?.filter((product) => {
+        const name = product?.name?.toLowerCase() || "";
+        const status = product?.status?.toLowerCase() || "";
+        return name.includes(search) || status.includes(search);
+      }) || []
     );
-  });
-
-  const pageCount = Math.ceil(filteredProduct.length / itemsPerPage);
-  const paginatedProduct = filteredProduct.slice(
-    currentPage * itemsPerPage,
-    (currentPage + 1) * itemsPerPage
-  );
+  }, [products, searchTerm]);
 
   return (
-    <div className="flex flex-col gap-6 p-4 w-2/3 rounded-lg bg-white shadow-md border">
-      <h1 className="text-2xl font-semibold font-serif text-blue-900">Product List</h1>
-      <div className="flex flex-row justify-between items-center">
+    <div className="grid grid-cols-1 gap-4 p-4 rounded-lg bg-white shadow-md border">
+      <h1 className="text-2xl font-semibold font-serif text-blue-900">
+        Product List
+      </h1>
+      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-[2fr_1fr]">
         <ProductSearchToolbar
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
@@ -44,8 +43,9 @@ export const ProductListing = ({ addToCart = () => {}, scannedCode }) => {
           className="py-2 px-3 border rounded-2xl"
         />
       </div>
-      <div className="grid grid-cols-2 gap-6 pl-4 md:grid-cols-3 lg:grid-cols-4">
-        {paginatedProduct.map((product) => (
+
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 min-h-[400px]">
+        {currentProducts.map((product) => (
           <ProductCard
             key={product.product_id}
             product={product}
@@ -53,16 +53,11 @@ export const ProductListing = ({ addToCart = () => {}, scannedCode }) => {
           />
         ))}
       </div>
-      <div
-      // put it at the bottom page
-      className="mt-auto"
-      > 
-        <ProductSalePagination
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          pageCount={pageCount}
-        />
-      </div>
+      <PagePagination
+        Items={filteredProduct}
+        itemsPerPage={8}
+        setCurrentItems={setCurrentProducts}
+      />
     </div>
   );
 };

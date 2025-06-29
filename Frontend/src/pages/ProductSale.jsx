@@ -4,6 +4,7 @@ import useAuthStore from "@/store/auth.store";
 import { useCustomerStore } from "@/store/customers.store";
 import { useProductStore } from "@/store/product.store";
 import { useSaleStore } from "@/store/sales.store";
+import toast, { Toaster } from "react-hot-toast";
 import {
   ShoppingCart,
   Trash2,
@@ -30,7 +31,6 @@ import SelectCustomer from "@/components/Customers/SelectCustomer";
 const ProductSale = () => {
   const { products, fetchProducts } = useProductStore();
   const { createSale } = useSaleStore();
-  const { customers, fetchCustomers } = useCustomerStore();
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [openCustomerDialog, setOpenCustomerDialog] = useState(false);
   const [loyaltyPoints, setLoyaltyPoints] = useState(0);
@@ -103,12 +103,13 @@ const ProductSale = () => {
       if (product) {
         addToCart(product);
       } else {
-        alert("Product not found for scanned code: " + code);
+        toast.error("Product not found for scanned code: ");
       }
     });
 
     socket.on("connect_error", (err) => {
       console.error("Connection error:", err);
+      toast.error("Failed to connect to the server");
     });
 
     return () => socket.disconnect();
@@ -116,8 +117,7 @@ const ProductSale = () => {
 
   useEffect(() => {
     fetchProducts();
-    fetchCustomers();
-  }, [fetchProducts, fetchCustomers]);
+  }, []);
 
   const clearCart = () => {
     setCart([]);
@@ -126,7 +126,7 @@ const ProductSale = () => {
   const addToCart = (product) => {
     const stock_quantity = product?.inventory?.quantity;
     if (!stock_quantity || stock_quantity <= 0) {
-      alert("This product is out of stock.");
+      toast.error("This product is out of stock.");
       return;
     }
 
@@ -166,13 +166,14 @@ const ProductSale = () => {
   };
 
   return (
-    <div className="flex flex-row gap-4 max-h-screen">
+    <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-[2fr_1fr] gap-4 ">
+      <Toaster />
       <ProductListing
         addToCart={(product) => addToCart(product)}
         scannedCode={scannedCode}
       />
 
-      <div className="w-1/3 shadow-md bg-white p-4 rounded-lg border font-serif">
+      <div className="shadow-md bg-white p-4 rounded-lg border font-serif">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-semibold text-blue-900">Current Sale</h1>
           <UserPlus
@@ -181,7 +182,7 @@ const ProductSale = () => {
           />
         </div>
 
-        <div className="sapce-y-2 overflow-y-auto h-80">
+        <div className="sapce-y-2 overflow-y-auto min-h-80">
           {cart.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-muted-foreground p-4">
               <ShoppingCart className="h-12 w-12 mb-2" />
@@ -224,7 +225,9 @@ const ProductSale = () => {
                         onClick={() => {
                           const stock_quantity = item?.inventory?.quantity;
                           if (stock_quantity <= item.quantity) {
-                            alert("Cannot increase quantity beyond stock.");
+                            toast.error(
+                              "Cannot increase quantity beyond stock."
+                            );
                             return;
                           }
                           updateCartItemQuantity(
@@ -383,7 +386,7 @@ const ProductSale = () => {
               }
               onClick={async () => {
                 try {
-                  await createSale({
+                  const data = await createSale({
                     payment_method: paymentMethod,
                     employee_id: user?.employee_id,
                     items: cart.map((item) => ({
@@ -402,9 +405,10 @@ const ProductSale = () => {
                   setCart([]);
                   setSelectedCustomer(null);
                   setPaymentDialogOpen(false);
-                  alert("Sale completed successfully!");
+                  toast.success("Sale completed successfully!");
                 } catch (error) {
                   console.error("Error creating sale:", error);
+                  toast.error("Error creating sale");
                 }
               }}
             >

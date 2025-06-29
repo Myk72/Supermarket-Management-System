@@ -9,6 +9,7 @@ import { CustomTable } from "../table/Table";
 import SelectProductColumns from "../columns/SelectProduct";
 import { Package, ShoppingCart, Trash2 } from "lucide-react";
 import useAuthStore from "@/store/auth.store";
+import toast, { Toaster } from "react-hot-toast";
 
 const AddPurchase = () => {
   const { user } = useAuthStore();
@@ -24,7 +25,7 @@ const AddPurchase = () => {
 
   const { suppliers, fetchSuppliers } = useSupplierStore();
   const { products, fetchProducts } = useProductStore();
-  const { addPurchase } = usePurchaseStore();
+  const { addPurchase, loading } = usePurchaseStore();
   const [cart, setCart] = useState([]);
   const clearCart = () => {
     setCart([]);
@@ -70,16 +71,28 @@ const AddPurchase = () => {
     fetchProducts();
   }, [fetchSuppliers, fetchProducts]);
 
+  useEffect(() => {
+    if (loading) {
+      toast.loading("Adding purchase...");
+    } else {
+      toast.dismiss();
+    }
+  }, [loading]);
+
   const onSubmit = async (data) => {
     try {
-      await addPurchase(data, cart);
-      alert("Purchase added successfully!");
+      const resp = await addPurchase(data, cart);
+      if (resp) {
+        toast.success("Purchase added successfully!");
+      }
     } catch (error) {
       console.error("Error adding purchase:", error);
+      toast.error("Error while purchasing");
     }
   };
   return (
     <div className="flex flex-col justify-center font-serif gap-2 bg-white rounded-2xl p-10">
+      <Toaster />
       <div className="flex justify-between items-center">
         <Button
           variant="outline"
@@ -107,7 +120,9 @@ const AddPurchase = () => {
               </label>
               <select
                 id="supplier"
-                {...register("supplier_id", { required: "Supplier is required" })}
+                {...register("supplier_id", {
+                  required: "Supplier is required",
+                })}
                 className={`p-3 border rounded-md`}
               >
                 <option value="">Select a supplier</option>
@@ -194,7 +209,7 @@ const AddPurchase = () => {
                         <Button
                           variant="outline"
                           size="icon"
-                          type="button" 
+                          type="button"
                           className="h-8 w-8"
                           onClick={() =>
                             updateCartItemQuantity(
@@ -209,7 +224,7 @@ const AddPurchase = () => {
                         <Button
                           variant="outline"
                           size="icon"
-                          type="button" 
+                          type="button"
                           className="h-8 w-8"
                           onClick={() =>
                             updateCartItemQuantity(
@@ -224,7 +239,7 @@ const AddPurchase = () => {
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8 text-destructive"
-                          type="button" 
+                          type="button"
                           onClick={() => removeFromCart(item.product_id)}
                         >
                           <Trash2 className="h-4 w-4" />

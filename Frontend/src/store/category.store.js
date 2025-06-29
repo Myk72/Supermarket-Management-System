@@ -11,8 +11,10 @@ export const useCategoryStore = create((set) => ({
     try {
       const response = await api.get("/category");
       set({ categories: response.data, isLoading: false });
+      return response.data;
     } catch (error) {
       set({ error: error.message, isLoading: false });
+      throw error
     }
   },
 
@@ -20,7 +22,10 @@ export const useCategoryStore = create((set) => ({
     set({ isLoading: true });
     try {
       const response = await api.post("/category", categoryData);
-
+      set((state) => ({
+        categories: [...state.categories, response.data],
+        isLoading: false,
+      }));
       return response.data;
     } catch (error) {
       set({ error: error.message, isLoading: false });

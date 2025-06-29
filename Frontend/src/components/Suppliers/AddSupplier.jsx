@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "../ui/button";
 import { FaArrowLeft } from "react-icons/fa6";
 import { useSupplierStore } from "@/store/suppliers.store";
+import toast, { Toaster } from "react-hot-toast";
 
 const AddSupplier = () => {
   const {
@@ -10,22 +11,32 @@ const AddSupplier = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { addSupplier } = useSupplierStore();
+
+  const { addSupplier, isLoading } = useSupplierStore();
 
   const onSubmit = async (data) => {
     try {
       const res = await addSupplier(data);
       if (res) {
-        alert("Supplier added successfully");
-      } else {
-        alert("Failed to add supplier. Please try again.");
+        toast.success("Supplier added successfully");
       }
     } catch (error) {
       console.error("Error adding supplier:", error);
+      toast.error("Failed to add supplier. Please try again.");
     }
   };
+
+  useEffect(() => {
+    if (isLoading) {
+      toast.loading("Adding supplier...");
+    } else {
+      toast.dismiss();
+    }
+  }, [isLoading]);
+
   return (
     <div className="flex flex-col justify-center font-serif gap-2 bg-white rounded-2xl p-10">
+      <Toaster />
       <div className="flex justify-between items-center">
         <Button
           variant="outline"

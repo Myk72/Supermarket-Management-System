@@ -62,6 +62,12 @@ const AuthRedirect = ({ children }) => {
 };
 
 const App = () => {
+  const { checkauth } = useAuthStore();
+
+  useEffect(() => {
+    checkauth();
+  }, []);
+
   return (
     <div className="flex justify-center w-full h-screen items-center">
       <Routes>

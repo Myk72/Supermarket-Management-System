@@ -22,12 +22,17 @@ export const useCustomerStore = create((set) => ({
   addCustomer: async (customerData) => {
     set({ isLoading: true });
     try {
-      console.log("here", customerData);
       const response = await api.post("/customer/register", customerData);
       console.log(response);
+      set((state) => ({
+        customers: [...state.customers, response.data.customer],
+        isLoading: false,
+      }));
+      return response.data;
     } catch (error) {
       console.log(error);
       set({ error: error.message, isLoading: false });
+      throw error;
     }
   },
 

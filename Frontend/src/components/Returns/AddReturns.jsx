@@ -9,6 +9,7 @@ import { useSaleStore } from "@/store/sales.store";
 import { useReturnStore } from "@/store/returns.store";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "@/store/auth.store";
+import toast, { Toaster } from "react-hot-toast";
 
 const AddReturns = () => {
   const navigate = useNavigate();
@@ -111,20 +112,20 @@ const AddReturns = () => {
         })),
         processed_by: user.employee_id,
       });
-      alert("Return processed successfully");
+      toast.success("Return processed successfully");
       setCart([]);
       setSale([]);
       setProducts([]);
       setActiveTab("sale");
     } catch (error) {
       console.error("Error processing return:", error);
-      alert("Failed to process return. Please try again.");
-      return;
+      toast.error("Failed to process return. Please try again.");
     }
   };
 
   return (
     <div className="space-y-6 p-4 bg-white rounded-2xl ">
+      <Toaster />
       <Button
         variant="outline"
         className="bg-gray-50 hover:bg-gray-200"
@@ -163,7 +164,8 @@ const AddReturns = () => {
               value="summary"
               className={"cursor-pointer p-2 data-[state=active]:bg-white"}
               onClick={() => setActiveTab("summary")}
-              disabled={ !cart.length ||
+              disabled={
+                !cart.length ||
                 cart.some(
                   (item) => !item.reason || item.reason.trim() === ""
                 ) ||

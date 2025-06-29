@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Edit } from "lucide-react";
 import { Button } from "../ui/button";
 import useAuthStore from "@/store/auth.store";
+import toast, { Toaster } from "react-hot-toast";
 
 const DetailProfile = () => {
   const form = useForm();
@@ -34,18 +35,19 @@ const DetailProfile = () => {
   const onSubmit = async (data) => {
     try {
       const response = await updateProfile(userProfile.employee_id, data);
-      if (response) {
-        alert("Profile updated successfully!");
+      if (response.data) {
+        toast.success("Profile updated successfully!");
         setEditMode(false);
       }
     } catch (error) {
       console.error("Error updating profile:", error);
-      alert("Failed to update profile. Please try again.");
+      toast.error("Failed to update profile. Please try again.");
     }
   };
 
   return (
     <div className="py-4 px-2 font-serif">
+      <Toaster />
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold text-blue-900">
           Profile Settings

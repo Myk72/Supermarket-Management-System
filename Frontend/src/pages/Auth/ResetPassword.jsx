@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { Lock } from "lucide-react";
 import { api } from "@/lib/api";
@@ -7,6 +8,7 @@ import { api } from "@/lib/api";
 const ResetPasswordPage = () => {
   const { id } = useParams();
   const [passwordMismatch, setPasswordMismatch] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm({
     defaultValues: {
       password: "",
@@ -25,19 +27,37 @@ const ResetPasswordPage = () => {
       setPasswordMismatch(false);
 
       try {
+        setIsLoading(true);
         const response = await api.post("/auth/set-password", {
           password,
           token: id,
         });
+        setIsLoading(false);
+        if (response.data) {
+          toast.success("Password reset successfully!");
+        }
         navigate("/login");
       } catch (error) {
         console.error("Error resetting password:", error);
+        toast.error(
+          error.response?.data?.detail ||
+            "Failed to reset password. Please try again."
+        );
       }
     }
   };
 
+  useEffect(() => {
+    if (isLoading) {
+      toast.loading("Processing...");
+    } else {
+      toast.dismiss();
+    }
+  }, [isLoading]);
+
   return (
     <div className="flex flex-col gap-6 p-6 justify-center items-center bg-white rounded-3xl shadow-2xl overflow-hidden w-2/5">
+      <Toaster />
       <img src="/reset.png" className="size-16" alt="Forgot Password" />
       <div className="flex flex-row gap-2 justify-between items-center font-serif font-bold w-full">
         <span className="bg-[#D6DDEB] h-[1px] w-1/4"></span>

@@ -1,4 +1,4 @@
-# 🛒 Supermarket Management System
+# 🛒 Mart-Sync
 
 A complete solution for supermarket operations with real-time barcode scanning and secure connections.
 

@@ -38,6 +38,7 @@ export const useReturnStore = create((set) => ({
       set({ isLoading: false, error: null });
     } catch (error) {
       set({ error: error.message, isLoading: false });
+      throw error;
     }
   },
 
@@ -46,12 +47,13 @@ export const useReturnStore = create((set) => ({
     try {
       const response = await api.patch(`/returns/${returnId}/${operation}`);
       console.log(response.data);
-      // Optionally, you can refetch returns after the operation
+      
       await set.getState().fetchReturns();
       await set.getState().fetchPendingReturns();
       set({ isLoading: false, error: null });
     } catch (error) {
       set({ error: error.message, isLoading: false });
+      throw error;
     }
   },
 }));

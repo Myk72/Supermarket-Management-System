@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Edit, Trash2, User, Eye, Package2, ArrowUpDown } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 
 const InventoryColumns = [
   {
@@ -10,9 +9,10 @@ const InventoryColumns = [
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className={"text-xs"}
       >
         ID
-        <ArrowUpDown className="size-4" />
+        <ArrowUpDown className="size-3" />
       </Button>
     ),
     size: 20,
@@ -25,9 +25,10 @@ const InventoryColumns = [
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className={"text-xs"}
       >
         Product
-        <ArrowUpDown className="size-4" />
+        <ArrowUpDown className="size-3" />
       </Button>
     ),
     cell: ({ row }) => {
@@ -45,7 +46,7 @@ const InventoryColumns = [
         </div>
       );
     },
-    size: 100,
+    size: 50,
   },
 
   {
@@ -55,9 +56,10 @@ const InventoryColumns = [
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className={"text-xs"}
       >
         Quantity
-        <ArrowUpDown className="size-4" />
+        <ArrowUpDown className="size-3" />
       </Button>
     ),
     size: 50,
@@ -69,9 +71,10 @@ const InventoryColumns = [
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className={"text-xs"}
       >
         Reorder Level
-        <ArrowUpDown className="size-4" />
+        <ArrowUpDown className="size-3" />
       </Button>
     ),
     size: 50,
@@ -84,9 +87,10 @@ const InventoryColumns = [
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className={"text-xs"}
       >
         Location
-        <ArrowUpDown className="size-4" />
+        <ArrowUpDown className="size-3" />
       </Button>
     ),
     cell: ({ row }) => {
@@ -99,33 +103,6 @@ const InventoryColumns = [
     size: 80,
   },
 
-  // {
-  //   id: "status",
-  //   accessorKey: "status",
-  //   header: ({ column }) => (
-  //     <Button
-  //       variant="ghost"
-  //       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-  //     >
-  //       Status
-  //       <ArrowUpDown className="size-4" />
-  //     </Button>
-  //   ),
-  //   cell: ({ row }) => {
-  //     const status = row.original.quantity > 0 ? "Available" : "Out of Stock";
-  //     return (
-  //       <div
-  //         className={`text-sm border-none ${
-  //           status === "Available" ? " text-green-600" : " text-red-600"
-  //         }`}
-  //       >
-  //         {status}
-  //       </div>
-  //     );
-  //   },
-  //   size: 60,
-  // },
-
   {
     id: "last_restocked",
     accessorKey: "last_restocked",
@@ -133,9 +110,10 @@ const InventoryColumns = [
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className={"text-xs"}
       >
         Last Restocked
-        <ArrowUpDown className="size-4" />
+        <ArrowUpDown className="size-3" />
       </Button>
     ),
     cell: ({ row }) => {
@@ -150,7 +128,7 @@ const InventoryColumns = [
         </div>
       );
     },
-    size: 80,
+    size: 50,
   },
 ];
 

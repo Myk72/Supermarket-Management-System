@@ -50,6 +50,11 @@ export const useProductStore = create((set) => ({
         },
       });
       console.log(response);
+      set((state) => ({
+        products: [...state.products, response.data],
+        isLoading: false,
+      }));
+
       return response.data;
     } catch (error) {
       console.error("Product upload failed:", error);

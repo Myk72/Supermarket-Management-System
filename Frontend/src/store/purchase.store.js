@@ -51,22 +51,29 @@ export const usePurchaseStore = create((set) => ({
       console.log(newData, "here");
       const response = await api.post("/purchase", newData);
       console.log(response);
+      set((state) => ({
+        purchases: [...state.purchases, response.data.purchase],
+        loading: false,
+      }));
+      return response.data;
     } catch (error) {
       set({ error: error.message, loading: false });
+      throw error
     }
   },
-
-
 
   updatePurchase: async (purchaseId, operation) => {
     set({ loading: true });
     try {
-      const response = await api.put(`/purchase/checkin/${purchaseId}/${operation}`);
+      const response = await api.put(
+        `/purchase/checkin/${purchaseId}/${operation}`
+      );
       console.log(response);
       set({ loading: false });
       return response.data;
     } catch (error) {
       set({ error: error.message, loading: false });
+      throw error;
     }
   },
 }));

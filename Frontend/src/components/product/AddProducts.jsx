@@ -6,6 +6,7 @@ import { useSupplierStore } from "@/store/suppliers.store";
 import { useCategoryStore } from "@/store/category.store";
 import { useProductStore } from "@/store/product.store";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 const AddProducts = () => {
   const {
@@ -13,35 +14,41 @@ const AddProducts = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const { suppliers, fetchSuppliers } = useSupplierStore();
   const { categories, fetchCategories } = useCategoryStore();
-  const { addProduct } = useProductStore();
+  const { addProduct, isLoading } = useProductStore();
   const [image, setImage] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchSuppliers();
     fetchCategories();
-    // console.log(suppliers, "suppliers in add product");
-  }, [fetchSuppliers, fetchCategories]);
+  }, []);
+
+  useEffect(() => {
+    if (isLoading) {
+      toast.loading("Adding product...");
+    } else {
+      toast.dismiss();
+    }
+  }, [isLoading]);
 
   const onSubmit = async (data) => {
     // console.log("Form Data Submitted: ", data);
     try {
-      const resp = await addProduct(data, image);
-      if (resp) {
-        alert("Product added successfully!");
-        navigate("/inventory/add");
-      } else {
-        alert("Failed to add product. Please try again.");
-      }
+      const response = await addProduct(data, image);
+      if (response) {
+        toast.success("Product added successfully!");
+      } 
     } catch (error) {
       console.log(error.message);
-      alert("An error occurred while adding the product. Please try again.");
+      toast.error(error.response?.data?.detail || "Failed to add product");
     }
   };
   return (
     <div className="space-y-6">
+      <Toaster />
       <Button
         variant={"outline"}
         onClick={() => {
@@ -230,7 +237,11 @@ const AddProducts = () => {
               />
             </div>
 
-            <Button type="submit" className="bg-blue-500 text-white mt-6">
+            <Button
+              variant={"default"}
+              type="submit"
+              className="bg-blue-500 text-white mt-6 hover:bg-blue-600 cursor-pointer"
+            >
               Add Product
             </Button>
           </div>

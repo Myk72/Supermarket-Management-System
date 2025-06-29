@@ -6,6 +6,7 @@ import { useInventoryStore } from "@/store/inventory.store";
 import { useForm } from "react-hook-form";
 import { Button } from "../ui/button";
 import { FaArrowLeft } from "react-icons/fa6";
+import toast, { Toaster } from "react-hot-toast";
 
 const AddInventory = () => {
   const {
@@ -14,7 +15,7 @@ const AddInventory = () => {
     formState: { errors },
   } = useForm();
   const { products, fetchProducts } = useProductStore();
-  const { addInventory } = useInventoryStore();
+  const { addInventory, isLoading } = useInventoryStore();
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [productId, setProductId] = useState(null);
   //   console.log(selectedProducts, "selected products");
@@ -22,9 +23,17 @@ const AddInventory = () => {
     fetchProducts();
   }, [fetchProducts]);
 
+  useEffect(() => {
+    if (isLoading) {
+      toast.loading("Adding inventory...");
+    } else {
+      toast.dismiss();
+    }
+  }, [isLoading]);
+
   const onSubmit = async (data) => {
     if (!selectedProducts.product_id) {
-      alert("Please select a product from the left table.");
+      toast.error("Please select a product from the left table.");
       return;
     }
     try {
@@ -36,20 +45,21 @@ const AddInventory = () => {
         batch_number: data.batch_number,
         expiry_date: data.expiry_date,
       });
-      
+
       if (res) {
-        alert("Inventory added successfully!");
-      } else {
-        alert("Failed to add inventory. Please try again.");
+        toast.success("Inventory added successfully!");
       }
     } catch (error) {
       console.error("Error adding inventory:", error);
-      alert("An error occurred while adding inventory. Please try again.");
+      toast.error(
+        "An error occurred while adding inventory. Please try again."
+      );
     }
   };
 
   return (
     <div className="space-y-6 font-serif">
+      <Toaster />
       <div className="flex justify-between items-center">
         <Button
           variant="outline"
@@ -69,6 +79,7 @@ const AddInventory = () => {
         <CustomTable
           data={products}
           columns={SelectProductColumns}
+          pageSize={6}
           onRowClick={(row) => {
             setSelectedProducts(row);
             setProductId(row.product_id);

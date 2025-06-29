@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ShoppingCart } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "@/store/auth.store";
+import toast, { Toaster } from "react-hot-toast";
 import {
   Dialog,
   DialogContent,
@@ -20,19 +21,35 @@ const LoginPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { login, forgotpassword } = useAuthStore();
+  const { login, forgotpassword, loading } = useAuthStore();
   const navigate = useNavigate();
   const [forgotPasswordIsOpen, setForgotPasswordIsOpen] = useState(false);
   const [email, setEmail] = useState("");
   const onSubmit = async (data) => {
     try {
-      await login(data);
+      const response = await login(data);
+      if (response.data) {
+        toast.success("Login successful!");
+      }
     } catch (error) {
-      console.error("Login failed:", error);
+      console.error("Login failed:", error.response?.data?.detail);
+      toast.error(
+        error.response?.data?.detail || "Login failed. Please try again."
+      );
     }
   };
+
+  useEffect(() => {
+    if (loading) {
+      toast.loading("Loading...");
+    } else {
+      toast.dismiss();
+    }
+  }, [loading]);
+
   return (
     <div className="flex flex-col items-center justify-center p-6 bg-white rounded-lg font-serif gap-4">
+      <Toaster />
       <div className="flex justify-center items-center flex-col gap-1">
         <h1 className="text-2xl font-black text-blue-600">Welcome Back!</h1>
         <span className="text-sm font-light text-blue-600">
@@ -124,23 +141,26 @@ const LoginPage = () => {
               type="email"
               placeholder="you@example.com"
               required
-              className="p-2 border rounded-xl border-black"
-              onChange={() => {
-                setEmail(event.target.value);
+              className="py-2 px-4 border rounded-xl border-black"
+              onChange={(e) => {
+                setEmail(e.target.value);
               }}
             />
           </div>
           <Button
-            variant={"outline"}
+            variant={"default"}
             className={
               "bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
             }
             onClick={async () => {
               try {
-                await forgotpassword(email);
+                const resp = await forgotpassword(email);
+                if (resp.data) {
+                  toast.success("Reset link sent to your email!");
+                }
                 setForgotPasswordIsOpen(false);
               } catch {
-                alert("Failed to send reset link. Please try again.");
+                toast.error("Failed to send reset link. Please try again.");
               }
             }}
           >

@@ -18,6 +18,7 @@ export const useEmployeeStore = create((set) => ({
       });
     } catch (error) {
       set({ error: error.message, isLoading: false });
+      throw error;
     }
   },
 
@@ -26,10 +27,15 @@ export const useEmployeeStore = create((set) => ({
     try {
       const response = await api.post("/auth/register", employeeData);
       console.log(response);
+      set((state) => ({
+        employees: [...state.employees, response.data],
+        isLoading: false,
+      }));
       return response.data;
     } catch (error) {
       console.log(error);
       set({ error: error.message, isLoading: false });
+      throw error;
     }
   },
 
@@ -43,10 +49,15 @@ export const useEmployeeStore = create((set) => ({
     try {
       const response = await api.post(`/users/assign-shift`, shiftData);
       console.log(response);
+      set((state) => ({
+        shifts: [...state.shifts, response.data],
+        isLoading: false,
+      }));
       return response.data;
     } catch (error) {
       console.log(error);
       set({ error: error.message, isLoading: false });
+      throw error;
     }
   },
 
@@ -60,7 +71,7 @@ export const useEmployeeStore = create((set) => ({
     } catch (error) {
       console.log(error);
       set({ error: error.message, isLoading: false });
-      return [];
+      throw error;
     }
   },
   deleteEmployee: async (employeeId) => {
@@ -76,6 +87,7 @@ export const useEmployeeStore = create((set) => ({
     } catch (error) {
       console.log(error);
       set({ error: error.message, isLoading: false });
+      throw error;
     }
   },
 }));

@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "../ui/button";
 import { FaArrowLeft } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
 import { useCustomerStore } from "@/store/customers.store";
+import toast, { Toaster } from "react-hot-toast";
 
 const AddCustomer = () => {
   const {
@@ -10,19 +11,32 @@ const AddCustomer = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { addCustomer } = useCustomerStore();
+  const { addCustomer, isLoading } = useCustomerStore();
 
   const onSubmit = async (data) => {
     try {
-      console.log(data);
-      await addCustomer(data);
-      alert("Customer has registered successfully");
+      // console.log(data);
+      const response = await addCustomer(data);
+      if (response) {
+        toast.success(response.message);
+      }
     } catch (error) {
       console.log(error.message);
+      toast.error("Error while registering customer");
     }
   };
+
+  useEffect(() => {
+    if (isLoading) {
+      toast.loading("Adding Customer...");
+    } else {
+      toast.dismiss();
+    }
+  }, [isLoading]);
+
   return (
     <div className="flex flex-col justify-center font-serif gap-2 bg-white rounded-2xl p-10">
+      <Toaster />
       <div className="flex justify-between items-center">
         <Button
           variant="outline"
@@ -195,8 +209,8 @@ const AddCustomer = () => {
           </div>
           <div className="flex justify-end mt-4">
             <Button
-              variant={"outline"}
-              className="ml-2 bg-blue-500 text-white hover:bg-blue-600"
+              variant={"default"}
+              className="ml-2 bg-blue-500 text-white hover:bg-blue-600 cursor-pointer"
               type="submit"
             >
               Add Customer

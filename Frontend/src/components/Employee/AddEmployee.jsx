@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "../ui/button";
 import { FaArrowLeft } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
 import { useEmployeeStore } from "@/store/employee.store";
+import toast, { Toaster } from "react-hot-toast";
 
 const AddEmployee = () => {
   const {
@@ -11,24 +12,32 @@ const AddEmployee = () => {
     formState: { errors },
   } = useForm();
 
-  const { addEmployee } = useEmployeeStore();
+  const { addEmployee, isLoading } = useEmployeeStore();
 
   const onSubmit = async (data) => {
     console.log(data);
     try {
       const res = await addEmployee(data);
       if (res) {
-        alert("Employee added successfully!");
-      } else {
-        alert("Failed to add employee. Please try again.");
+        toast.success("Employee added successfully!");
       }
     } catch (error) {
       console.log(error.message);
+      toast.error("Failed to add employee. Please try again.");
     }
   };
 
+  useEffect(() => {
+    if (isLoading) {
+      toast.loading("Adding employee...");
+    } else {
+      toast.dismiss();
+    }
+  }, [isLoading]);
+
   return (
     <div className="flex flex-col justify-center font-serif gap-2 bg-white rounded-2xl p-10">
+      <Toaster />
       <div className="flex justify-between items-center">
         <Button
           variant="outline"

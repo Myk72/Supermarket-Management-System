@@ -2,10 +2,10 @@ import { Barcode } from "lucide-react";
 const ProductCard = ({ product, onClick = () => {} }) => {
   return (
     <div
-      className="flex flex-col rounded-lg overflow-hidden shadow-sm cursor-pointer hover:shadow-lg hover:bg-gray-100 transition-all duration-300 font-serif"
+      className="flex flex-col rounded-lg overflow-hidden shadow-sm cursor-pointer hover:shadow-lg hover:bg-gray-100 transition-all duration-300 font-serif h-fit"
       onClick={onClick}
     >
-      <div className="shrink-0 overflow-hidden h-28">
+      <div className="shrink-0 overflow-hidden h-24">
         <img
           src={product?.image}
           alt={product?.name}

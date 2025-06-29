@@ -10,10 +10,10 @@ import { Filter } from "lucide-react";
 import { Button } from "../ui/button";
 const ProductSearchToolbar = ({ searchTerm, setSearchTerm }) => {
   return (
-    <div className="space-x-1">
+    <div className="space-x-1 w-full">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="gap-2 border-none shadow-md">
+          <Button variant="outline" className="gap-2 border-none shadow-sm">
             <Filter className="size-4" />
           </Button>
         </DropdownMenuTrigger>

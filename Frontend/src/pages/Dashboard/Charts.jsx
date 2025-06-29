@@ -83,7 +83,7 @@ const Charts = () => {
             <YAxis dataKey="name" type="category" />
             <Tooltip />
             <Legend />
-            <Bar dataKey="total_sold" fill="#9900FF" barSize={20} />
+            <Bar dataKey="total_sold" fill="#0C7ECF" barSize={20} />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -100,13 +100,13 @@ const Charts = () => {
             <Legend />
             <Bar
               dataKey="quantity"
-              fill="#6366f1"
+              fill="#072F5F"
               barSize={30}
               name="Current Stock"
             />
             <Bar
               dataKey="reorder"
-              fill="#f97316"
+              fill="#008000"
               barSize={30}
               name="Reorder Level"
             />

@@ -45,8 +45,8 @@ const Topbar = ({ currentNavItem }) => {
             </DropdownMenuItem>
 
             <DropdownMenuItem
-              onClick={() => {
-                logout();
+              onClick={async () => {
+                await logout();
                 Navigate("/login");
               }}
             >

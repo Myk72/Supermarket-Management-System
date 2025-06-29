@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "../ui/button";
 import { FaArrowLeft } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { useEmployeeStore } from "@/store/employee.store";
+import toast, { Toaster } from "react-hot-toast";
 
 const AssignShift = () => {
   const { id } = useParams();
@@ -20,21 +21,31 @@ const AssignShift = () => {
       date: "",
     },
   });
-  const { assignShift } = useEmployeeStore();
+  const { assignShift, isLoading } = useEmployeeStore();
 
   const onSubmit = async (data) => {
     try {
       const response = await assignShift(data);
       if (response) {
-        alert("Shift assigned successfully");
+        toast.success("Shift assigned successfully");
       }
     } catch (error) {
       console.error("Error assigning shift:", error.message);
-      alert("Failed to assign shift. Please try again.");
+      toast.error("Failed to assign shift. Please try again.");
     }
   };
+
+  useEffect(() => {
+    if (isLoading) {
+      toast.loading("Assigning shift...");
+    } else {
+      toast.dismiss();
+    }
+  }, [isLoading]);
+
   return (
     <div className="flex flex-col font-serif gap-2 bg-white rounded-2xl p-10">
+      <Toaster />
       <div className="flex justify-between items-center">
         <Button
           variant="outline"
