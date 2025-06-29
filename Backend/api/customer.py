@@ -14,7 +14,6 @@ async def get_customers(db: Session = Depends(connect_db)):
 
 @router.post("/register")
 async def register_customer(data:CustomerBase, db: Session = Depends(connect_db)):
-    print(data)
     if db.query(Customer).filter(Customer.email == data.email).first():
         raise HTTPException(status_code=400, detail="Customer already exists")
     new_customer = Customer(
@@ -32,7 +31,7 @@ async def register_customer(data:CustomerBase, db: Session = Depends(connect_db)
     db.commit()
     db.refresh(new_customer)
 
-    return {"message": "Customer has registered successfully"}
+    return {"message": "Customer has registered successfully", "customer" : new_customer}
 
 
 @router.get("/monthly")

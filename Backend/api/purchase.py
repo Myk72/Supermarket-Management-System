@@ -105,7 +105,7 @@ async def add_purchase(data: createPurchase, db: Session = Depends(connect_db)):
     if supplier and supplier.email:
         await send_purchase_email(supplier.email, supplier.name, data.items, data.expected_date, purchase.purchase_id)
 
-    return {"message": "Purchase added successfully", "purchase_id": purchase.purchase_id}
+    return {"message": "Purchase added successfully", "purchase": purchase}
 
 
 @router.get("/{purchase_id}")

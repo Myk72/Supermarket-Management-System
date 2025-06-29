@@ -1,16 +1,15 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response, Request
 from sqlalchemy.orm import Session
+from fastapi.responses import JSONResponse
 from utils import utils
 from schemas.userSchema import UserRegister, UserLogin, SetPasswordRequest, ForgotPasswordRequest, ChangePasswordRequest
 from db.model.employee import User, Employee
 from db.database import connect_db
 from datetime import datetime
+from utils.utils import hash_password, verify_password, generate_token, send_email, verify_token
+from utils.jwt import generate_cookie_token, verify_cookie_token
 
 router = APIRouter(prefix="/auth", tags=["auth"])
-
-
-
-from utils.utils import hash_password, verify_password, generate_token, send_email, verify_token
 
 
 @router.post("/register")
@@ -58,9 +57,37 @@ def login(credentials: UserLogin, db: Session = Depends(connect_db)):
     db.commit()
     db.refresh(user)
 
-    return {"message": "Login successful", "id": user.employee_id}
+    token = generate_cookie_token({"id": user.employee_id, "email": user.email})
 
+    # print(token, "token here")
+    # checktoken = verify_cookie_token(token)
+    # if checktoken:
+    #     print("id here:", checktoken.get("id"))
 
+    response = JSONResponse(content={"message": "Login successful", "id": user.employee_id})
+    print("here")
+
+    response.set_cookie(
+        key="token",
+        value=token,
+        httponly=True,
+        secure=False,
+        samesite="Lax",
+        max_age=86400,
+        path="/"
+        )
+    return response
+
+@router.post("/logout")
+def logout(response: Response):
+    res = JSONResponse(content={"message": "Logged out"})
+    res.delete_cookie(
+        key="token",
+        httponly=True,
+        samesite="Lax",
+        secure=False,
+    )
+    return res
 
 @router.post("/set-password")
 def set_password(data: SetPasswordRequest, db: Session = Depends(connect_db)):
@@ -122,3 +149,22 @@ def change_password(emp_id: int, data: ChangePasswordRequest, db: Session = Depe
     db.refresh(user)
 
     return {"message": "Password has been changed successfully"}
+
+
+@router.get("/check-auth")
+def check_auth(request: Request, db: Session = Depends(connect_db)):
+    print(request.cookies, "cookies here")
+    token = request.cookies.get("token")
+    if not token:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+
+    payload = verify_cookie_token(token)
+
+    if not payload:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    email = payload.get("email")
+    id = payload.get('id')
+
+    user = db.query(Employee).filter(Employee.employee_id == id).first()
+
+    return {"message": "Authenticated", "user": user, "email": email}
